@@ -9,7 +9,7 @@ export const pool = new Pool({
   host: 'localhost',
   database: 'api',
   password: 'password', // move to a .env file
-  port: 3030
+  port: 5432
 })
 
 pool.connect(function (err) {
