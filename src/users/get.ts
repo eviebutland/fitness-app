@@ -1,17 +1,13 @@
 import { Response, Request } from 'express'
 import { QueryResult } from 'pg'
-import { pool } from '../../server'
+import { client } from '../../server'
 
-export const getUsers = (request: Request, response: Response): void => {
+export const getUsers = async (request: Request, response: Response) => {
   // response.send('Reached users')
+  const res = await client.query('SELECT * FROM users')
 
-  pool.query('SELECT * FROM users', (error, results) => {
-    console.log('RUNNING QUERY')
-    if (error) {
-      console.log('Error', error)
-    }
-    console.log(results)
-  })
+  response.json(res.rows)
+  await client.end()
 
   //
 }

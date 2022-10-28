@@ -9,6 +9,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const routes_1 = require("./src/routes");
 // import { getUsers } from './server'
+const server_1 = require("./server");
 dotenv_1.default.config();
 exports.app = (0, express_1.default)();
 exports.app.use(body_parser_1.default.json());
@@ -21,3 +22,4 @@ exports.app.use(routes_1.router);
 exports.app.listen(3030, () => {
     console.log(`App running on port 3030.`);
 });
+(0, server_1.connectDb)();

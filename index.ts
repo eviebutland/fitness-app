@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import { router } from './src/routes'
 // import { getUsers } from './server'
+import { connectDb } from './server'
 
 dotenv.config()
 
@@ -21,3 +22,5 @@ app.use(router)
 app.listen(3030, (): void => {
   console.log(`App running on port 3030.`)
 })
+
+connectDb()
