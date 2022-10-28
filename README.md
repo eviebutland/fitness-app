@@ -9,3 +9,4 @@ I have created a pool in the server.ts file. Using a client only allows for one 
 ## node-postgres
 
 [Transcations](https://node-postgres.com/features/transactions).
+[pg-pool](https://www.npmjs.com/package/pg-pool)

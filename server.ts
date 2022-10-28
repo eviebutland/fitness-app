@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import pg from 'pg'
 
-const Pool = pg.Pool
+const Pool = pg.Client
 
 console.log('reached server file')
 export const pool = new Pool({
@@ -10,6 +10,11 @@ export const pool = new Pool({
   database: 'api',
   password: 'password', // move to a .env file
   port: 3030
+})
+
+pool.connect(function (err) {
+  if (err) console.log(err)
+  else console.log('Connected!')
 })
 
 // export const getUsers = (request: Request, response: Response) => {

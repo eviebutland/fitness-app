@@ -13,7 +13,5 @@ const createUser = async (request, response) => {
         console.log(results);
         response.status(201).send(`User added with ID: ${results.rows[0].id}`);
     });
-    response.json(`${server_1.pool.idleCount}`);
-    return server_1.pool.idleCount;
 };
 exports.createUser = createUser;

@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.pool = void 0;
 const pg_1 = __importDefault(require("pg"));
-const Pool = pg_1.default.Pool;
+const Pool = pg_1.default.Client;
 console.log('reached server file');
 exports.pool = new Pool({
     user: 'me',
@@ -13,6 +13,12 @@ exports.pool = new Pool({
     database: 'api',
     password: 'password',
     port: 3030
+});
+exports.pool.connect(function (err) {
+    if (err)
+        console.log(err);
+    else
+        console.log('Connected!');
 });
 // export const getUsers = (request: Request, response: Response) => {
 //   pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {

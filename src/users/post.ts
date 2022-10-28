@@ -18,6 +18,4 @@ export const createUser = async (request: Request, response: Response) => {
       response.status(201).send(`User added with ID: ${results.rows[0].id}`)
     }
   )
-  response.json(`${pool.idleCount}`)
-  return pool.idleCount
 }
