@@ -1,6 +1,6 @@
 // import { Request, Response } from 'express'
-const { Client } = require('pg')
-const dotenv = require('dotenv')
+import { Client } from 'pg'
+import dotenv from 'dotenv'
 
 dotenv.config()
 
@@ -16,7 +16,7 @@ const connectDb = async () => {
 
     await client.connect()
     const res = await client.query('SELECT * FROM users')
-    console.log(res)
+    console.log(res.rows)
     await client.end()
   } catch (error) {
     console.log(error)
@@ -24,3 +24,8 @@ const connectDb = async () => {
 }
 
 connectDb()
+
+// pool.on('error', (err: Error) => {
+//   console.error('Unexpected error on idle client', err)
+//   process.exit(-1)
+// })

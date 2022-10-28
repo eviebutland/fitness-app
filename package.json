@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "A Fitness app that provides daily workouts",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "start:DB": "brew services start postgresql",
     "stop:DB": "brew services stop postgresql"
   },
