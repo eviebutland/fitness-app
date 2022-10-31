@@ -1,10 +1,9 @@
 import express from 'express'
-import { getUsers } from './users/get'
-import { createUser } from './users/post'
+import { getUsers, createUser, updateUser, deleteUser } from './users/index'
 
 export const router = express.Router()
-console.log('reached routes')
 
 router.get('/users', getUsers)
 router.post('/users', createUser)
-// export { getUsers }
+router.patch('/users', updateUser)
+router.delete('/users', deleteUser)

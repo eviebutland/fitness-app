@@ -1,21 +1,29 @@
 import { Request, Response } from 'express'
-// import { pool } from '../../server'
+import { client } from '../../server'
 
 export const createUser = async (request: Request, response: Response) => {
-  const name = 'Evie'
+  const firstName = 'Evie'
+  const lastName = 'B'
   const email = 'evie.butland@gamol.com'
 
-  // await pool.query(
-  //   'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *',
-  //   [name, email],
-  //   (error, results) => {
-  //     if (error) {
-  //       console.log('theres an error', error)
-  //       return
-  //     }
+  // const query = `INSERT INTO users (email, name)
+  // VALUES (${email}, ${firstName})
+  // `
+  const query = `
+INSERT INTO users (email, name)
+VALUES ('johndoe@gmail.com', 'john')
+`
 
-  //     console.log(results)
-  //     response.status(201).send(`User added with ID: ${results.rows[0].id}`)
-  //   }
-  // )
+  try {
+    const res = await client.query(query)
+
+    console.log(res)
+    response.json(res.rows)
+  } catch (error) {
+    client.query('ROLLBACK;')
+    console.log(error)
+    response.json(error)
+  } finally {
+    // await client.end()
+  }
 }
