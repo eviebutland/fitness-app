@@ -10,3 +10,5 @@ I have created a pool in the server.ts file. Using a client only allows for one 
 
 [Transcations](https://node-postgres.com/features/transactions).
 [pg-pool](https://www.npmjs.com/package/pg-pool)
+
+Dummy data from: [Mockeroo](https://www.mockaroo.com/)
