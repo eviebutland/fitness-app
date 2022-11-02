@@ -5,7 +5,7 @@ export const getUsers = async (request: Request, response: Response) => {
   try {
     const res = await client.query('SELECT * FROM users')
 
-    response.json(res.rows)
+    response.json({ data: res.rows, total: res.rows.length })
   } catch (error) {
     try {
       await client.query('ROLLBACK;')
