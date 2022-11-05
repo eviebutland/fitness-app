@@ -8,17 +8,20 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const routes_1 = require("./src/routes");
-// import { getUsers } from './server'
 const server_1 = require("./server");
+const openapi_backend_1 = __importDefault(require("openapi-backend"));
+const index_1 = require("./src/index");
+const schema_1 = require("./schema/schema");
+const api = new openapi_backend_1.default({
+    definition: schema_1.document,
+    handlers: index_1.handlers
+});
 dotenv_1.default.config();
 exports.app = (0, express_1.default)();
 exports.app.use(body_parser_1.default.json());
 exports.app.use(body_parser_1.default.urlencoded({ extended: true }));
 exports.app.use(routes_1.router);
-// app.get('/', (request: Request, response: Response): void => {
-//   response.json({ info: 'Node.js, Express, and Postgres API' })
-// })
-// app.get('/users', getUsers)
+exports.app.use((req, res) => api.handleRequest(req, req, res));
 exports.app.listen(3030, () => {
     console.log(`App running on port 3030.`);
 });
