@@ -6,9 +6,7 @@ const createUser = async (request, response) => {
     const firstName = 'Evie';
     const lastName = 'B';
     const email = 'evie.butland@gamol.com';
-    // const query = `INSERT INTO users (email, name)
-    // VALUES (${email}, ${firstName})
-    // `
+    // Insert into means adding a record to the table
     const query = `
 INSERT INTO users (email, name)
 VALUES ('johndoe@gmail.com', 'john')

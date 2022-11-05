@@ -5,7 +5,7 @@ const server_1 = require("../../server");
 const getUsers = async (request, response) => {
     try {
         const res = await server_1.client.query('SELECT * FROM users');
-        response.json(res.rows);
+        response.json({ data: res.rows, total: res.rows.length });
     }
     catch (error) {
         try {
