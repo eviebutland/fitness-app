@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.createUser = exports.getUsers = void 0;
+exports.getAUser = exports.deleteUser = exports.updateUser = exports.createUser = exports.getUsers = void 0;
 const get_1 = require("./get");
 Object.defineProperty(exports, "getUsers", { enumerable: true, get: function () { return get_1.getUsers; } });
+Object.defineProperty(exports, "getAUser", { enumerable: true, get: function () { return get_1.getAUser; } });
 const post_1 = require("./post");
 Object.defineProperty(exports, "createUser", { enumerable: true, get: function () { return post_1.createUser; } });
 const patch_1 = require("./patch");

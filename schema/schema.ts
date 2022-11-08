@@ -40,11 +40,11 @@ export const document: OpenAPIV3.Document = {
     }
   ],
   paths: {
-    '/user': {
+    '/users': {
       get: {
         tags: ['user'],
         summary: 'Get all user',
-        description: 'Get a user \n',
+        description: 'Get all users \n',
         operationId: 'getUsers',
         security: [
           {
@@ -130,7 +130,7 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
-    '/user/{id}': {
+    '/users/{id}': {
       get: {
         tags: ['user'],
         summary: 'Get a user',

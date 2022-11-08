@@ -1,20 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsers = void 0;
+exports.getAUser = exports.getUsers = void 0;
 const server_1 = require("../../server");
+const rollback_1 = require("../utils/rollback");
+const format_response_1 = require("../utils/format-response");
 const getUsers = async (request, response) => {
     try {
         const res = await server_1.client.query('SELECT * FROM users');
-        response.json({ data: res.rows, total: res.rows.length });
+        const data = (0, format_response_1.formatResponse)(res, 'workoutpreference');
+        response.json({ data, total: res.rows.length });
     }
     catch (error) {
-        try {
-            await server_1.client.query('ROLLBACK;');
-            console.log(error);
-        }
-        catch (e) {
-            console.log('could not rollback: ', e);
-        }
+        (0, rollback_1.rollback)(server_1.client);
+        // try {
+        //   await client.query('ROLLBACK;')
+        //   console.log(error)
+        // } catch (e) {
+        //   console.log('could not rollback: ', e)
+        // }
     }
     finally {
         // Best practice to have a finally and end the session
@@ -22,3 +25,24 @@ const getUsers = async (request, response) => {
     }
 };
 exports.getUsers = getUsers;
+const getAUser = async (request, response) => {
+    if (request.params.id === ':id') {
+        response.send({ message: 'Error: Please provide an ID' });
+        return;
+    }
+    const query = `SELECT * FROM users
+  WHERE id = $1`;
+    try {
+        const result = await server_1.client.query(query, [request.params.id]);
+        const data = (0, format_response_1.formatResponse)(result, 'workoutpreference');
+        console.log(data);
+        response.send(data);
+    }
+    catch (error) {
+        (0, rollback_1.rollback)(server_1.client);
+    }
+    finally {
+        // do something here
+    }
+};
+exports.getAUser = getAUser;

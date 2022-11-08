@@ -10,4 +10,5 @@ exports.router = express_1.default.Router();
 exports.router.get('/users', index_1.getUsers);
 exports.router.post('/users', index_1.createUser);
 exports.router.patch('/users', index_1.updateUser);
-exports.router.delete('/users', index_1.deleteUser);
+exports.router.delete('/users/:id', index_1.deleteUser);
+exports.router.get('/users/:id', index_1.getAUser);

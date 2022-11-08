@@ -39,17 +39,13 @@
   "paths": {
     "/user": {
       "get": {
-        "tags": [
-          "user"
-        ],
+        "tags": ["user"],
         "summary": "Get all user",
         "description": "Get a user \n",
         "operationId": "getUsers",
         "security": [
           {
-            "main_auth": [
-              "read:users"
-            ]
+            "main_auth": ["read:users"]
           },
           {
             "api_key": []
@@ -82,9 +78,7 @@
         }
       },
       "post": {
-        "tags": [
-          "user"
-        ],
+        "tags": ["user"],
         "summary": "Create a new user",
         "description": "Create a new user",
         "operationId": "createAUser",
@@ -135,9 +129,7 @@
     },
     "/user/{id}": {
       "get": {
-        "tags": [
-          "user"
-        ],
+        "tags": ["user"],
         "summary": "Get a user",
         "description": "Get a user \n",
         "operationId": "getAUser",
@@ -154,9 +146,7 @@
         ],
         "security": [
           {
-            "main_auth": [
-              "read:users"
-            ]
+            "main_auth": ["read:users"]
           },
           {
             "api_key": []
@@ -189,9 +179,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "user"
-        ],
+        "tags": ["user"],
         "summary": "Deletes a user",
         "description": "User can delete own account or be removed by admin",
         "operationId": "deleteUser",
@@ -208,9 +196,7 @@
         ],
         "security": [
           {
-            "main_auth": [
-              "write:users"
-            ]
+            "main_auth": ["write:users"]
           }
         ],
         "responses": {
@@ -240,9 +226,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "user"
-        ],
+        "tags": ["user"],
         "summary": "Updates the user",
         "description": "User's can update their own profile, as well as adding to completed exercises",
         "operationId": "updateUser",
@@ -259,9 +243,7 @@
         ],
         "security": [
           {
-            "main_auth": [
-              "write:users"
-            ]
+            "main_auth": ["write:users"]
           }
         ],
         "responses": {
@@ -311,17 +293,13 @@
     },
     "/exercises": {
       "get": {
-        "tags": [
-          "exercises"
-        ],
+        "tags": ["exercises"],
         "summary": "Get all exercises",
         "description": "Get all exercises in the database returned",
         "operationId": "getAllExercises",
         "security": [
           {
-            "main_auth": [
-              "read:users"
-            ]
+            "main_auth": ["read:users"]
           },
           {
             "api_key": []
@@ -354,9 +332,7 @@
         }
       },
       "post": {
-        "tags": [
-          "exercises"
-        ],
+        "tags": ["exercises"],
         "summary": "Create a new exercise",
         "description": "Create a new exercise",
         "operationId": "createExcerise",
@@ -414,9 +390,7 @@
     },
     "/exercises/{id}": {
       "patch": {
-        "tags": [
-          "exercises"
-        ],
+        "tags": ["exercises"],
         "summary": "Updates the exercise",
         "description": "This can only be done by the admin user.",
         "operationId": "updateExercise",
@@ -433,9 +407,7 @@
         ],
         "security": [
           {
-            "main_auth": [
-              "write:users"
-            ]
+            "main_auth": ["write:users"]
           }
         ],
         "responses": {
@@ -483,9 +455,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "exercises"
-        ],
+        "tags": ["exercises"],
         "summary": "Deletes an exercise",
         "description": "This can only be done by the admin user.",
         "operationId": "deleteExercise",
@@ -502,9 +472,7 @@
         ],
         "security": [
           {
-            "main_auth": [
-              "write:users"
-            ]
+            "main_auth": ["write:users"]
           }
         ],
         "responses": {
@@ -536,9 +504,7 @@
     },
     "/exercise/catergory/{catergory}": {
       "get": {
-        "tags": [
-          "exercises"
-        ],
+        "tags": ["exercises"],
         "summary": "Get all exercises in a catergory",
         "description": "Get all exercises in the database returned with the same catergory",
         "operationId": "getAllExercisesInCatergory",
@@ -555,9 +521,7 @@
         ],
         "security": [
           {
-            "main_auth": [
-              "read:users"
-            ]
+            "main_auth": ["read:users"]
           },
           {
             "api_key": []
@@ -592,9 +556,7 @@
     },
     "/exercises/planned-workouts": {
       "get": {
-        "tags": [
-          "planned workouts"
-        ],
+        "tags": ["planned workouts"],
         "summary": "Get all planned workouts",
         "description": "Get all planned workouts created",
         "operationId": "getAllPlannedWorkout",
@@ -639,9 +601,7 @@
         }
       },
       "post": {
-        "tags": [
-          "planned workouts"
-        ],
+        "tags": ["planned workouts"],
         "summary": "Create a planned workout",
         "description": "Create a planned workout based off user's preferences and table of exercises in database",
         "operationId": "createPlannedWorkout",
@@ -706,9 +666,7 @@
     },
     "/exercises/planned-workouts/{id}": {
       "get": {
-        "tags": [
-          "planned workouts"
-        ],
+        "tags": ["planned workouts"],
         "summary": "Get a planned workouts",
         "description": "Get a planned workouts",
         "operationId": "getPlannedWorkout",
@@ -764,9 +722,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "planned workouts"
-        ],
+        "tags": ["planned workouts"],
         "summary": "Update a planned workout",
         "description": "Update a planned workout",
         "operationId": "updatePlannedWorkout",
@@ -850,9 +806,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "planned workouts"
-        ],
+        "tags": ["planned workouts"],
         "summary": "Delete a planned workout by ID",
         "description": "Delete a planned workout by ID",
         "operationId": "deletePlannedWorkout",
@@ -933,15 +887,7 @@
           "scheduledDay": {
             "description": "scheduled day of the week based off users preferences",
             "type": "string",
-            "enum": [
-              "mon",
-              "tues",
-              "wed",
-              "thurs",
-              "fri",
-              "sat",
-              "sun"
-            ]
+            "enum": ["mon", "tues", "wed", "thurs", "fri", "sat", "sun"]
           },
           "intensityRating": {
             "description": "Overall intensity rating based off of the exercises intensity",
@@ -982,13 +928,7 @@
             "description": "The catergory the excerise belongs in",
             "type": "string",
             "example": "upper",
-            "enum": [
-              "upper",
-              "lower",
-              "glutes",
-              "cardio",
-              "full-body"
-            ]
+            "enum": ["upper", "lower", "glutes", "cardio", "full-body"]
           },
           "intensity": {
             "description": "The intensity rating of the exercise",
@@ -1015,10 +955,7 @@
             "items": {
               "type": "string"
             },
-            "example": [
-              "Bent over row",
-              "Lat fly"
-            ]
+            "example": ["Bent over row", "Lat fly"]
           }
         }
       },
@@ -1060,10 +997,7 @@
             "items": {
               "type": "string"
             },
-            "example": [
-              "Upper 1 02/11/2022",
-              "Lower 1 03/11/2022"
-            ]
+            "example": ["Upper 1 02/11/2022", "Lower 1 03/11/2022"]
           },
           "permissions": {
             "description": "User's permissions",
