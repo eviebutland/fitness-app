@@ -9,5 +9,8 @@ const rollback = async (client) => {
         console.log('could not rollback: ', error);
         throw new Error('Unable to rollback');
     }
+    finally {
+        // done() need to access done from the client connection
+    }
 };
 exports.rollback = rollback;

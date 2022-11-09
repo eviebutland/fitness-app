@@ -1,23 +1,29 @@
 import { Response, Request } from 'express'
 import { client } from '../../server'
 import { rollback } from '../utils/rollback'
-import { composeObject, formatResponse } from '../utils/format-response'
+import { formatResponse } from '../utils/format-response'
+import { QueryResult } from 'pg'
+interface User {
+  name: string
+  age: number
+  email: string
+  password: string
+  levelofaccess: string
+  premium: string // could use a type here 'STANDARD' ..
+  completedworkouts: string[]
+  permissions: string
+  workoutpreference: string
+}
 
 export const getUsers = async (request: Request, response: Response) => {
   try {
-    const res = await client.query('SELECT * FROM users')
+    const res: QueryResult<User> = await client.query('SELECT * FROM users')
 
-    const data = formatResponse(res, 'workoutpreference')
+    const data: User[] = formatResponse(res, 'workoutpreference')
 
     response.json({ data, total: res.rows.length })
   } catch (error) {
     rollback(client)
-    // try {
-    //   await client.query('ROLLBACK;')
-    //   console.log(error)
-    // } catch (e) {
-    //   console.log('could not rollback: ', e)
-    // }
   } finally {
     // Best practice to have a finally and end the session
     // await client.end()
@@ -34,12 +40,11 @@ export const getAUser = async (request: Request, response: Response) => {
   WHERE id = $1`
 
   try {
-    const result = await client.query(query, [request.params.id])
+    const result: QueryResult<User> = await client.query(query, [request.params.id])
 
-    const data = formatResponse(result, 'workoutpreference')
+    const data: User[] = formatResponse(result, 'workoutpreference')
 
-    console.log(data)
-    response.send(data)
+    response.send({ data: data[0] })
   } catch (error) {
     rollback(client)
   } finally {

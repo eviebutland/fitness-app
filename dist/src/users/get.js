@@ -12,12 +12,6 @@ const getUsers = async (request, response) => {
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
-        // try {
-        //   await client.query('ROLLBACK;')
-        //   console.log(error)
-        // } catch (e) {
-        //   console.log('could not rollback: ', e)
-        // }
     }
     finally {
         // Best practice to have a finally and end the session
@@ -35,8 +29,7 @@ const getAUser = async (request, response) => {
     try {
         const result = await server_1.client.query(query, [request.params.id]);
         const data = (0, format_response_1.formatResponse)(result, 'workoutpreference');
-        console.log(data);
-        response.send(data);
+        response.send({ data: data[0] });
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
