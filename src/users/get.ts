@@ -22,6 +22,7 @@ export const getUsers = async (request: Request, response: Response) => {
 
 export const getAUser = async (request: Request, response: Response) => {
   if (request.params.id === ':id') {
+    response.status(404)
     response.send({ message: 'Error: Please provide an ID' })
     return
   }

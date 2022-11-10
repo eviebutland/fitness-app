@@ -4,6 +4,11 @@ exports.updateUser = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const updateUser = async (request, response) => {
+    if (request.params.id === ':id') {
+        response.status(404);
+        response.send({ message: 'Please provide an id' });
+        return;
+    }
     const columns = Object.keys(request.body);
     const values = Object.values(request.body);
     const set = [];

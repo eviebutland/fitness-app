@@ -21,6 +21,7 @@ const getUsers = async (request, response) => {
 exports.getUsers = getUsers;
 const getAUser = async (request, response) => {
     if (request.params.id === ':id') {
+        response.status(404);
         response.send({ message: 'Error: Please provide an ID' });
         return;
     }

@@ -40,6 +40,47 @@ exports.document = {
         }
     ],
     paths: {
+        '/login': {
+            get: {
+                tags: ['authentication'],
+                summary: 'Login as user',
+                description: 'Login as user',
+                operationId: 'login',
+                security: [
+                    {
+                        main_auth: ['read:users']
+                    },
+                    {
+                        api_key: []
+                    }
+                ],
+                responses: {
+                    '200': {
+                        description: 'Success',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    $ref: '#/components/schemas/User'
+                                }
+                            }
+                        }
+                    },
+                    '403': {
+                        description: 'Forbidden'
+                    },
+                    '404': {
+                        description: 'NOT_FOUND',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    $ref: '#/components/schemas/NotFound'
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         '/users': {
             get: {
                 tags: ['user'],
