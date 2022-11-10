@@ -2,18 +2,7 @@ import { Request, Response } from 'express'
 import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { rollback } from '../utils/rollback'
-
-interface User {
-  name: string
-  age: number
-  email: string
-  password: string
-  levelofaccess: string
-  premium: string // could use a type here 'STANDARD' ..
-  completedworkouts: string[]
-  permissions: string
-  workoutpreference: string
-}
+import { User } from '../lib/types/user'
 
 export const updateUser = async (request: Request, response: Response) => {
   const columns = Object.keys(request.body)

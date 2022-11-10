@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import { client } from '../../server'
+import { User } from '../lib/types/user'
+import { rollback } from '../utils/rollback'
 
 export const createUser = async (request: Request, response: Response) => {
   const query = `
@@ -7,9 +9,7 @@ INSERT INTO users (name, age, email, password, levelOfAccess, premium, completed
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 `
 
-  console.log(typeof request.body.workoutPreference)
-
-  let model = request.body
+  let model: User = request.body
   model = {
     ...request.body,
     workoutPreference: JSON.stringify(request.body.workoutPreference)
@@ -17,12 +17,10 @@ VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 
   try {
     const res = await client.query(query, [...Object.values(model)])
-    console.log(res)
+
     response.json(res.rows)
   } catch (error) {
-    client.query('ROLLBACK;')
-    console.log('ROLLBACK', error)
-    response.json(error)
+    rollback(client)
   } finally {
     // await client.end()
   }

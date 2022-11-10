@@ -3,17 +3,7 @@ import { client } from '../../server'
 import { rollback } from '../utils/rollback'
 import { formatResponse } from '../utils/format-response'
 import { QueryResult } from 'pg'
-interface User {
-  name: string
-  age: number
-  email: string
-  password: string
-  levelofaccess: string
-  premium: string // could use a type here 'STANDARD' ..
-  completedworkouts: string[]
-  permissions: string
-  workoutpreference: string
-}
+import { User } from '../lib/types/user'
 
 export const getUsers = async (request: Request, response: Response) => {
   try {
