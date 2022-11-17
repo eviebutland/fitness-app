@@ -21,17 +21,16 @@ const updateUser = async (request, response) => {
     WHERE id = ${request.params.id}
     `;
     try {
+        await server_1.client.query('BEGIN TRANSACTION');
         const res = await server_1.client.query(query, [...values]);
         console.log(res);
-        if (res.rowCount === 1) {
-            response.status(201).send({ message: 'Successfully Updated user' });
-        }
+        await server_1.client.query('COMMIT TRANSACTION');
+        response.status(201).send({ message: 'Successfully Updated user' });
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
-    }
-    finally {
-        // do something here
+        console.log(error);
+        response.status(500).json({ message: 'Something went wrong', error });
     }
 };
 exports.updateUser = updateUser;

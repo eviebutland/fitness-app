@@ -27,8 +27,7 @@ export const login = async (request: Request, response: Response) => {
 
     // const filteredResponse = 
 
-
-     await client.query('COMMIT')
+    await client.query('COMMIT TRANSACTION')
     response.status(200).send({message: 'Successfully logged in', user: result.rows})
 
 

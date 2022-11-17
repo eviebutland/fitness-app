@@ -14,11 +14,14 @@ VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         workoutPreference: JSON.stringify(request.body.workoutPreference)
     };
     try {
+        await server_1.client.query('BEGIN TRANSACTION');
         const res = await server_1.client.query(query, [...Object.values(model)]);
+        await server_1.client.query('COMMIT TRANSACTION');
         response.json(res.rows);
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
+        response.status(500).json({ message: 'Something went wrong', error });
     }
     finally {
         // await client.end()

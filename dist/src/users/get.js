@@ -15,7 +15,7 @@ const getUsers = async (request, response) => {
     catch (error) {
         console.log(error);
         (0, rollback_1.rollback)(server_1.client);
-        response.json({ message: 'Error getting all users' });
+        response.status(500).json({ message: 'Error getting all users', error });
     }
 };
 exports.getUsers = getUsers;
@@ -37,7 +37,7 @@ const getAUser = async (request, response) => {
     catch (error) {
         console.log(error);
         (0, rollback_1.rollback)(server_1.client);
-        response.json({ message: 'Something went wrong', error: error });
+        response.status(500).json({ message: 'Something went wrong', error: error });
     }
     finally {
         // do something here

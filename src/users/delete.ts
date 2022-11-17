@@ -10,36 +10,29 @@ export const deleteUser = async (request: Request, response: Response) => {
     return
   }
 
-  client.query('BEGIN', async error => {
-    if (error) {
-      rollback(client)
-    }
-
-    // Get the record first
-    const query = `SELECT * FROM users
+  // Get the record first
+  const query = `SELECT * FROM users
     WHERE id = $1`
 
-    try {
-      const res: QueryResult<User> = await client.query(query, [request.params.id])
-      const rowToArchive = res.rows.find(row => row.id == request.params.id)
+  try {
+    await client.query('BEGIN TRANSACTION')
 
-      if (rowToArchive) {
-        await archiveDocument(rowToArchive)
+    const res: QueryResult<User> = await client.query(query, [request.params.id])
+    const rowToArchive = res.rows.find(row => row.id == request.params.id)
 
-        await deleteDocument(request, response)
+    if (rowToArchive) {
+      await archiveDocument(rowToArchive)
 
-        client.query('COMMIT', error => {
-          if (error) {
-            console.log('Error committing transaction', error)
-          } else {
-            console.log('Successful transaction')
-          }
-        })
-      }
-    } catch (error) {
-      rollback(client)
+      await deleteDocument(request, response)
+
+      await client.query('COMMIT')
+      response.status(200).json({message:'Successfully deleted user'})
     }
-  })
+  } catch (error) {
+    rollback(client)
+    console.log(error)
+    response.status(500).json({ message: 'Something went wrong', error })
+  }
 }
 
 const archiveDocument = async (rowToArchive: User) => {

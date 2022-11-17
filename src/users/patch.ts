@@ -26,16 +26,16 @@ export const updateUser = async (request: Request, response: Response) => {
     WHERE id = ${request.params.id}
     `
   try {
+    await client.query('BEGIN TRANSACTION')
+
     const res: QueryResult<User> = await client.query(query, [...values])
     console.log(res)
-    
 
-    if(res.rowCount === 1){
-      response.status(201).send({message: 'Successfully Updated user'})
-    }
+    await client.query('COMMIT TRANSACTION')
+    response.status(201).send({ message: 'Successfully Updated user' })
   } catch (error) {
     rollback(client)
-  } finally {
-    // do something here
+    console.log(error)
+    response.status(500).json({ message: 'Something went wrong', error })
   }
 }

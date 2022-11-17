@@ -20,7 +20,7 @@ const login = async (request, response) => {
         // if the user is an admin, we want to send back admin related fields
         // if the user is a subscriber, we want to only send subscriber related fields
         // const filteredResponse = 
-        await server_1.client.query('COMMIT');
+        await server_1.client.query('COMMIT TRANSACTION');
         response.status(200).send({ message: 'Successfully logged in', user: result.rows });
     }
     catch (error) {

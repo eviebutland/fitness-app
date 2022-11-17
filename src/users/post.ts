@@ -16,11 +16,15 @@ VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
   }
 
   try {
+    await client.query('BEGIN TRANSACTION')
+
     const res = await client.query(query, [...Object.values(model)])
 
+    await client.query('COMMIT TRANSACTION')
     response.json(res.rows)
   } catch (error) {
     rollback(client)
+    response.status(500).json({ message: 'Something went wrong', error })
   } finally {
     // await client.end()
   }

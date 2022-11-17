@@ -8,33 +8,25 @@ const deleteUser = async (request, response) => {
         response.send({ message: 'Error: Please provide an ID' });
         return;
     }
-    server_1.client.query('BEGIN', async (error) => {
-        if (error) {
-            (0, rollback_1.rollback)(server_1.client);
-        }
-        // Get the record first
-        const query = `SELECT * FROM users
+    // Get the record first
+    const query = `SELECT * FROM users
     WHERE id = $1`;
-        try {
-            const res = await server_1.client.query(query, [request.params.id]);
-            const rowToArchive = res.rows.find(row => row.id == request.params.id);
-            if (rowToArchive) {
-                await archiveDocument(rowToArchive);
-                await deleteDocument(request, response);
-                server_1.client.query('COMMIT', error => {
-                    if (error) {
-                        console.log('Error committing transaction', error);
-                    }
-                    else {
-                        console.log('Successful transaction');
-                    }
-                });
-            }
+    try {
+        await server_1.client.query('BEGIN TRANSACTION');
+        const res = await server_1.client.query(query, [request.params.id]);
+        const rowToArchive = res.rows.find(row => row.id == request.params.id);
+        if (rowToArchive) {
+            await archiveDocument(rowToArchive);
+            await deleteDocument(request, response);
+            await server_1.client.query('COMMIT');
+            response.status(200).json({ message: 'Successfully deleted user' });
         }
-        catch (error) {
-            (0, rollback_1.rollback)(server_1.client);
-        }
-    });
+    }
+    catch (error) {
+        (0, rollback_1.rollback)(server_1.client);
+        console.log(error);
+        response.status(500).json({ message: 'Something went wrong', error });
+    }
 };
 exports.deleteUser = deleteUser;
 const archiveDocument = async (rowToArchive) => {
