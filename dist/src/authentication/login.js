@@ -4,10 +4,14 @@ exports.login = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const login = async (request, response) => {
-    const query = `SELECT (name, email) FROM users
+    const query = `
+  SELECT * FROM users
   WHERE email = $1
-  AND password = $2`;
+  AND password = $2;
+  
+  `;
     try {
+        await server_1.client.query('BEGIN TRANSACTION');
         const result = await server_1.client.query(query, [request.body.username, request.body.password]);
         if (!result.rowCount) {
             response.statusCode = 404;
@@ -15,13 +19,12 @@ const login = async (request, response) => {
         }
         // if the user is an admin, we want to send back admin related fields
         // if the user is a subscriber, we want to only send subscriber related fields
-        response.send(result.rows);
+        // const filteredResponse = 
+        await server_1.client.query('COMMIT');
+        response.status(200).send({ message: 'Successfully logged in', user: result.rows });
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
-    }
-    finally {
-        // do something here
     }
 };
 exports.login = login;

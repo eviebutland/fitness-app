@@ -7,16 +7,18 @@ import { User } from '../lib/types/user'
 
 export const getUsers = async (request: Request, response: Response) => {
   try {
+    await client.query('BEGIN TRANSACTION')
+
     const res: QueryResult<User> = await client.query('SELECT * FROM users')
 
     const data: User[] = formatResponse(res, 'workoutpreference')
-
+    
+    await client.query('COMMIT TRANSACTION')
     response.json({ data, total: res.rows.length })
   } catch (error) {
+    console.log(error)
     rollback(client)
-  } finally {
-    // Best practice to have a finally and end the session
-    // await client.end()
+    response.json({message: 'Error getting all users'})
   }
 }
 
@@ -31,13 +33,19 @@ export const getAUser = async (request: Request, response: Response) => {
   WHERE id = $1`
 
   try {
+    await client.query('BEGIN TRANSACTION')
+
     const result: QueryResult<User> = await client.query(query, [request.params.id])
 
     const data: User[] = formatResponse(result, 'workoutpreference')
 
+    await client.query('COMMIT TRANSACTION')
+
     response.send({ data: data[0] })
   } catch (error) {
+    console.log(error)
     rollback(client)
+    response.json({message: 'Something went wrong', error: error})
   } finally {
     // do something here
   }

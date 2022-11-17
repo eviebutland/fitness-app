@@ -23,7 +23,9 @@ const updateUser = async (request, response) => {
     try {
         const res = await server_1.client.query(query, [...values]);
         console.log(res);
-        response.json(res);
+        if (res.rowCount === 1) {
+            response.status(201).send({ message: 'Successfully Updated user' });
+        }
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);

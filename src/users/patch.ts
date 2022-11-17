@@ -28,7 +28,11 @@ export const updateUser = async (request: Request, response: Response) => {
   try {
     const res: QueryResult<User> = await client.query(query, [...values])
     console.log(res)
-    response.json(res)
+    
+
+    if(res.rowCount === 1){
+      response.status(201).send({message: 'Successfully Updated user'})
+    }
   } catch (error) {
     rollback(client)
   } finally {
