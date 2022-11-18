@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const login_1 = require("./authentication/login");
+const exercises_1 = require("./exercises");
 const index_1 = require("./users/index");
 exports.router = express_1.default.Router();
 // Authentication
@@ -16,3 +17,7 @@ exports.router.post('/users', index_1.createUser);
 exports.router.patch('/users/:id', index_1.updateUser);
 exports.router.delete('/users/:id', index_1.deleteUser);
 exports.router.get('/users/:id', index_1.getAUser);
+// Exercises
+exports.router.get('/exercises', exercises_1.getAllExercises);
+exports.router.post('/exercises', exercises_1.createExcerise);
+// Workouts
