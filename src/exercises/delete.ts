@@ -56,7 +56,7 @@ const archiveDocument = async (rowToArchive: Exercise, database: string) => {
     console.log(...postgresVars)
     const archiveRes: QueryResult = await client.query(
       `INSERT INTO ${database} (${...keys})
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      VALUES (${...postgresVars})`,
       [...Object.values(dataToArchive)]
     )
     // console.log(archiveRes)
