@@ -20,4 +20,6 @@ exports.router.get('/users/:id', index_1.getAUser);
 // Exercises
 exports.router.get('/exercises', exercises_1.getAllExercises);
 exports.router.post('/exercises', exercises_1.createExcerise);
+exports.router.patch('/exercises/:id', exercises_1.updateExercise);
+exports.router.delete('/exercises/:id', exercises_1.deleteExercise);
 // Workouts

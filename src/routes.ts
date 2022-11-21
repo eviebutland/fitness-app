@@ -1,6 +1,6 @@
 import express from 'express'
 import { login } from './authentication/login'
-import { createExcerise, getAllExercises } from './exercises'
+import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
 import { getUsers, createUser, updateUser, deleteUser, getAUser } from './users/index'
 
 export const router = express.Router()
@@ -18,5 +18,7 @@ router.get('/users/:id', getAUser)
 // Exercises
 router.get('/exercises', getAllExercises)
 router.post('/exercises', createExcerise)
+router.patch('/exercises/:id', updateExercise)
+router.delete('/exercises/:id', deleteExercise)
 
 // Workouts

@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createExcerise = exports.getAllExercises = void 0;
+exports.deleteExercise = exports.updateExercise = exports.createExcerise = exports.getAllExercises = void 0;
 const get_1 = require("./get");
 Object.defineProperty(exports, "getAllExercises", { enumerable: true, get: function () { return get_1.getAllExercises; } });
 const post_1 = require("./post");
 Object.defineProperty(exports, "createExcerise", { enumerable: true, get: function () { return post_1.createExcerise; } });
+const patch_1 = require("./patch");
+Object.defineProperty(exports, "updateExercise", { enumerable: true, get: function () { return patch_1.updateExercise; } });
+const delete_1 = require("./delete");
+Object.defineProperty(exports, "deleteExercise", { enumerable: true, get: function () { return delete_1.deleteExercise; } });

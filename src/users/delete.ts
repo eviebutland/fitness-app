@@ -26,7 +26,7 @@ export const deleteUser = async (request: Request, response: Response) => {
       await deleteDocument(request, response)
 
       await client.query('COMMIT')
-      response.status(200).json({message:'Successfully deleted user'})
+      response.status(200).json({ message: 'Successfully deleted user' })
     }
   } catch (error) {
     rollback(client)
@@ -49,7 +49,7 @@ const archiveDocument = async (rowToArchive: User) => {
       workoutPreference: rowToArchive.workoutpreference
     }
 
-    const archiveRes = await client.query(
+    const archiveRes: QueryResult = await client.query(
       `INSERT INTO users_archive (name, age, email, password, levelOfAccess, premium, completedWorkouts, permissions, workoutPreference)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
       [...Object.values(dataToArchive)]
