@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const login_1 = require("./authentication/login");
 const exercises_1 = require("./exercises");
 const index_1 = require("./users/index");
+const workouts_1 = require("./workouts");
 exports.router = express_1.default.Router();
 // Authentication
 exports.router.get('/login', login_1.login);
@@ -23,3 +24,4 @@ exports.router.post('/exercises', exercises_1.createExcerise);
 exports.router.patch('/exercises/:id', exercises_1.updateExercise);
 exports.router.delete('/exercises/:id', exercises_1.deleteExercise);
 // Workouts
+exports.router.get('/workouts', workouts_1.getAllWorkouts);

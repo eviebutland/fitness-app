@@ -2,6 +2,7 @@ import express from 'express'
 import { login } from './authentication/login'
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
 import { getUsers, createUser, updateUser, deleteUser, getAUser } from './users/index'
+import { getAllWorkouts } from './workouts'
 
 export const router = express.Router()
 
@@ -22,3 +23,4 @@ router.patch('/exercises/:id', updateExercise)
 router.delete('/exercises/:id', deleteExercise)
 
 // Workouts
+router.get('/workouts', getAllWorkouts)

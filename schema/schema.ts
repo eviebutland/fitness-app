@@ -598,12 +598,12 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
-    '/exercises/planned-workouts': {
+    '/workouts': {
       get: {
-        tags: ['planned workouts'],
-        summary: 'Get all planned workouts',
-        description: 'Get all planned workouts created',
-        operationId: 'getAllPlannedWorkout',
+        tags: ['workouts'],
+        summary: 'Get all workouts',
+        description: 'Get all workouts created',
+        operationId: 'getAllWorkouts',
         security: [
           {
             api_key: []
@@ -645,10 +645,10 @@ export const document: OpenAPIV3.Document = {
         }
       },
       post: {
-        tags: ['planned workouts'],
-        summary: 'Create a planned workout',
-        description: "Create a planned workout based off user's preferences and table of exercises in database",
-        operationId: 'createPlannedWorkout',
+        tags: ['workouts'],
+        summary: 'Create a workout',
+        description: "Create a workout based off user's preferences and table of exercises in database",
+        operationId: 'createWorkout',
         security: [
           {
             api_key: []
@@ -708,17 +708,17 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
-    '/exercises/planned-workouts/{id}': {
+    '/workouts/{id}': {
       get: {
-        tags: ['planned workouts'],
-        summary: 'Get a planned workouts',
-        description: 'Get a planned workouts',
-        operationId: 'getPlannedWorkout',
+        tags: ['workouts'],
+        summary: 'Get a workouts',
+        description: 'Get a workouts',
+        operationId: 'getWorkout',
         parameters: [
           {
             name: 'id',
             in: 'path',
-            description: 'The id of the planned workout to get',
+            description: 'The id of the workout to get',
             required: true,
             schema: {
               type: 'string'
@@ -766,15 +766,15 @@ export const document: OpenAPIV3.Document = {
         }
       },
       patch: {
-        tags: ['planned workouts'],
-        summary: 'Update a planned workout',
-        description: 'Update a planned workout',
-        operationId: 'updatePlannedWorkout',
+        tags: ['workouts'],
+        summary: 'Update a workout',
+        description: 'Update a workout',
+        operationId: 'updateWorkout',
         parameters: [
           {
             name: 'id',
             in: 'path',
-            description: 'The id of the planned workout that needs to be updated',
+            description: 'The id of the workout that needs to be updated',
             required: true,
             schema: {
               type: 'string'
@@ -850,10 +850,10 @@ export const document: OpenAPIV3.Document = {
         }
       },
       delete: {
-        tags: ['planned workouts'],
-        summary: 'Delete a planned workout by ID',
-        description: 'Delete a planned workout by ID',
-        operationId: 'deletePlannedWorkout',
+        tags: ['workouts'],
+        summary: 'Delete a workout by ID',
+        description: 'Delete a workout by ID',
+        operationId: 'deleteWorkout',
         parameters: [
           {
             name: 'id',
