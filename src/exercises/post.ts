@@ -8,7 +8,6 @@ export const createExcerise = async (request: Request, response: Response) => {
   INSERT INTO exercises (name, description, restTime, recommendedRepRange, catergory, intensity, isCompound, exerciseTime, video, variations)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 
-  console.log(request.body)
   let model: Exercise = request.body
 
   model = {

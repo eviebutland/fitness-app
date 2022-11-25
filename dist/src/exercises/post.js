@@ -7,7 +7,6 @@ const createExcerise = async (request, response) => {
     const query = `
   INSERT INTO exercises (name, description, restTime, recommendedRepRange, catergory, intensity, isCompound, exerciseTime, video, variations)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
-    console.log(request.body);
     let model = request.body;
     model = {
         ...request.body,
