@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUser = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
-const format_patch_body_1 = require("../utils/format-patch-body");
+const format_request_body_1 = require("../utils/format-request-body");
 const updateUser = async (request, response) => {
     if (request.params.id === ':id') {
         response.status(404);
@@ -12,7 +12,7 @@ const updateUser = async (request, response) => {
     }
     const columns = Object.keys(request.body);
     const values = Object.values(request.body);
-    const set = (0, format_patch_body_1.formatPatchBody)(columns);
+    const set = (0, format_request_body_1.formatPatchBody)(columns);
     const query = `
     UPDATE users
     SET ${set}

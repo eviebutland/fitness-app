@@ -1,11 +1,9 @@
 import { Request, Response } from 'express'
-import { QueryResult } from 'pg'
 import { client } from '../../server'
-import { Exercise } from '../lib/types/exercise'
+import { archiveDocument, deleteDocument } from '../utils/delete'
 import { rollback } from '../utils/rollback'
 
 export const deleteExercise = async (request: Request, response: Response) => {
-  console.log(request.params.id)
   if (request.params.id === ':id') {
     response.status(404).json({ message: 'Please provide an ID to delete' })
     return
@@ -16,51 +14,29 @@ export const deleteExercise = async (request: Request, response: Response) => {
     const findQuery = `SELECT * FROM exercises
     WHERE id = $1`
     const exerciseToDelete = await client.query(findQuery, [request.params.id])
-    console.log(exerciseToDelete)
 
-    if (exerciseToDelete.rows.length) {
+    if (exerciseToDelete.rows.length > 0) {
       // Insert into archive database
-
-      const insertToArchiveQuery = `INSERT INTO exercises_archive`
       await archiveDocument(exerciseToDelete.rows[0], 'exercises_archive')
+    } else {
+      response.json({
+        message: `There is no exercise with ID: ${request.params.id}`
+      })
+
+      return
     }
+
     // remove from current database
-    // commit transaction
+    const deletedRes = await deleteDocument(request, 'exercises')
+
+    await client.query('COMMIT TRANSACTION')
+    response.json({
+      message: `Exercise with ID: ${request.params.id} has been successfully deleted`,
+      result: deletedRes
+    })
   } catch (error) {
     console.log(error)
     rollback(client)
     response.status(500).json({ message: 'Something went wrong', error })
-  }
-}
-
-const archiveDocument = async (rowToArchive: Exercise, database: string) => {
-  try {
-    const dataToArchive = {
-      name: rowToArchive.name,
-      description: rowToArchive.description,
-      resttime: rowToArchive.resttime,
-      recommendedreprange: rowToArchive.recommendedreprange,
-      catergory: rowToArchive.catergory,
-      intensity: rowToArchive.intensity,
-      iscompound: rowToArchive.iscompound,
-      exercisetime: rowToArchive.exercisetime,
-      video: rowToArchive.video,
-      variations: rowToArchive.variations
-    }
-
-    const keys = Object.keys(dataToArchive)
-
-    const postgresVars: string[] = []
-    Object.keys(dataToArchive).forEach((key, index) => postgresVars.push(`$${index + 1}`))
-
-    console.log(...postgresVars)
-    const archiveRes: QueryResult = await client.query(
-      `INSERT INTO ${database} (${...keys})
-      VALUES (${...postgresVars})`,
-      [...Object.values(dataToArchive)]
-    )
-    // console.log(archiveRes)
-  } catch (error) {
-    rollback(client)
   }
 }

@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteExercise = void 0;
 const server_1 = require("../../server");
+const delete_1 = require("../utils/delete");
 const rollback_1 = require("../utils/rollback");
 const deleteExercise = async (request, response) => {
-    console.log(request.params.id);
     if (request.params.id === ':id') {
         response.status(404).json({ message: 'Please provide an ID to delete' });
         return;
@@ -15,14 +15,23 @@ const deleteExercise = async (request, response) => {
         const findQuery = `SELECT * FROM exercises
     WHERE id = $1`;
         const exerciseToDelete = await server_1.client.query(findQuery, [request.params.id]);
-        console.log(exerciseToDelete);
-        if (exerciseToDelete.rows.length) {
+        if (exerciseToDelete.rows.length > 0) {
             // Insert into archive database
-            const insertToArchiveQuery = `INSERT INTO exercises_archive`;
-            await archiveDocument(exerciseToDelete.rows[0], 'exercises_archive');
+            await (0, delete_1.archiveDocument)(exerciseToDelete.rows[0], 'exercises_archive');
+        }
+        else {
+            response.json({
+                message: `There is no exercise with ID: ${request.params.id}`
+            });
+            return;
         }
         // remove from current database
-        // commit transaction
+        const deletedRes = await (0, delete_1.deleteDocument)(request, 'exercises');
+        await server_1.client.query('COMMIT TRANSACTION');
+        response.json({
+            message: `Exercise with ID: ${request.params.id} has been successfully deleted`,
+            result: deletedRes
+        });
     }
     catch (error) {
         console.log(error);
@@ -31,34 +40,3 @@ const deleteExercise = async (request, response) => {
     }
 };
 exports.deleteExercise = deleteExercise;
-const archiveDocument = async (rowToArchive, database) => {
-    try {
-        const dataToArchive = {
-            name: rowToArchive.name,
-            description: rowToArchive.description,
-            resttime: rowToArchive.resttime,
-            recommendedreprange: rowToArchive.recommendedreprange,
-            catergory: rowToArchive.catergory,
-            intensity: rowToArchive.intensity,
-            iscompound: rowToArchive.iscompound,
-            exercisetime: rowToArchive.exercisetime,
-            video: rowToArchive.video,
-            variations: rowToArchive.variations
-        };
-        const keys = Object.keys(dataToArchive);
-        const postgresVars = [];
-        Object.keys(dataToArchive).forEach((key, index) => postgresVars.push(`$${index + 1}`));
-        console.log(...postgresVars);
-        const archiveRes = await server_1.client.query(`INSERT INTO ${database} (${, ...keys);
-    }
-    finally { }
-    VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) `,
-      [...Object.values(dataToArchive)]
-    )
-    // console.log(archiveRes)
-  } catch (error) {
-    rollback(client)
-  }
-}
-    ;
-};

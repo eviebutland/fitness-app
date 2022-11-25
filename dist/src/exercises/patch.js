@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateExercise = void 0;
 const server_1 = require("../../server");
-const format_patch_body_1 = require("../utils/format-patch-body");
+const format_request_body_1 = require("../utils/format-request-body");
 const rollback_1 = require("../utils/rollback");
 const updateExercise = async (request, response) => {
     if (request.params.id === ':id') {
@@ -16,7 +16,7 @@ const updateExercise = async (request, response) => {
     try {
         const keys = Object.keys(request.body);
         const values = Object.values(request.body);
-        const set = (0, format_patch_body_1.formatPatchBody)(keys);
+        const set = (0, format_request_body_1.formatPatchBody)(keys);
         const query = `
     UPDATE exercises
     SET ${set}

@@ -3,7 +3,7 @@ import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { rollback } from '../utils/rollback'
 import { User } from '../lib/types/user'
-import { formatPatchBody } from '../utils/format-patch-body'
+import { formatPatchBody } from '../utils/format-request-body'
 
 export const updateUser = async (request: Request, response: Response) => {
   if (request.params.id === ':id') {

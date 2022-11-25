@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { client } from '../../server'
-import { formatPatchBody } from '../utils/format-patch-body'
+import { formatPatchBody } from '../utils/format-request-body'
 import { rollback } from '../utils/rollback'
 
 export const updateExercise = async (request: Request, response: Response) => {
