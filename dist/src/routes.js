@@ -25,3 +25,6 @@ exports.router.patch('/exercises/:id', exercises_1.updateExercise);
 exports.router.delete('/exercises/:id', exercises_1.deleteExercise);
 // Workouts
 exports.router.get('/workouts', workouts_1.getAllWorkouts);
+exports.router.get('/workouts/:id', workouts_1.getWorkoutByID);
+exports.router.get('/workouts/catergory/:catergory', workouts_1.getAllExercisesInCatergory);
+exports.router.patch('/workouts/:id', workouts_1.updateWorkout);

@@ -1,3 +1,4 @@
-import { getAllWorkouts } from './get'
+import { getAllWorkouts, getWorkoutByID, getAllExercisesInCatergory } from './get'
+import { updateWorkout } from './patch'
 
-export { getAllWorkouts }
+export { getAllWorkouts, getWorkoutByID, getAllExercisesInCatergory, updateWorkout }
