@@ -18,8 +18,8 @@ const deleteUser = async (request, response) => {
         const rowToArchive = res.rows.find(row => row.id == request.params.id);
         if (rowToArchive) {
             await (0, delete_1.archiveDocument)(rowToArchive, 'users_archive');
-            const deletedRes = await (0, delete_1.deleteDocument)(request, 'users');
-            response.json({
+            const deletedRes = await (0, delete_1.deleteDocument)(request.params.id, 'users');
+            response.status(200).json({
                 message: `User with ID: ${request.params.id} has been successfully deleted`,
                 result: deletedRes
             });

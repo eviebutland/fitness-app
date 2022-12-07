@@ -4,11 +4,11 @@ exports.archiveDocument = exports.deleteDocument = void 0;
 const server_1 = require("../../server");
 const format_request_body_1 = require("./format-request-body");
 const rollback_1 = require("./rollback");
-const deleteDocument = async (request, database) => {
+const deleteDocument = async (docId, database) => {
     try {
         const query = `DELETE FROM ${database}
       WHERE id = $1`;
-        const deletedRes = await server_1.client.query(query, [request.params.id]);
+        const deletedRes = await server_1.client.query(query, [docId]);
         return deletedRes;
     }
     catch (error) {

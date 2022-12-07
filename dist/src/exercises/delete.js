@@ -26,9 +26,9 @@ const deleteExercise = async (request, response) => {
             return;
         }
         // remove from current database
-        const deletedRes = await (0, delete_1.deleteDocument)(request, 'exercises');
+        const deletedRes = await (0, delete_1.deleteDocument)(request.params.id, 'exercises');
         await server_1.client.query('COMMIT TRANSACTION');
-        response.json({
+        response.status(200).json({
             message: `Exercise with ID: ${request.params.id} has been successfully deleted`,
             result: deletedRes
         });

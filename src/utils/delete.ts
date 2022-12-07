@@ -6,11 +6,11 @@ import { formatKeyValueStrings } from './format-request-body'
 import { rollback } from './rollback'
 import { User } from '../lib/types/user'
 
-export const deleteDocument = async (request: Request, database: string) => {
+export const deleteDocument = async (docId: string, database: string) => {
   try {
     const query = `DELETE FROM ${database}
       WHERE id = $1`
-    const deletedRes = await client.query(query, [request.params.id])
+    const deletedRes = await client.query(query, [docId])
 
     return deletedRes
   } catch (error) {

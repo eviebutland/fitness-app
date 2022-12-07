@@ -27,4 +27,6 @@ exports.router.delete('/exercises/:id', exercises_1.deleteExercise);
 exports.router.get('/workouts', workouts_1.getAllWorkouts);
 exports.router.get('/workouts/:id', workouts_1.getWorkoutByID);
 exports.router.get('/workouts/catergory/:catergory', workouts_1.getAllExercisesInCatergory);
+exports.router.post('/workouts', workouts_1.createWorkout);
 exports.router.patch('/workouts/:id', workouts_1.updateWorkout);
+exports.router.delete('/workouts/:id', workouts_1.deleteWorkout);

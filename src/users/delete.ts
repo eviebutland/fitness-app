@@ -24,9 +24,9 @@ export const deleteUser = async (request: Request, response: Response) => {
     if (rowToArchive) {
       await archiveDocument(rowToArchive, 'users_archive')
 
-      const deletedRes = await deleteDocument(request, 'users')
+      const deletedRes = await deleteDocument(request.params.id, 'users')
 
-      response.json({
+      response.status(200).json({
         message: `User with ID: ${request.params.id} has been successfully deleted`,
         result: deletedRes
       })

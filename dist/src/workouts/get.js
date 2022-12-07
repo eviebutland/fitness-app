@@ -37,10 +37,10 @@ const getAllWorkouts = async (request, response) => {
     try {
         await server_1.client.query('BEGIN TRANSACTION');
         const results = await server_1.client.query(workoutJoinQuery);
-        const formattedResult = formatWorkoutJoin(results);
+        const formattedResult = formatWorkoutJoin(results).filter(value => value !== null);
         // Is this possible to be done in the query?
         await server_1.client.query('COMMIT TRANSACTION');
-        response.status(200).json({ data: formattedResult, total: results.rowCount });
+        response.status(200).json({ data: formattedResult, total: formattedResult.length });
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
@@ -58,7 +58,7 @@ const getWorkoutByID = async (request, response) => {
         await server_1.client.query('BEGIN TRANSACTION');
         const query = workoutJoinQuery + ` WHERE w.ID = ${request.params.id}`;
         const results = await server_1.client.query(query);
-        const formattedResult = formatWorkoutJoin(results);
+        const formattedResult = formatWorkoutJoin(results).filter(value => value !== null);
         await server_1.client.query('COMMIT TRANSACTION');
         response.status(200).json({ data: formattedResult });
     }
@@ -76,8 +76,8 @@ const getAllExercisesInCatergory = async (request, response) => {
         await server_1.client.query('BEGIN TRANSACTION');
         const results = await server_1.client.query(query);
         await server_1.client.query('COMMIT TRANSACTION');
-        const formattedResult = formatWorkoutJoin(results);
-        response.status(200).json({ data: formattedResult, total: results.rowCount });
+        const formattedResult = formatWorkoutJoin(results).filter(value => value !== null);
+        response.status(200).json({ data: formattedResult, total: formattedResult.length });
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
@@ -88,7 +88,7 @@ const getAllExercisesInCatergory = async (request, response) => {
 exports.getAllExercisesInCatergory = getAllExercisesInCatergory;
 const formatWorkoutJoin = (results) => {
     return results.rows.map(row => {
-        return {
+        const result = {
             id: row.id,
             workoutName: row.workoutname,
             resttime: row.resttime,
@@ -117,5 +117,6 @@ const formatWorkoutJoin = (results) => {
                 exerciseTime: row.set_3_excercisetime
             }
         };
+        return result.id !== null ? result : null;
     });
 };

@@ -39,11 +39,12 @@ export const getAllWorkouts = async (request: Request, response: Response) => {
     await client.query('BEGIN TRANSACTION')
 
     const results: QueryResult = await client.query(workoutJoinQuery)
-    const formattedResult = formatWorkoutJoin(results)
+
+    const formattedResult = formatWorkoutJoin(results).filter(value => value !== null)
 
     // Is this possible to be done in the query?
     await client.query('COMMIT TRANSACTION')
-    response.status(200).json({ data: formattedResult, total: results.rowCount })
+    response.status(200).json({ data: formattedResult, total: formattedResult.length })
   } catch (error) {
     rollback(client)
     console.log(error)
@@ -62,7 +63,7 @@ export const getWorkoutByID = async (request: Request, response: Response) => {
 
     const results: QueryResult = await client.query(query)
 
-    const formattedResult = formatWorkoutJoin(results)
+    const formattedResult = formatWorkoutJoin(results).filter(value => value !== null)
 
     await client.query('COMMIT TRANSACTION')
     response.status(200).json({ data: formattedResult })
@@ -82,9 +83,9 @@ export const getAllExercisesInCatergory = async (request: Request, response: Res
     const results: QueryResult = await client.query(query)
 
     await client.query('COMMIT TRANSACTION')
-    const formattedResult = formatWorkoutJoin(results)
+    const formattedResult = formatWorkoutJoin(results).filter(value => value !== null)
 
-    response.status(200).json({ data: formattedResult, total: results.rowCount })
+    response.status(200).json({ data: formattedResult, total: formattedResult.length })
   } catch (error) {
     rollback(client)
     console.log(error)
@@ -94,7 +95,7 @@ export const getAllExercisesInCatergory = async (request: Request, response: Res
 
 const formatWorkoutJoin = (results: QueryResult) => {
   return results.rows.map(row => {
-    return {
+    const result = {
       id: row.id,
       workoutName: row.workoutname,
       resttime: row.resttime,
@@ -123,5 +124,7 @@ const formatWorkoutJoin = (results: QueryResult) => {
         exerciseTime: row.set_3_excercisetime
       }
     }
+
+    return result.id !== null ? result : null
   })
 }
