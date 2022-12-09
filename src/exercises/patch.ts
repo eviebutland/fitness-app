@@ -3,7 +3,7 @@ import { client } from '../../server'
 import { formatPatchBody } from '../utils/format-request-body'
 import { rollback } from '../utils/rollback'
 
-export const updateExercise = async (request: Request, response: Response) => {
+export const updateExercise = async (request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(404).json({ message: 'Please provide an ID to update' })
     return
@@ -15,8 +15,8 @@ export const updateExercise = async (request: Request, response: Response) => {
   }
 
   try {
-    const keys = Object.keys(request.body)
-    const values = Object.values(request.body)
+    const keys: string[] = Object.keys(request.body)
+    const values: string[] = Object.values(request.body)
 
     const set = formatPatchBody(keys)
 
@@ -26,13 +26,13 @@ export const updateExercise = async (request: Request, response: Response) => {
     WHERE id = ${request.params.id}
     `
     await client.query('BEGIN TRANSACTION')
-    const result = await client.query(query, [...values])
+    await client.query(query, [...values])
 
     await client.query('COMMIT TRANSACTION')
     response.status(200).json({ message: 'Successfully updated exercise', id: request.params.id })
   } catch (error) {
-    console.log(error)
     rollback(client)
+    console.log(error)
     response.status(500).json({ message: 'Something went wrong', error })
   }
 }

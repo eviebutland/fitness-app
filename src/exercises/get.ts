@@ -1,20 +1,20 @@
-import { Request, Response } from "express";
-import { client } from "../../server";
-import { rollback } from "../utils/rollback";
+import { Request, Response } from 'express'
+import { QueryResult } from 'pg'
+import { client } from '../../server'
+import { Exercise } from '../lib/types/exercise'
+import { rollback } from '../utils/rollback'
 
-export const getAllExercises = async (request: Request, response: Response) => {
-    try {
-        await client.query('BEGIN TRANSACTION')
-    
-        const result = await client.query('SELECT * FROM exercises')
-        console.log(result)
+export const getAllExercises = async (request: Request, response: Response): Promise<void> => {
+  try {
+    await client.query('BEGIN TRANSACTION')
 
-        await client.query('COMMIT TRANSACTION')
-        response.status(200).json({message: 'Successful transaction', data: result.rows})
-    } catch (error){
-        console.log(error)
-        rollback(client)
-        response.json({message: 'Something went wrong', error})
-    } 
+    const result: QueryResult<Exercise> = await client.query('SELECT * FROM exercises')
+
+    await client.query('COMMIT TRANSACTION')
+    response.status(200).json({ message: 'Successful transaction', data: result.rows })
+  } catch (error) {
+    rollback(client)
+    console.log(error)
+    response.json({ message: 'Something went wrong', error })
+  }
 }
-

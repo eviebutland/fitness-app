@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Router } from 'express'
 import { login } from './authentication/login'
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
 import { getUsers, createUser, updateUser, deleteUser, getAUser } from './users/index'
@@ -11,7 +11,7 @@ import {
   createWorkout
 } from './workouts'
 
-export const router = express.Router()
+export const router: Router = express.Router()
 
 // Authentication
 router.get('/login', login)

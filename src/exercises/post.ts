@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
+import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { Exercise } from '../lib/types/exercise'
 import { rollback } from '../utils/rollback'
 
-export const createExcerise = async (request: Request, response: Response) => {
+export const createExcerise = async (request: Request, response: Response): Promise<void> => {
   const query = `
   INSERT INTO exercises (name, description, restTime, recommendedRepRange, catergory, intensity, isCompound, exerciseTime, video, variations)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
@@ -22,8 +23,7 @@ export const createExcerise = async (request: Request, response: Response) => {
     // Can we make the name also a primary key
 
     // Add to new database
-    const result = await client.query(query, Object.values(model))
-    console.log(result)
+    const result: QueryResult<Exercise> = await client.query(query, Object.values(model))
 
     await client.query('COMMIT TRANSACTION')
     response.send({ message: 'Sucessfully added new workout', data: result })

@@ -5,12 +5,13 @@ import { client } from '../../server'
 import { formatKeyValueStrings } from './format-request-body'
 import { rollback } from './rollback'
 import { User } from '../lib/types/user'
+import { WorkoutPlain } from '../lib/types/workouts'
 
-export const deleteDocument = async (docId: string, database: string) => {
+export const deleteDocument = async (docId: string, database: string): Promise<QueryResult<any> | ErrorEvent> => {
   try {
     const query = `DELETE FROM ${database}
       WHERE id = $1`
-    const deletedRes = await client.query(query, [docId])
+    const deletedRes: QueryResult<any> = await client.query(query, [docId])
 
     return deletedRes
   } catch (error) {
@@ -20,10 +21,13 @@ export const deleteDocument = async (docId: string, database: string) => {
   }
 }
 
-type Data = User | Exercise
+type Data = User | Exercise | WorkoutPlain
 
 // Share this between other deletes
-export const archiveDocument = async (dataToArchive: Data, archiveDatabase: string) => {
+export const archiveDocument = async (
+  dataToArchive: Data,
+  archiveDatabase: string
+): Promise<QueryResult<any> | ErrorEvent> => {
   try {
     const postgresVars: string[] = []
     const keys = Object.keys(dataToArchive)

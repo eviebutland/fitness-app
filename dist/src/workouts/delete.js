@@ -29,6 +29,7 @@ const deleteWorkout = async (request, response) => {
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
+        console.log(error);
         response.status(500).json({ message: 'Something went wrong', error });
     }
 };

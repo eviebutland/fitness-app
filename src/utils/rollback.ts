@@ -1,10 +1,10 @@
-import { Client } from 'pg'
+import { Client, QueryResult } from 'pg'
 
-export const rollback = async (client: Client) => {
+export const rollback = async (client: Client): Promise<QueryResult<any> | ErrorEvent> => {
   try {
-    await client.query('ROLLBACK;')
+    return await client.query('ROLLBACK;')
   } catch (error) {
     console.log('could not rollback: ', error)
     throw new Error('Unable to rollback')
-  } 
+  }
 }

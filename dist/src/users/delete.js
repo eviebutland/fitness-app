@@ -19,12 +19,11 @@ const deleteUser = async (request, response) => {
         if (rowToArchive) {
             await (0, delete_1.archiveDocument)(rowToArchive, 'users_archive');
             const deletedRes = await (0, delete_1.deleteDocument)(request.params.id, 'users');
+            await server_1.client.query('COMMIT TRANSACTION');
             response.status(200).json({
                 message: `User with ID: ${request.params.id} has been successfully deleted`,
                 result: deletedRes
             });
-            await server_1.client.query('COMMIT');
-            response.status(200).json({ message: 'Successfully deleted user' });
         }
         else {
             response.json({

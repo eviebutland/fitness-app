@@ -5,7 +5,7 @@ export interface Exercise {
   recommendedreprange: number
   catergory: string
   intensity: number
-  iscompound: true
+  iscompound: boolean
   exercisetime: number
   video: string
   variations: string[] // -> need to be used for a JOIN

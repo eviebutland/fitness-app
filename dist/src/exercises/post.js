@@ -18,7 +18,6 @@ const createExcerise = async (request, response) => {
         // Can we make the name also a primary key
         // Add to new database
         const result = await server_1.client.query(query, Object.values(model));
-        console.log(result);
         await server_1.client.query('COMMIT TRANSACTION');
         response.send({ message: 'Sucessfully added new workout', data: result });
     }

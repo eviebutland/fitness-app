@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllExercisesInCatergory = exports.getWorkoutByID = exports.getAllWorkouts = void 0;
+exports.getTodaysWorkout = exports.getAllExercisesInCatergory = exports.getWorkoutByID = exports.getAllWorkouts = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
@@ -71,7 +71,6 @@ const getWorkoutByID = async (request, response) => {
 exports.getWorkoutByID = getWorkoutByID;
 const getAllExercisesInCatergory = async (request, response) => {
     const query = workoutJoinQuery + ` WHERE w.name = '${request.params.catergory}'`;
-    // console.log(query)
     try {
         await server_1.client.query('BEGIN TRANSACTION');
         const results = await server_1.client.query(query);
@@ -120,3 +119,7 @@ const formatWorkoutJoin = (results) => {
         return result.id !== null ? result : null;
     });
 };
+const getTodaysWorkout = () => {
+    // Based off the user's logged in workout preference find a workout that matches
+};
+exports.getTodaysWorkout = getTodaysWorkout;

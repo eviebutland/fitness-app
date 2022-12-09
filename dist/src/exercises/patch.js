@@ -23,13 +23,13 @@ const updateExercise = async (request, response) => {
     WHERE id = ${request.params.id}
     `;
         await server_1.client.query('BEGIN TRANSACTION');
-        const result = await server_1.client.query(query, [...values]);
+        await server_1.client.query(query, [...values]);
         await server_1.client.query('COMMIT TRANSACTION');
         response.status(200).json({ message: 'Successfully updated exercise', id: request.params.id });
     }
     catch (error) {
-        console.log(error);
         (0, rollback_1.rollback)(server_1.client);
+        console.log(error);
         response.status(500).json({ message: 'Something went wrong', error });
     }
 };

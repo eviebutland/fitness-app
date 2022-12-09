@@ -1,4 +1,4 @@
-import express, { Express, Response } from 'express'
+import express, { Express } from 'express'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import { router } from './src/routes'

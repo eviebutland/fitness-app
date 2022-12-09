@@ -3,7 +3,7 @@ import { client } from '../../server'
 import { formatPatchBody } from '../utils/format-request-body'
 import { rollback } from '../utils/rollback'
 
-export const updateWorkout = async (request: Request, response: Response) => {
+export const updateWorkout = async (request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(400).json({ message: 'Please provide an ID to update' })
     return
@@ -14,10 +14,10 @@ export const updateWorkout = async (request: Request, response: Response) => {
     return
   }
 
-  const keys = Object.keys(request.body)
-  const values = Object.values(request.body)
+  const keys: string[] = Object.keys(request.body)
+  const values: string[] = Object.values(request.body)
 
-  const set = formatPatchBody(keys)
+  const set: string[] = formatPatchBody(keys)
 
   const query = `
     UPDATE exercises

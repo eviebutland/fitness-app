@@ -8,7 +8,6 @@ const login = async (request, response) => {
   SELECT * FROM users
   WHERE email = $1
   AND password = $2;
-  
   `;
     try {
         await server_1.client.query('BEGIN TRANSACTION');
@@ -19,12 +18,14 @@ const login = async (request, response) => {
         }
         // if the user is an admin, we want to send back admin related fields
         // if the user is a subscriber, we want to only send subscriber related fields
-        // const filteredResponse = 
+        // const filteredResponse =
         await server_1.client.query('COMMIT TRANSACTION');
         response.status(200).send({ message: 'Successfully logged in', user: result.rows });
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
+        console.log(error);
+        response.status(500).send({ message: 'Something went wrong', error });
     }
 };
 exports.login = login;

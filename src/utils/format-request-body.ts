@@ -1,4 +1,4 @@
-export const formatPatchBody = (columns: string[]) => {
+export const formatPatchBody = (columns: string[]): string[] => {
   const set: string[] = []
   columns.forEach((column, index) => {
     set.push(`${column} = $${index + 1}`)
@@ -7,7 +7,7 @@ export const formatPatchBody = (columns: string[]) => {
   return set
 }
 
-export const formatKeyValueStrings = (arrayOfValues: string[]) => {
+export const formatKeyValueStrings = (arrayOfValues: string[]): string => {
   let valueString = ''
 
   for (const value of arrayOfValues) {

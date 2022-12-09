@@ -58,3 +58,9 @@ This platform has lots of relating tables. For example, the workout table is bui
 SELECT workouts.name as workoutName, set_1, exercises.name AS name FROM workouts
 LEFT JOIN exercises ON workouts.set_1 = exercises.id
 ```
+
+### API
+
+The purpose of this API is to provide daily workouts to users via email based off their preferences. The users with level of access set to 'subscriber' will be able to provide their workout preference (Monday: LOWER) and be sent an email with a lower body workout.
+
+Currently, these workouts are hardcoded for specific exercises but would like to evolve this in the future to generate its own workouts based of type, intensity, time range etc.

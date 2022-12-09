@@ -5,7 +5,7 @@ import { formatResponse } from '../utils/format-response'
 import { QueryResult } from 'pg'
 import { User } from '../lib/types/user'
 
-export const getUsers = async (request: Request, response: Response) => {
+export const getUsers = async (request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
 
@@ -16,13 +16,13 @@ export const getUsers = async (request: Request, response: Response) => {
     await client.query('COMMIT TRANSACTION')
     response.json({ data, total: res.rows.length })
   } catch (error) {
-    console.log(error)
     rollback(client)
+    console.log(error)
     response.status(500).json({ message: 'Error getting all users', error })
   }
 }
 
-export const getAUser = async (request: Request, response: Response) => {
+export const getAUser = async (request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(404)
     response.send({ message: 'Error: Please provide an ID' })
@@ -43,10 +43,8 @@ export const getAUser = async (request: Request, response: Response) => {
 
     response.send({ data: data[0] })
   } catch (error) {
-    console.log(error)
     rollback(client)
+    console.log(error)
     response.status(500).json({ message: 'Something went wrong', error: error })
-  } finally {
-    // do something here
   }
 }

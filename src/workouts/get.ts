@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
-import { QueryResult, QueryResultRow } from 'pg'
+import { QueryResult } from 'pg'
 import { client } from '../../server'
+import { WorkoutFormatted } from '../lib/types/workouts'
 import { rollback } from '../utils/rollback'
 
 const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
@@ -34,13 +35,13 @@ RIGHT JOIN exercises e3 on w.set_3 = e3.id`
 // RIGHT JOIN exercises e ON w.set_1 = e.id
 // RIGHT JOIN exercises e2 on w.set_2 = e2.id
 // RIGHT JOIN exercises e3 on w.set_3 = e3.id`
-export const getAllWorkouts = async (request: Request, response: Response) => {
+export const getAllWorkouts = async (request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
 
-    const results: QueryResult = await client.query(workoutJoinQuery)
+    const results: QueryResult<WorkoutFormatted> = await client.query(workoutJoinQuery)
 
-    const formattedResult = formatWorkoutJoin(results).filter(value => value !== null)
+    const formattedResult: (WorkoutFormatted | null)[] = formatWorkoutJoin(results).filter(value => value !== null)
 
     // Is this possible to be done in the query?
     await client.query('COMMIT TRANSACTION')
@@ -53,7 +54,7 @@ export const getAllWorkouts = async (request: Request, response: Response) => {
 }
 
 // get by name also?
-export const getWorkoutByID = async (request: Request, response: Response) => {
+export const getWorkoutByID = async (request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(400).json({ message: 'Please provide an ID' })
   }
@@ -61,9 +62,9 @@ export const getWorkoutByID = async (request: Request, response: Response) => {
     await client.query('BEGIN TRANSACTION')
     const query = workoutJoinQuery + ` WHERE w.ID = ${request.params.id}`
 
-    const results: QueryResult = await client.query(query)
+    const results: QueryResult<WorkoutFormatted> = await client.query(query)
 
-    const formattedResult = formatWorkoutJoin(results).filter(value => value !== null)
+    const formattedResult: (WorkoutFormatted | null)[] = formatWorkoutJoin(results).filter(value => value !== null)
 
     await client.query('COMMIT TRANSACTION')
     response.status(200).json({ data: formattedResult })
@@ -74,16 +75,15 @@ export const getWorkoutByID = async (request: Request, response: Response) => {
   }
 }
 
-export const getAllExercisesInCatergory = async (request: Request, response: Response) => {
+export const getAllExercisesInCatergory = async (request: Request, response: Response): Promise<void> => {
   const query = workoutJoinQuery + ` WHERE w.name = '${request.params.catergory}'`
 
-  // console.log(query)
   try {
     await client.query('BEGIN TRANSACTION')
-    const results: QueryResult = await client.query(query)
+    const results: QueryResult<WorkoutFormatted> = await client.query(query)
 
     await client.query('COMMIT TRANSACTION')
-    const formattedResult = formatWorkoutJoin(results).filter(value => value !== null)
+    const formattedResult: (WorkoutFormatted | null)[] = formatWorkoutJoin(results).filter(value => value !== null)
 
     response.status(200).json({ data: formattedResult, total: formattedResult.length })
   } catch (error) {
@@ -95,7 +95,7 @@ export const getAllExercisesInCatergory = async (request: Request, response: Res
 
 const formatWorkoutJoin = (results: QueryResult) => {
   return results.rows.map(row => {
-    const result = {
+    const result: WorkoutFormatted = {
       id: row.id,
       workoutName: row.workoutname,
       resttime: row.resttime,
@@ -127,4 +127,8 @@ const formatWorkoutJoin = (results: QueryResult) => {
 
     return result.id !== null ? result : null
   })
+}
+
+export const getTodaysWorkout = () => {
+  // Based off the user's logged in workout preference find a workout that matches
 }

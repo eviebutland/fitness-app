@@ -13,8 +13,8 @@ const getUsers = async (request, response) => {
         response.json({ data, total: res.rows.length });
     }
     catch (error) {
-        console.log(error);
         (0, rollback_1.rollback)(server_1.client);
+        console.log(error);
         response.status(500).json({ message: 'Error getting all users', error });
     }
 };
@@ -35,12 +35,9 @@ const getAUser = async (request, response) => {
         response.send({ data: data[0] });
     }
     catch (error) {
-        console.log(error);
         (0, rollback_1.rollback)(server_1.client);
+        console.log(error);
         response.status(500).json({ message: 'Something went wrong', error: error });
-    }
-    finally {
-        // do something here
     }
 };
 exports.getAUser = getAUser;

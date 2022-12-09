@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export const client = new Client({
+export const client: Client = new Client({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
@@ -11,7 +11,7 @@ export const client = new Client({
   port: 5432
 })
 
-export const connectDb = async () => {
+export const connectDb = async (): Promise<void> => {
   try {
     await client.connect()
   } catch (error) {
