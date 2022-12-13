@@ -7,7 +7,8 @@ import OpenApiBackend from 'openapi-backend'
 import { handlers } from './src/index'
 import { document } from './schema/schema'
 import type { Request } from 'openapi-backend'
-
+import session from 'express-session'
+import passport from './oauth2'
 const api = new OpenApiBackend({
   definition: document,
   handlers
@@ -16,6 +17,19 @@ const api = new OpenApiBackend({
 dotenv.config()
 
 export const app: Express = express()
+app.use(
+  session({
+    name: 'expressSessionHere',
+    secret: 'something is in the seceet',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 100
+    }
+  })
+)
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))

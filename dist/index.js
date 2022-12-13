@@ -12,12 +12,25 @@ const server_1 = require("./server");
 const openapi_backend_1 = __importDefault(require("openapi-backend"));
 const index_1 = require("./src/index");
 const schema_1 = require("./schema/schema");
+const express_session_1 = __importDefault(require("express-session"));
+const oauth2_1 = __importDefault(require("./oauth2"));
 const api = new openapi_backend_1.default({
     definition: schema_1.document,
     handlers: index_1.handlers
 });
 dotenv_1.default.config();
 exports.app = (0, express_1.default)();
+exports.app.use((0, express_session_1.default)({
+    name: 'expressSessionHere',
+    secret: 'something is in the seceet',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 100
+    }
+}));
+exports.app.use(oauth2_1.default.initialize());
+exports.app.use(oauth2_1.default.session());
 exports.app.use(body_parser_1.default.json());
 exports.app.use(body_parser_1.default.urlencoded({ extended: true }));
 exports.app.use(routes_1.router);

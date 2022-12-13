@@ -9,7 +9,14 @@ const login_1 = require("./authentication/login");
 const exercises_1 = require("./exercises");
 const index_1 = require("./users/index");
 const workouts_1 = require("./workouts");
+const oauth2_1 = __importDefault(require("../oauth2"));
 exports.router = express_1.default.Router();
+// Will need a UI to access these
+exports.router.get('/login/google', oauth2_1.default.authenticate('google'));
+exports.router.get('/oauth2/redirect/google', oauth2_1.default.authenticate('google', { failureRedirect: '/login', failureMessage: true }), function (req, res) {
+    console.log('sucessfully authenticated with google');
+    res.redirect('/');
+});
 // Authentication
 exports.router.get('/login', login_1.login);
 // Users

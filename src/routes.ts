@@ -10,8 +10,20 @@ import {
   deleteWorkout,
   createWorkout
 } from './workouts'
+import passport from '../oauth2'
 
 export const router: Router = express.Router()
+
+// Will need a UI to access these
+router.get('/login/google', passport.authenticate('google'))
+router.get(
+  '/oauth2/redirect/google',
+  passport.authenticate('google', { failureRedirect: '/login', failureMessage: true }),
+  function (req, res) {
+    console.log('sucessfully authenticated with google')
+    res.redirect('/')
+  }
+)
 
 // Authentication
 router.get('/login', login)
