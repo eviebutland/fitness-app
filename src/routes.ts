@@ -15,21 +15,42 @@ import passport from '../oauth2'
 export const router: Router = express.Router()
 
 // Will need a UI to access these
-router.get('/login/google', passport.authenticate('google'))
-router.get(
-  '/oauth2/redirect/google',
-  passport.authenticate('google', { failureRedirect: '/login', failureMessage: true }),
-  function (req, res) {
-    console.log('sucessfully authenticated with google')
-    res.redirect('/')
-  }
-)
+// router.get('/login/google', passport.authenticate('google'))
+// router.get(
+//   '/oauth2/redirect/google',
+//   passport.authenticate('google', { failureRedirect: '/login', failureMessage: true }),
+//   function (req, res) {
+//     console.log('sucessfully authenticated with google')
+//     res.redirect('/')
+//   }
+// )
+
+export function isAuthenticated() {
+  console.log('is authenticationed')
+
+  return passport.authenticate(
+    'oauth2Bearer',
+    {
+      session: false,
+      passReqToCallback: true,
+      authInfo: true
+      // failWithError: true
+      // prompt: 'help'
+    },
+    (req, res) => {
+      console.log('running in callback')
+    }
+  )
+}
 
 // Authentication
 router.get('/login', login)
 
 // Users
-router.get('/users', getUsers)
+router.get('/users', isAuthenticated(), getUsers)
+
+// router.get('/users', getUsers)
+
 router.post('/users', createUser)
 router.patch('/users/:id', updateUser)
 router.delete('/users/:id', deleteUser)

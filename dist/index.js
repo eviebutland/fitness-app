@@ -31,6 +31,16 @@ exports.app.use((0, express_session_1.default)({
 }));
 exports.app.use(oauth2_1.default.initialize());
 exports.app.use(oauth2_1.default.session());
+// app.use(
+//   passport.authenticate('oauth2Bearer', (error, done, next) => {
+//     console.log('using bearer token to authorise', error)
+//     // error prints null
+//     // done prints false
+//     // next prints Bearer realm="Users" ??
+//     console.log(done)
+//     console.log(next)
+//   })
+// )
 exports.app.use(body_parser_1.default.json());
 exports.app.use(body_parser_1.default.urlencoded({ extended: true }));
 exports.app.use(routes_1.router);

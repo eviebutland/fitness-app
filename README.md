@@ -65,4 +65,6 @@ The purpose of this API is to provide daily workouts to users via email based of
 
 Currently, these workouts are hardcoded for specific exercises but would like to evolve this in the future to generate its own workouts based of type, intensity, time range etc.
 
-[OAuth 2.0](https://www.passportjs.org/)
+#### Authentication
+
+I have looked into using the google stratergy offered by [PassportJS](https://www.passportjs.org/) but soon realised that this required a front end to allow the users to enter the google account information in. I then moved to use passport-http-bearer instead which allowed me to authenticate by using a bearer token, generated using [this](https://github.com/jaredhanson/oauth2orize)
