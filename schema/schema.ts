@@ -81,6 +81,58 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
+    ' /logout/:id': {
+      get: {
+        tags: ['authentication'],
+        summary: 'Logout as user',
+        description: 'Logout as user',
+        operationId: 'logout',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'Get a single user',
+            required: true,
+            schema: {
+              type: 'string'
+            }
+          }
+        ],
+        security: [
+          {
+            main_auth: ['read:users']
+          },
+          {
+            api_key: []
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'Success',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/User'
+                }
+              }
+            }
+          },
+          '403': {
+            description: 'Forbidden'
+          },
+          '404': {
+            description: 'NOT_FOUND',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/NotFound'
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     '/users': {
       get: {
         tags: ['user'],

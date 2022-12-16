@@ -9,7 +9,9 @@ export const getUsers = async (request: Request, response: Response): Promise<vo
   try {
     await client.query('BEGIN TRANSACTION')
 
-    const res: QueryResult<User> = await client.query('SELECT * FROM users')
+    const res: QueryResult<User> = await client.query(
+      'SELECT id, name, email, age, password, levelofaccess, premium, completedworkouts, permissions, workoutpreference FROM users'
+    )
 
     const data: User[] = formatResponse(res, 'workoutpreference')
 

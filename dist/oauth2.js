@@ -7,9 +7,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
 const server_1 = require("./server");
 const passport_local_1 = require("passport-local");
+const passport_http_bearer_1 = require("passport-http-bearer");
 passport_1.default.use(new passport_local_1.Strategy(async function verify(username, password, done) {
-    // Change to use bearer
-    console.log(username);
     try {
         const user = await server_1.client.query('SELECT * FROM users WHERE email = $1 AND password = $2', [
             username,
@@ -19,6 +18,22 @@ passport_1.default.use(new passport_local_1.Strategy(async function verify(usern
             return done(null, false, { message: 'Incorrect username or password.' });
         }
         return done(null, user.rows[0]);
+    }
+    catch (error) {
+        done(error);
+    }
+}));
+passport_1.default.use(new passport_http_bearer_1.Strategy(async function verify(token, done) {
+    // Change to use bearer
+    if (!token) {
+        return done('No Token', false, { message: 'Please provide a token', scope: 'none' });
+    }
+    try {
+        const user = await server_1.client.query('SELECT * FROM users WHERE token = $1', [token]);
+        if (!user.rows[0]) {
+            return done(null, false, { message: 'Incorrect token. Please login again', scope: 'none' });
+        }
+        return done(null, user.rows[0], { scope: user.rows[0]?.levelofaccess });
     }
     catch (error) {
         done(error);

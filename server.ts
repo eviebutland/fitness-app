@@ -15,6 +15,6 @@ export const connectDb = async (): Promise<void> => {
   try {
     await client.connect()
   } catch (error) {
-    console.log(error)
+    throw new Error(`Error connecting to DB: ${error}`)
   }
 }

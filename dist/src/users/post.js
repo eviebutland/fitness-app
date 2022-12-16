@@ -5,8 +5,8 @@ const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const createUser = async (request, response) => {
     const query = `
-  INSERT INTO users (name, age, email, password, levelOfAccess, premium, completedWorkouts, permissions, workoutPreference)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+  INSERT INTO users (name, age, email, password, levelOfAccess, premium, completedWorkouts, permissions, workoutPreference, token)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, '')
   ON CONFLICT (id) DO NOTHING 
   `;
     let model = request.body;

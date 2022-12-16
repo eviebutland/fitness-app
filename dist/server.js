@@ -19,7 +19,7 @@ const connectDb = async () => {
         await exports.client.connect();
     }
     catch (error) {
-        console.log(error);
+        throw new Error(`Error connecting to DB: ${error}`);
     }
 };
 exports.connectDb = connectDb;

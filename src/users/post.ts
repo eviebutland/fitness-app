@@ -6,8 +6,8 @@ import { rollback } from '../utils/rollback'
 
 export const createUser = async (request: Request, response: Response): Promise<void> => {
   const query = `
-  INSERT INTO users (name, age, email, password, levelOfAccess, premium, completedWorkouts, permissions, workoutPreference)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+  INSERT INTO users (name, age, email, password, levelOfAccess, premium, completedWorkouts, permissions, workoutPreference, token)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, '')
   ON CONFLICT (id) DO NOTHING 
   `
 

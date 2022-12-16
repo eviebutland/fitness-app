@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isAuthenticated = exports.router = void 0;
 const express_1 = __importDefault(require("express"));
-const login_1 = require("./authentication/login");
+const authentication_1 = require("./authentication");
 const exercises_1 = require("./exercises");
 const index_1 = require("./users/index");
 const workouts_1 = require("./workouts");
@@ -22,19 +22,23 @@ exports.router = express_1.default.Router();
 //   }
 // )
 function isAuthenticated(req, res, next) {
-    return oauth2_1.default.authenticate('local', { session: false }, function (err, user, info) {
-        if (!err && user) {
+    return oauth2_1.default.authenticate('bearer', { session: false }, function (err, user, info) {
+        if (err === null && user) {
             next();
         }
-        else {
-            res.json(info);
+        else if (err) {
+            res.status(401).json(err);
         }
-        console.log(user);
+        else {
+            res.status(401).json(info);
+        }
+        console.log(err);
     })(req, res, next);
 }
 exports.isAuthenticated = isAuthenticated;
 // Authentication
-exports.router.get('/login', login_1.login);
+exports.router.get('/login', authentication_1.login);
+exports.router.get('/logout/:id', authentication_1.logout);
 // Users
 exports.router.get('/users', isAuthenticated, index_1.getUsers);
 exports.router.post('/users', isAuthenticated, index_1.createUser);

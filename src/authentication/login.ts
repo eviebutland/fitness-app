@@ -3,6 +3,7 @@ import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { User } from '../lib/types/user'
 import { rollback } from '../utils/rollback'
+import jwt from 'jsonwebtoken'
 
 export const login = async (request: Request, response: Response): Promise<void> => {
   const query = `
@@ -25,8 +26,25 @@ export const login = async (request: Request, response: Response): Promise<void>
 
     // const filteredResponse =
 
+    const token = jwt.sign(
+      {
+        id: result.rows[0].id,
+        email: result.rows[0].email
+      },
+      'secret',
+      { expiresIn: '1h' }
+    )
+
+    const updateQuery = `
+    UPDATE users
+    SET token = '${token}'
+    WHERE id = ${result.rows[0].id}
+    `
+
+    const updateResult: QueryResult<User> = await client.query(updateQuery)
+
     await client.query('COMMIT TRANSACTION')
-    response.status(200).send({ message: 'Successfully logged in', user: result.rows })
+    response.status(200).send({ message: 'Successfully logged in', user: { ...result.rows[0], token } })
   } catch (error) {
     rollback(client)
     console.log(error)

@@ -1,5 +1,5 @@
 import express, { Request, Response, Router } from 'express'
-import { login } from './authentication/login'
+import { login, logout } from './authentication'
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
 import { getUsers, createUser, updateUser, deleteUser, getAUser } from './users/index'
 import {
@@ -26,19 +26,22 @@ export const router: Router = express.Router()
 // )
 
 export function isAuthenticated(req: Request, res: Response, next: Function) {
-  return passport.authenticate('local', { session: false }, function (err, user, info) {
-    if (!err && user) {
+  return passport.authenticate('bearer', { session: false }, function (err, user, info) {
+    if (err === null && user) {
       next()
+    } else if (err) {
+      res.status(401).json(err)
     } else {
-      res.json(info)
+      res.status(401).json(info)
     }
 
-    console.log(user)
+    console.log(err)
   })(req, res, next)
 }
 
 // Authentication
 router.get('/login', login)
+router.get('/logout/:id', logout)
 
 // Users
 router.get('/users', isAuthenticated, getUsers)
