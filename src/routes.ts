@@ -1,4 +1,4 @@
-import express, { Router } from 'express'
+import express, { Request, Response, Router } from 'express'
 import { login } from './authentication/login'
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
 import { getUsers, createUser, updateUser, deleteUser, getAUser } from './users/index'
@@ -25,47 +25,43 @@ export const router: Router = express.Router()
 //   }
 // )
 
-export function isAuthenticated() {
-  console.log('is authenticationed')
-
-  return passport.authenticate(
-    'oauth2Bearer',
-    {
-      session: false,
-      passReqToCallback: true,
-      authInfo: true
-      // failWithError: true
-      // prompt: 'help'
-    },
-    (req, res) => {
-      console.log('running in callback')
+export function isAuthenticated(req: Request, res: Response, next: Function) {
+  return passport.authenticate('local', { session: false }, function (err, user, info) {
+    if (!err) {
+      next()
     }
-  )
+  })(req, res, next)
 }
 
 // Authentication
 router.get('/login', login)
 
 // Users
-router.get('/users', isAuthenticated(), getUsers)
+// router.get('/users', isAuthenticated(req, res, done), getUsers)
+router.get('/users', isAuthenticated, getUsers)
 
+// router.get('/users', passport.authenticate('bearer', { session: false }), function (req, res) {
+//   console.log(req)
+//   console.log(res)
+//   res.json(req.user)
+// })
 // router.get('/users', getUsers)
 
-router.post('/users', createUser)
-router.patch('/users/:id', updateUser)
-router.delete('/users/:id', deleteUser)
-router.get('/users/:id', getAUser)
+router.post('/users', isAuthenticated, createUser)
+router.patch('/users/:id', isAuthenticated, updateUser)
+router.delete('/users/:id', isAuthenticated, deleteUser)
+router.get('/users/:id', isAuthenticated, getAUser)
 
 // Exercises
-router.get('/exercises', getAllExercises)
-router.post('/exercises', createExcerise)
-router.patch('/exercises/:id', updateExercise)
-router.delete('/exercises/:id', deleteExercise)
+router.get('/exercises', isAuthenticated, getAllExercises)
+router.post('/exercises', isAuthenticated, createExcerise)
+router.patch('/exercises/:id', isAuthenticated, updateExercise)
+router.delete('/exercises/:id', isAuthenticated, deleteExercise)
 
 // Workouts
-router.get('/workouts', getAllWorkouts)
-router.get('/workouts/:id', getWorkoutByID)
-router.get('/workouts/catergory/:catergory', getAllExercisesInCatergory)
-router.post('/workouts', createWorkout)
-router.patch('/workouts/:id', updateWorkout)
-router.delete('/workouts/:id', deleteWorkout)
+router.get('/workouts', isAuthenticated, getAllWorkouts)
+router.get('/workouts/:id', isAuthenticated, getWorkoutByID)
+router.get('/workouts/catergory/:catergory', isAuthenticated, getAllExercisesInCatergory)
+router.post('/workouts', isAuthenticated, createWorkout)
+router.patch('/workouts/:id', isAuthenticated, updateWorkout)
+router.delete('/workouts/:id', isAuthenticated, deleteWorkout)

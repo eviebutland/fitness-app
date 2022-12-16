@@ -21,37 +21,38 @@ exports.router = express_1.default.Router();
 //     res.redirect('/')
 //   }
 // )
-function isAuthenticated() {
-    console.log('is authenticationed');
-    return oauth2_1.default.authenticate('oauth2Bearer', {
-        session: false,
-        passReqToCallback: true,
-        authInfo: true
-        // failWithError: true
-        // prompt: 'help'
-    }, (req, res) => {
-        console.log('running in callback');
-    });
+function isAuthenticated(req, res, next) {
+    return oauth2_1.default.authenticate('local', { session: false }, function (err, user, info) {
+        if (!err) {
+            next();
+        }
+    })(req, res, next);
 }
 exports.isAuthenticated = isAuthenticated;
 // Authentication
 exports.router.get('/login', login_1.login);
 // Users
-exports.router.get('/users', isAuthenticated(), index_1.getUsers);
+// router.get('/users', isAuthenticated(req, res, done), getUsers)
+exports.router.get('/users', isAuthenticated, index_1.getUsers);
+// router.get('/users', passport.authenticate('bearer', { session: false }), function (req, res) {
+//   console.log(req)
+//   console.log(res)
+//   res.json(req.user)
+// })
 // router.get('/users', getUsers)
-exports.router.post('/users', index_1.createUser);
-exports.router.patch('/users/:id', index_1.updateUser);
-exports.router.delete('/users/:id', index_1.deleteUser);
-exports.router.get('/users/:id', index_1.getAUser);
+exports.router.post('/users', isAuthenticated, index_1.createUser);
+exports.router.patch('/users/:id', isAuthenticated, index_1.updateUser);
+exports.router.delete('/users/:id', isAuthenticated, index_1.deleteUser);
+exports.router.get('/users/:id', isAuthenticated, index_1.getAUser);
 // Exercises
-exports.router.get('/exercises', exercises_1.getAllExercises);
-exports.router.post('/exercises', exercises_1.createExcerise);
-exports.router.patch('/exercises/:id', exercises_1.updateExercise);
-exports.router.delete('/exercises/:id', exercises_1.deleteExercise);
+exports.router.get('/exercises', isAuthenticated, exercises_1.getAllExercises);
+exports.router.post('/exercises', isAuthenticated, exercises_1.createExcerise);
+exports.router.patch('/exercises/:id', isAuthenticated, exercises_1.updateExercise);
+exports.router.delete('/exercises/:id', isAuthenticated, exercises_1.deleteExercise);
 // Workouts
-exports.router.get('/workouts', workouts_1.getAllWorkouts);
-exports.router.get('/workouts/:id', workouts_1.getWorkoutByID);
-exports.router.get('/workouts/catergory/:catergory', workouts_1.getAllExercisesInCatergory);
-exports.router.post('/workouts', workouts_1.createWorkout);
-exports.router.patch('/workouts/:id', workouts_1.updateWorkout);
-exports.router.delete('/workouts/:id', workouts_1.deleteWorkout);
+exports.router.get('/workouts', isAuthenticated, workouts_1.getAllWorkouts);
+exports.router.get('/workouts/:id', isAuthenticated, workouts_1.getWorkoutByID);
+exports.router.get('/workouts/catergory/:catergory', isAuthenticated, workouts_1.getAllExercisesInCatergory);
+exports.router.post('/workouts', isAuthenticated, workouts_1.createWorkout);
+exports.router.patch('/workouts/:id', isAuthenticated, workouts_1.updateWorkout);
+exports.router.delete('/workouts/:id', isAuthenticated, workouts_1.deleteWorkout);
