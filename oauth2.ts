@@ -23,6 +23,8 @@ type Callback = (error: any, user?: any, options?: string | IVerifyOptions | und
 
 passport.use(
   new LocalStrategy(async function verify(username, password, done) {
+    // Change to use bearer
+    console.log(username)
     try {
       const user = await client.query('SELECT * FROM users WHERE email = $1 AND password = $2', [
         username,

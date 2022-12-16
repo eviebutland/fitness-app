@@ -8,6 +8,8 @@ const passport_1 = __importDefault(require("passport"));
 const server_1 = require("./server");
 const passport_local_1 = require("passport-local");
 passport_1.default.use(new passport_local_1.Strategy(async function verify(username, password, done) {
+    // Change to use bearer
+    console.log(username);
     try {
         const user = await server_1.client.query('SELECT * FROM users WHERE email = $1 AND password = $2', [
             username,

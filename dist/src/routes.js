@@ -23,23 +23,20 @@ exports.router = express_1.default.Router();
 // )
 function isAuthenticated(req, res, next) {
     return oauth2_1.default.authenticate('local', { session: false }, function (err, user, info) {
-        if (!err) {
+        if (!err && user) {
             next();
         }
+        else {
+            res.json(info);
+        }
+        console.log(user);
     })(req, res, next);
 }
 exports.isAuthenticated = isAuthenticated;
 // Authentication
 exports.router.get('/login', login_1.login);
 // Users
-// router.get('/users', isAuthenticated(req, res, done), getUsers)
 exports.router.get('/users', isAuthenticated, index_1.getUsers);
-// router.get('/users', passport.authenticate('bearer', { session: false }), function (req, res) {
-//   console.log(req)
-//   console.log(res)
-//   res.json(req.user)
-// })
-// router.get('/users', getUsers)
 exports.router.post('/users', isAuthenticated, index_1.createUser);
 exports.router.patch('/users/:id', isAuthenticated, index_1.updateUser);
 exports.router.delete('/users/:id', isAuthenticated, index_1.deleteUser);

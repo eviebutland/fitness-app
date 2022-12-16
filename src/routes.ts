@@ -27,9 +27,13 @@ export const router: Router = express.Router()
 
 export function isAuthenticated(req: Request, res: Response, next: Function) {
   return passport.authenticate('local', { session: false }, function (err, user, info) {
-    if (!err) {
+    if (!err && user) {
       next()
+    } else {
+      res.json(info)
     }
+
+    console.log(user)
   })(req, res, next)
 }
 
@@ -37,16 +41,7 @@ export function isAuthenticated(req: Request, res: Response, next: Function) {
 router.get('/login', login)
 
 // Users
-// router.get('/users', isAuthenticated(req, res, done), getUsers)
 router.get('/users', isAuthenticated, getUsers)
-
-// router.get('/users', passport.authenticate('bearer', { session: false }), function (req, res) {
-//   console.log(req)
-//   console.log(res)
-//   res.json(req.user)
-// })
-// router.get('/users', getUsers)
-
 router.post('/users', isAuthenticated, createUser)
 router.patch('/users/:id', isAuthenticated, updateUser)
 router.delete('/users/:id', isAuthenticated, deleteUser)
