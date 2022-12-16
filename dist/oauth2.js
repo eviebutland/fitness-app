@@ -8,6 +8,7 @@ const passport_1 = __importDefault(require("passport"));
 const server_1 = require("./server");
 const passport_local_1 = require("passport-local");
 const passport_http_bearer_1 = require("passport-http-bearer");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 passport_1.default.use(new passport_local_1.Strategy(async function verify(username, password, done) {
     try {
         const user = await server_1.client.query('SELECT * FROM users WHERE email = $1 AND password = $2', [
@@ -30,7 +31,7 @@ passport_1.default.use(new passport_http_bearer_1.Strategy(async function verify
     }
     try {
         const user = await server_1.client.query('SELECT * FROM users WHERE token = $1', [token]);
-        if (!user.rows[0]) {
+        if (!user.rows[0] || !jsonwebtoken_1.default.verify(token, 'secret')) {
             return done(null, false, { message: 'Incorrect token. Please login again', scope: 'none' });
         }
         return done(null, user.rows[0], { scope: user.rows[0]?.levelofaccess });
