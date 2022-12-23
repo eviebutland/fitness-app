@@ -9,6 +9,7 @@ const createUser = async (request, response) => {
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, '')
   ON CONFLICT (id) DO NOTHING 
   `;
+    // TODO BCYPRT HASH AND SALT PASSWORD
     let model = request.body;
     model = {
         ...request.body,

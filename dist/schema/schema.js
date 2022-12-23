@@ -81,7 +81,7 @@ exports.document = {
                 }
             }
         },
-        ' /logout/:id': {
+        '/logout/{id}': {
             get: {
                 tags: ['authentication'],
                 summary: 'Logout as user',

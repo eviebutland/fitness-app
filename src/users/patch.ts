@@ -12,6 +12,7 @@ export const updateUser = async (request: Request, response: Response): Promise<
   }
 
   const columns: string[] = Object.keys(request.body)
+  // TODO BCYPRT HASH AND SALT PASSWORD
 
   const values: string[] = Object.values(request.body)
 

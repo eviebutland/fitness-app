@@ -10,6 +10,7 @@ const updateUser = async (request, response) => {
         return;
     }
     const columns = Object.keys(request.body);
+    // TODO BCYPRT HASH AND SALT PASSWORD
     const values = Object.values(request.body);
     const set = (0, format_request_body_1.formatPatchBody)(columns);
     const query = `

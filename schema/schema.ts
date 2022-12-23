@@ -81,7 +81,7 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
-    ' /logout/:id': {
+    '/logout/{id}': {
       get: {
         tags: ['authentication'],
         summary: 'Logout as user',

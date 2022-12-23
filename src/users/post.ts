@@ -11,6 +11,7 @@ export const createUser = async (request: Request, response: Response): Promise<
   ON CONFLICT (id) DO NOTHING 
   `
 
+  // TODO BCYPRT HASH AND SALT PASSWORD
   let model: User = request.body
   model = {
     ...request.body,
