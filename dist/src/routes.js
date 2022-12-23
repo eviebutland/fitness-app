@@ -29,9 +29,9 @@ function isAuthorized(request, response, next, permissions) {
             return;
         }
         else {
+            console.log('has access');
             next();
         }
-        console.log(info);
     })(request, response, next);
 }
 exports.isAuthorized = isAuthorized;
@@ -53,10 +53,7 @@ exports.router.get('/logout/:id', authentication_1.logout);
 // Users
 exports.router.get('/users', (req, res, next) => {
     isAuthenticated(req, res, next);
-    if (res.statusCode !== 401) {
-        isAuthorized(req, res, next, 'rw:user');
-    }
-    next();
+    isAuthorized(req, res, next, 'rw:user');
 }, index_1.getUsers);
 exports.router.post('/users', isAuthenticated, index_1.createUser);
 exports.router.patch('/users/:id', isAuthenticated, index_1.updateUser);

@@ -144,7 +144,7 @@ exports.document = {
                         main_auth: ['read:users']
                     },
                     {
-                        api_key: []
+                        jwt: ['rw:users']
                     }
                 ],
                 responses: {

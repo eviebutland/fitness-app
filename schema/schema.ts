@@ -144,7 +144,7 @@ export const document: OpenAPIV3.Document = {
             main_auth: ['read:users']
           },
           {
-            api_key: []
+            jwt: ['rw:users']
           }
         ],
         responses: {

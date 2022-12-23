@@ -44,7 +44,7 @@ exports.app.use(oauth2_1.default.session());
 exports.app.use(body_parser_1.default.json());
 exports.app.use(body_parser_1.default.urlencoded({ extended: true }));
 exports.app.use(routes_1.router);
-exports.app.use((req, res) => api.handleRequest(req, req, res));
+exports.app.use((req, res, next) => api.handleRequest(req, req, res, next));
 exports.app.listen(3030, () => {
     console.log(`App running on port 3030.`);
 });

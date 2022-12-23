@@ -32,9 +32,9 @@ export function isAuthorized(request: Request, response: Response, next: NextFun
       response.status(401).json({ message: 'You do not have permissions to access this resource', error: info })
       return
     } else {
+      console.log('has access')
       next()
     }
-    console.log(info)
   })(request, response, next)
 }
 
@@ -59,10 +59,7 @@ router.get(
   (req: Request, res: Response, next: NextFunction) => {
     isAuthenticated(req, res, next)
 
-    if (res.statusCode !== 401) {
-      isAuthorized(req, res, next, 'rw:user')
-    }
-    next()
+    isAuthorized(req, res, next, 'rw:user')
   },
   getUsers
 )

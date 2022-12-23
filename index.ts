@@ -45,7 +45,7 @@ app.use(passport.session())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(router)
-app.use((req, res) => api.handleRequest(req as Request, req, res))
+app.use((req, res, next) => api.handleRequest(req as Request, req, res, next))
 
 app.listen(3030, (): void => {
   console.log(`App running on port 3030.`)
