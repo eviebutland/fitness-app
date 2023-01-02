@@ -24,29 +24,18 @@ export const router: Router = express.Router()
 //     res.redirect('/')
 //   }
 // )
-export function isAuthorized(request: Request, response: Response, next: NextFunction, permissions: string) {
-  return passport.authorize('bearer', { session: false }, function (err, user, info) {
-    console.log(user)
 
-    if (!user.permissions || user.permissions !== permissions) {
-      response.status(401).json({ message: 'You do not have permissions to access this resource', error: info })
-      return
+export function isAuthorized(permissions: string) {
+  return passport.authorize('bearer', { session: false }, function (err, user, info) {
+    // return user?.permissions || user.permissions === permissions
+    console.log(user)
+    if (!user?.permissions || user?.permissions !== permissions) {
+      return false
     } else {
       console.log('has access')
-      next()
+      return true
     }
-  })(request, response, next)
-}
-
-export function isAuthenticated(request: Request, response: Response, next: NextFunction) {
-  return passport.authenticate('bearer', { session: false }, function (err, user, info) {
-    if (err === null && user) {
-      next()
-    } else if (err) {
-      response.status(401).json({ message: info, error: err })
-      return
-    }
-  })(request, response, next)
+  })()
 }
 
 // Authentication
@@ -56,28 +45,36 @@ router.get('/logout/:id', logout)
 // Users
 router.get(
   '/users',
-  (req: Request, res: Response, next: NextFunction) => {
-    isAuthenticated(req, res, next)
+  // isAuthorized('yes'),
+  // isAuthorized('rw:users'),
+  // (req: Request, res: Response, next: NextFunction) => {
+  //   console.log(isAuthenticated(req, res, next))
+  //   return isAuthenticated(req, res, next) ? next() : res.status(401).json({ message: 'Please login' })
 
-    isAuthorized(req, res, next, 'rw:user')
-  },
+  // ? isAuthorized(req, res, next, 'rw:user')
+  //   ? next()
+  //   : res.status(401).json({ message: 'You do not have access to this resource' })
+  // : res.status(401).json({ message: 'Please login' })
+
+  // it shouldn't fall into here if the first fails
+  // },
   getUsers
 )
-router.post('/users', isAuthenticated, createUser)
-router.patch('/users/:id', isAuthenticated, updateUser)
-router.delete('/users/:id', isAuthenticated, deleteUser)
-router.get('/users/:id', isAuthenticated, getAUser)
+router.post('/users', isAuthorized, createUser)
+router.patch('/users/:id', isAuthorized, updateUser)
+router.delete('/users/:id', isAuthorized, deleteUser)
+router.get('/users/:id', isAuthorized, getAUser)
 
 // Exercises
-router.get('/exercises', isAuthenticated, getAllExercises)
-router.post('/exercises', isAuthenticated, createExcerise)
-router.patch('/exercises/:id', isAuthenticated, updateExercise)
-router.delete('/exercises/:id', isAuthenticated, deleteExercise)
+router.get('/exercises', isAuthorized, getAllExercises)
+router.post('/exercises', isAuthorized, createExcerise)
+router.patch('/exercises/:id', isAuthorized, updateExercise)
+router.delete('/exercises/:id', isAuthorized, deleteExercise)
 
 // Workouts
-router.get('/workouts', isAuthenticated, getAllWorkouts)
-router.get('/workouts/:id', isAuthenticated, getWorkoutByID)
-router.get('/workouts/catergory/:catergory', isAuthenticated, getAllExercisesInCatergory)
-router.post('/workouts', isAuthenticated, createWorkout)
-router.patch('/workouts/:id', isAuthenticated, updateWorkout)
-router.delete('/workouts/:id', isAuthenticated, deleteWorkout)
+router.get('/workouts', isAuthorized, getAllWorkouts)
+router.get('/workouts/:id', isAuthorized, getWorkoutByID)
+router.get('/workouts/catergory/:catergory', isAuthorized, getAllExercisesInCatergory)
+router.post('/workouts', isAuthorized, createWorkout)
+router.patch('/workouts/:id', isAuthorized, updateWorkout)
+router.delete('/workouts/:id', isAuthorized, deleteWorkout)

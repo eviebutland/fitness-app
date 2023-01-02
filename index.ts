@@ -1,4 +1,4 @@
-import express, { Express } from 'express'
+import express, { Express, NextFunction, Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import { router } from './src/routes'
@@ -6,7 +6,7 @@ import { connectDb } from './server'
 import OpenApiBackend from 'openapi-backend'
 import { handlers } from './src/index'
 import { document } from './schema/schema'
-import type { Request } from 'openapi-backend'
+import type { Request as OpenAPIRequest } from 'openapi-backend'
 import session from 'express-session'
 import passport from './oauth2'
 
@@ -21,7 +21,7 @@ export const app: Express = express()
 app.use(
   session({
     name: 'expressSessionHere',
-    secret: 'something is in the seceet',
+    secret: 'something is in the secret',
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -31,6 +31,13 @@ app.use(
 )
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.use((request: Request, response: Response, next: NextFunction) => {
+  request.url.includes('login') || request.url.includes('logout')
+    ? next()
+    : passport.authenticate('bearer', { session: false })(request, response, next)
+})
+
 // app.use(
 //   passport.authenticate('oauth2Bearer', (error, done, next) => {
 //     console.log('using bearer token to authorise', error)
@@ -45,7 +52,7 @@ app.use(passport.session())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(router)
-app.use((req, res, next) => api.handleRequest(req as Request, req, res, next))
+app.use((req, res, next) => api.handleRequest(req as OpenAPIRequest, req, res, next))
 
 app.listen(3030, (): void => {
   console.log(`App running on port 3030.`)

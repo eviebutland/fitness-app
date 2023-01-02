@@ -141,9 +141,6 @@ exports.document = {
                 operationId: 'getUsers',
                 security: [
                     {
-                        main_auth: ['read:users']
-                    },
-                    {
                         jwt: ['rw:users']
                     }
                 ],

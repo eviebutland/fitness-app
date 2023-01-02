@@ -141,9 +141,6 @@ export const document: OpenAPIV3.Document = {
         operationId: 'getUsers',
         security: [
           {
-            main_auth: ['read:users']
-          },
-          {
             jwt: ['rw:users']
           }
         ],

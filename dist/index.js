@@ -22,7 +22,7 @@ dotenv_1.default.config();
 exports.app = (0, express_1.default)();
 exports.app.use((0, express_session_1.default)({
     name: 'expressSessionHere',
-    secret: 'something is in the seceet',
+    secret: 'something is in the secret',
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -31,6 +31,11 @@ exports.app.use((0, express_session_1.default)({
 }));
 exports.app.use(oauth2_1.default.initialize());
 exports.app.use(oauth2_1.default.session());
+exports.app.use((request, response, next) => {
+    request.url.includes('login') || request.url.includes('logout')
+        ? next()
+        : oauth2_1.default.authenticate('bearer', { session: false })(request, response, next);
+});
 // app.use(
 //   passport.authenticate('oauth2Bearer', (error, done, next) => {
 //     console.log('using bearer token to authorise', error)
