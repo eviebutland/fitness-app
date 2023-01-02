@@ -25,7 +25,6 @@ passport_1.default.use(new passport_local_1.Strategy(async function verify(usern
     }
 }));
 passport_1.default.use(new passport_http_bearer_1.Strategy(async function verify(token, done) {
-    // Change to use bearer
     if (!token) {
         return done('No Token', false, { message: 'Please provide a token', scope: 'none' });
     }
@@ -34,7 +33,7 @@ passport_1.default.use(new passport_http_bearer_1.Strategy(async function verify
         if (!user.rows[0] || !jsonwebtoken_1.default.verify(token, 'secret')) {
             return done(null, false, { message: 'Incorrect token. Please login again', scope: 'none' });
         }
-        return done(null, user.rows[0], { scope: user.rows[0]?.levelofaccess });
+        return done(null, user.rows[0], { scope: user.rows[0]?.permissions });
     }
     catch (error) {
         done(error);

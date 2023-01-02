@@ -5,7 +5,6 @@ const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const format_response_1 = require("../utils/format-response");
 const getUsers = async (request, response) => {
-    console.log('RUNNING');
     try {
         await server_1.client.query('BEGIN TRANSACTION');
         const res = await server_1.client.query('SELECT id, name, email, age, password, levelofaccess, premium, completedworkouts, permissions, workoutpreference FROM users');

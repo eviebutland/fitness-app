@@ -34,7 +34,10 @@ const login = async (request, response) => {
     `;
         const updateResult = await server_1.client.query(updateQuery);
         await server_1.client.query('COMMIT TRANSACTION');
-        response.status(200).send({ message: 'Successfully logged in', user: { ...result.rows[0], token } });
+        response.status(200).send({
+            message: 'Successfully logged in',
+            user: { ...result.rows[0], token }
+        });
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);

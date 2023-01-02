@@ -43,7 +43,6 @@ passport.use(
 
 passport.use(
   new BearerStrategy(async function verify(token, done) {
-    // Change to use bearer
     if (!token) {
       return done('No Token', false, { message: 'Please provide a token', scope: 'none' })
     }
@@ -54,7 +53,7 @@ passport.use(
         return done(null, false, { message: 'Incorrect token. Please login again', scope: 'none' })
       }
 
-      return done(null, user.rows[0], { scope: user.rows[0]?.levelofaccess })
+      return done(null, user.rows[0], { scope: user.rows[0]?.permissions })
     } catch (error) {
       done(error)
     }

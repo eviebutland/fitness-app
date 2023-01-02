@@ -6,7 +6,6 @@ import { QueryResult } from 'pg'
 import { User } from '../lib/types/user'
 
 export const getUsers = async (request: Request, response: Response): Promise<void> => {
-  console.log('RUNNING')
   try {
     await client.query('BEGIN TRANSACTION')
 

@@ -4,6 +4,7 @@ import { client } from '../../server'
 import { User } from '../lib/types/user'
 import { rollback } from '../utils/rollback'
 import jwt from 'jsonwebtoken'
+import { formatResponse } from '../utils/format-response'
 
 export const login = async (request: Request, response: Response): Promise<void> => {
   const query = `
@@ -44,7 +45,10 @@ export const login = async (request: Request, response: Response): Promise<void>
     const updateResult: QueryResult<User> = await client.query(updateQuery)
 
     await client.query('COMMIT TRANSACTION')
-    response.status(200).send({ message: 'Successfully logged in', user: { ...result.rows[0], token } })
+    response.status(200).send({
+      message: 'Successfully logged in',
+      user: { ...result.rows[0], token }
+    })
   } catch (error) {
     rollback(client)
     console.log(error)
