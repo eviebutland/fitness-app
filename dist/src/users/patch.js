@@ -4,14 +4,18 @@ exports.updateUser = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const format_request_body_1 = require("../utils/format-request-body");
+const security_1 = require("../utils/security");
 const updateUser = async (request, response) => {
     if (request.params.id === ':id') {
         response.status(404).json({ message: 'Please provide an id' });
         return;
     }
-    const columns = Object.keys(request.body);
-    // TODO BCYPRT HASH AND SALT PASSWORD
-    const values = Object.values(request.body);
+    let data = request.body;
+    const columns = Object.keys(data);
+    if (columns.includes('password')) {
+        data = { ...request.body, password: await (0, security_1.saltAndHash)(request.body.password) };
+    }
+    const values = Object.values(data);
     const set = (0, format_request_body_1.formatPatchBody)(columns);
     const query = `
     UPDATE users

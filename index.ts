@@ -9,6 +9,7 @@ import { document } from './schema/schema'
 import type { Request as OpenAPIRequest } from 'openapi-backend'
 import session from 'express-session'
 import passport from './oauth2'
+import bcrypt from 'bcrypt'
 
 const api = new OpenApiBackend({
   definition: document,
@@ -18,6 +19,7 @@ const api = new OpenApiBackend({
 dotenv.config()
 
 export const app: Express = express()
+
 app.use(
   session({
     name: 'expressSessionHere',
@@ -29,6 +31,7 @@ app.use(
     }
   })
 )
+
 app.use(passport.initialize())
 app.use(passport.session())
 

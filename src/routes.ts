@@ -14,17 +14,6 @@ import {
 
 export const router: Router = express.Router()
 
-// Will need a UI to access these
-// router.get('/login/google', passport.authenticate('google'))
-// router.get(
-//   '/oauth2/redirect/google',
-//   passport.authenticate('google', { failureRedirect: '/login', failureMessage: true }),
-//   function (req, res) {
-//     console.log('sucessfully authenticated with google')
-//     res.redirect('/')
-//   }
-// )
-
 export function isAuthorized(req: Request, res: Response, next: NextFunction, permission: string) {
   const access = permission.split(':')[0]
   const area = permission.split(':')[1]
@@ -166,3 +155,14 @@ router.delete(
   },
   deleteWorkout
 )
+
+// Will need a UI to access these
+// router.get('/login/google', passport.authenticate('google'))
+// router.get(
+//   '/oauth2/redirect/google',
+//   passport.authenticate('google', { failureRedirect: '/login', failureMessage: true }),
+//   function (req, res) {
+//     console.log('sucessfully authenticated with google')
+//     res.redirect('/')
+//   }
+// )

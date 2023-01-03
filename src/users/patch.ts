@@ -4,6 +4,7 @@ import { client } from '../../server'
 import { rollback } from '../utils/rollback'
 import { User } from '../lib/types/user'
 import { formatPatchBody } from '../utils/format-request-body'
+import { saltAndHash } from '../utils/security'
 
 export const updateUser = async (request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
@@ -11,10 +12,14 @@ export const updateUser = async (request: Request, response: Response): Promise<
     return
   }
 
-  const columns: string[] = Object.keys(request.body)
-  // TODO BCYPRT HASH AND SALT PASSWORD
+  let data = request.body
+  const columns: string[] = Object.keys(data)
 
-  const values: string[] = Object.values(request.body)
+  if (columns.includes('password')) {
+    data = { ...request.body, password: await saltAndHash(request.body.password) }
+  }
+
+  const values: string[] = Object.values(data)
 
   const set = formatPatchBody(columns)
   const query = `
