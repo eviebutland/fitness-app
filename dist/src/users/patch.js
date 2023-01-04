@@ -13,7 +13,8 @@ const updateUser = async (request, response) => {
     let data = request.body;
     const columns = Object.keys(data);
     if (columns.includes('password')) {
-        data = { ...request.body, password: await (0, security_1.saltAndHash)(request.body.password) };
+        // Reset status if password is updated
+        data = { ...request.body, password: await (0, security_1.saltAndHash)(request.body.password), status: 'active' };
     }
     const values = Object.values(data);
     const set = (0, format_request_body_1.formatPatchBody)(columns);

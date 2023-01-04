@@ -1,5 +1,6 @@
 type Premium = 'standard' | 'gold'
 type LevelOfAccess = 'subscriber' | 'admin'
+type Status = 'active' | 'inactive'
 // Permissions
 // admin -> rw:u, rw:w, rw:e
 // subscriber -> rw:u, r:w, r:e
@@ -18,4 +19,5 @@ export interface User {
   completedworkouts: string[]
   permissions: string
   workoutpreference: string
+  status: Status
 }

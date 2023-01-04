@@ -16,7 +16,8 @@ export const updateUser = async (request: Request, response: Response): Promise<
   const columns: string[] = Object.keys(data)
 
   if (columns.includes('password')) {
-    data = { ...request.body, password: await saltAndHash(request.body.password) }
+    // Reset status if password is updated
+    data = { ...request.body, password: await saltAndHash(request.body.password), status: 'active' }
   }
 
   const values: string[] = Object.values(data)

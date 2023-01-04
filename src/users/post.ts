@@ -7,8 +7,8 @@ import { saltAndHash } from '../utils/security'
 
 export const createUser = async (request: Request, response: Response): Promise<void> => {
   const query = `
-  INSERT INTO users (name, age, email, password, levelOfAccess, premium, completedWorkouts, permissions, workoutPreference, token)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, '')
+  INSERT INTO users (name, age, email, password, levelOfAccess, premium, completedWorkouts, permissions, workoutPreference, token, status)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, '', 'active')
   ON CONFLICT (id) DO NOTHING 
   `
 
