@@ -4,7 +4,7 @@ import { client } from '../../server'
 import { rollback } from '../utils/rollback'
 import { User } from '../lib/types/user'
 import { formatPatchBody } from '../utils/format-request-body'
-import { saltAndHash } from '../utils/security'
+import { passwordValidation, saltAndHash } from '../utils/security'
 
 export const updateUser = async (request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
@@ -16,6 +16,8 @@ export const updateUser = async (request: Request, response: Response): Promise<
   const columns: string[] = Object.keys(data)
 
   if (columns.includes('password')) {
+    passwordValidation(request.body.password, response, client)
+
     // Reset status if password is updated
     data = { ...request.body, password: await saltAndHash(request.body.password), status: 'active' }
   }

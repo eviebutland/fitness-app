@@ -3,7 +3,7 @@ import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { User } from '../lib/types/user'
 import { rollback } from '../utils/rollback'
-import { saltAndHash } from '../utils/security'
+import { passwordValidation, saltAndHash } from '../utils/security'
 
 export const resetPassword = async (request: Request, response: Response) => {
   try {
@@ -22,17 +22,7 @@ export const resetPassword = async (request: Request, response: Response) => {
     WHERE id = ${existingUser.rows[0].id}
     `
 
-    const passwordRegex = /([A-Z]+)([a-z]{3,})([!@£$%^&*()_+]+)([0-9])+/
-
-    if (!passwordRegex.test(request.body.newPassword)) {
-      await client.query('COMMIT TRANSACTION')
-      response.status(400).json({
-        message:
-          'Password must require at least 1 uppercase, 3 or more lower case, 1 special character and at least 1 number '
-      })
-
-      return
-    }
+    passwordValidation(request.body.newPassword, response, client)
 
     const password = await saltAndHash(request.body.newPassword)
 

@@ -3,7 +3,7 @@ import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { User } from '../lib/types/user'
 import { rollback } from '../utils/rollback'
-import { saltAndHash } from '../utils/security'
+import { passwordValidation, saltAndHash } from '../utils/security'
 
 export const createUser = async (request: Request, response: Response): Promise<void> => {
   const query = `
@@ -13,6 +13,8 @@ export const createUser = async (request: Request, response: Response): Promise<
   `
 
   let model: User = request.body
+
+  passwordValidation(request.body.password, response, client)
 
   model = {
     ...request.body,
