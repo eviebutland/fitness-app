@@ -24,6 +24,7 @@ exports.isAuthorized = isAuthorized;
 // Authentication
 exports.router.get('/login', authentication_1.login);
 exports.router.get('/logout/:id', authentication_1.logout);
+exports.router.post('/reset-password', authentication_1.resetPassword);
 // Users
 exports.router.get('/users', (req, res, next) => {
     // Minimum level of access required to get the list of users is read:users

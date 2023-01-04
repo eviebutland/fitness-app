@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response, Router } from 'express'
-import { login, logout } from './authentication'
+import { login, logout, resetPassword } from './authentication'
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
 import { getUsers, createUser, updateUser, deleteUser, getAUser } from './users/index'
 import {
@@ -31,6 +31,7 @@ export function isAuthorized(req: Request, res: Response, next: NextFunction, pe
 // Authentication
 router.get('/login', login)
 router.get('/logout/:id', logout)
+router.post('/reset-password', resetPassword)
 
 // Users
 router.get(

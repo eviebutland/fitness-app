@@ -133,6 +133,57 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
+    '/reset-password': {
+      post: {
+        tags: ['user'],
+        summary: 'Reset a user password',
+        description: 'Reset password',
+        operationId: 'resetPassword',
+        security: [
+          {
+            api_key: []
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'OK',
+            headers: {
+              'X-Expires-After': {
+                $ref: '#/components/headers/ExpiresAfter'
+              }
+            },
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/User'
+                }
+              }
+            }
+          },
+          '400': {
+            description: 'BAD_REQUEST',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/BadRequest'
+                }
+              }
+            }
+          }
+        },
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/User'
+              }
+            }
+          },
+          description: 'requestBody description',
+          required: true
+        }
+      }
+    },
     '/users': {
       get: {
         tags: ['user'],
