@@ -18,14 +18,7 @@ const resetPassword = async (request, response) => {
     SET password = $1, status = $2
     WHERE id = ${existingUser.rows[0].id}
     `;
-        const passwordRegex = /([A-Z]+)([a-z]{3,})([!@£$%^&*()_+]+)([0-9])+/;
-        if (!passwordRegex.test(request.body.newPassword)) {
-            await server_1.client.query('COMMIT TRANSACTION');
-            response.status(400).json({
-                message: 'Password must require at least 1 uppercase, 3 or more lower case, 1 special character and at least 1 number '
-            });
-            return;
-        }
+        (0, security_1.passwordValidation)(request.body.newPassword, response, server_1.client);
         const password = await (0, security_1.saltAndHash)(request.body.newPassword);
         const updatedUser = await server_1.client.query(updateQuery, [password, 'active']);
         await server_1.client.query('COMMIT TRANSACTION');

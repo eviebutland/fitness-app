@@ -1,6 +1,5 @@
-// import { Context } from 'openapi-backend/backend'
-// import { getAUser } from './users/get'
+import { getAllExercises } from './exercises'
 
 export const handlers = {
-  //   getAUser
+  getAllExercises
 }

@@ -48,10 +48,7 @@ export const document: OpenAPIV3.Document = {
         operationId: 'login',
         security: [
           {
-            main_auth: ['read:users']
-          },
-          {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -100,10 +97,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            main_auth: ['read:users']
-          },
-          {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -141,7 +135,7 @@ export const document: OpenAPIV3.Document = {
         operationId: 'resetPassword',
         security: [
           {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -192,7 +186,7 @@ export const document: OpenAPIV3.Document = {
         operationId: 'getUsers',
         security: [
           {
-            jwt: ['rw:users']
+            bearer: []
           }
         ],
         responses: {
@@ -228,7 +222,7 @@ export const document: OpenAPIV3.Document = {
         operationId: 'createAUser',
         security: [
           {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -290,10 +284,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            main_auth: ['read:users']
-          },
-          {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -340,7 +331,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            main_auth: ['write:users']
+            bearer: []
           }
         ],
         responses: {
@@ -387,7 +378,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            main_auth: ['write:users']
+            bearer: []
           }
         ],
         responses: {
@@ -443,10 +434,7 @@ export const document: OpenAPIV3.Document = {
         operationId: 'getAllExercises',
         security: [
           {
-            main_auth: ['read:users']
-          },
-          {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -482,7 +470,7 @@ export const document: OpenAPIV3.Document = {
         operationId: 'createExcerise',
         security: [
           {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -520,6 +508,7 @@ export const document: OpenAPIV3.Document = {
           }
         },
         requestBody: {
+          required: true,
           content: {
             'application/json': {
               schema: {
@@ -527,8 +516,7 @@ export const document: OpenAPIV3.Document = {
               }
             }
           },
-          description: 'requestBody description',
-          required: true
+          description: 'requestBody description'
         }
       }
     },
@@ -551,7 +539,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            main_auth: ['write:users']
+            bearer: []
           }
         ],
         responses: {
@@ -616,7 +604,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            main_auth: ['write:users']
+            bearer: []
           }
         ],
         responses: {
@@ -665,10 +653,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            main_auth: ['read:users']
-          },
-          {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -706,7 +691,7 @@ export const document: OpenAPIV3.Document = {
         operationId: 'getAllWorkouts',
         security: [
           {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -751,7 +736,7 @@ export const document: OpenAPIV3.Document = {
         operationId: 'createWorkout',
         security: [
           {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -827,7 +812,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -883,7 +868,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -967,7 +952,7 @@ export const document: OpenAPIV3.Document = {
         ],
         security: [
           {
-            api_key: []
+            bearer: []
           }
         ],
         responses: {
@@ -1016,6 +1001,7 @@ export const document: OpenAPIV3.Document = {
     schemas: {
       PlannedWorkout: {
         type: 'object',
+        required: ['name', 'averageTime', 'scheduledDay', 'intensityRating', 'completedStatus'],
         properties: {
           name: {
             type: 'string',
@@ -1047,6 +1033,18 @@ export const document: OpenAPIV3.Document = {
       },
       Exercise: {
         type: 'object',
+        required: [
+          'name',
+          'description',
+          'restTime',
+          'recommendedRepRange',
+          'category',
+          'intensity',
+          'isCompound',
+          'exerciseTime',
+          'video',
+          'variations'
+        ],
         properties: {
           name: {
             description: 'Name of the exercise',
@@ -1077,7 +1075,8 @@ export const document: OpenAPIV3.Document = {
           intensity: {
             description: 'The intensity rating of the exercise',
             type: 'number',
-            example: 1
+            example: 1,
+            maximum: 10
           },
           isCompound: {
             description: 'If the exercise is a compound exercise',
@@ -1099,13 +1098,25 @@ export const document: OpenAPIV3.Document = {
             items: {
               type: 'string'
             },
-            example: ['Bent over row', 'Lat fly']
+            example: ['Bent over row', 'Lat fly'],
+            uniqueItems: true
           }
         }
       },
       User: {
         type: 'object',
         title: 'user',
+        required: [
+          'name',
+          'age',
+          'email',
+          'password',
+          'levelOfAccess',
+          'premium',
+          'completedWorkouts',
+          'permissions',
+          'workoutPreference'
+        ],
         properties: {
           name: {
             description: 'The name of the user',
@@ -1204,10 +1215,10 @@ export const document: OpenAPIV3.Document = {
           }
         }
       },
-      api_key: {
-        type: 'apiKey',
-        in: 'header',
-        name: 'api_key'
+      bearer: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT'
       }
     },
     headers: {

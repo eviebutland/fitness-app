@@ -41,8 +41,6 @@ const login = async (request, response) => {
         if (!result.rowCount) {
             response.status(404).send({ message: 'No users found with match details' });
         }
-        // if the user is an admin, we want to send back admin related fields
-        // if the user is a subscriber, we want to only send subscriber related fields
         if (!comparePassword) {
             failedLoginAttempts++;
             response
@@ -67,7 +65,15 @@ const login = async (request, response) => {
             user: {
                 ...Object.fromEntries(Object.entries(result.rows[0]).filter(([key, value]) => {
                     // Omit password from being returned to the user
-                    return key !== 'password';
+                    if (result.rows[0].levelofaccess === 'admin') {
+                        return (key !== 'password' &&
+                            key !== 'workoutpreference' &&
+                            key !== 'premium' &&
+                            key !== 'completedworkouts');
+                    }
+                    else {
+                        return key !== 'password';
+                    }
                 })),
                 token
             }

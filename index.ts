@@ -3,18 +3,29 @@ import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import { router } from './src/routes'
 import { connectDb } from './server'
-import OpenApiBackend from 'openapi-backend'
+import OpenApiBackend, { Context, ParsedRequest } from 'openapi-backend'
 import { handlers } from './src/index'
 import { document } from './schema/schema'
 import type { Request as OpenAPIRequest } from 'openapi-backend'
 import session from 'express-session'
 import passport from './oauth2'
-import bcrypt from 'bcrypt'
 
 const api = new OpenApiBackend({
   definition: document,
-  handlers
+  // handlers, // Validation will be triggered once handlers are set up here
+  handlers,
+  validate: true,
+  strict: true
 })
+
+function validationFailHandler(c: Context, req: ParsedRequest, res: Response) {
+  console.log('running via validation fail', c)
+  return res.status(400).json({ status: 400, err: c.validation.errors })
+}
+
+api.register('validationFail', validationFailHandler)
+
+api.init()
 
 dotenv.config()
 
@@ -55,7 +66,10 @@ app.use((request: Request, response: Response, next: NextFunction) => {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(router)
-app.use((req, res, next) => api.handleRequest(req as OpenAPIRequest, req, res, next))
+
+app.use((c: Context, req: Request, res: Response, next: NextFunction) =>
+  api.handleRequest(req as OpenAPIRequest, req, res, next, c)
+)
 
 app.listen(3030, (): void => {
   console.log(`App running on port 3030.`)

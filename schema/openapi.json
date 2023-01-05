@@ -37,18 +37,15 @@
     }
   ],
   "paths": {
-    "/user": {
+    "/login": {
       "get": {
-        "tags": ["user"],
-        "summary": "Get all user",
-        "description": "Get a user \n",
-        "operationId": "getUsers",
+        "tags": ["authentication"],
+        "summary": "Login as user",
+        "description": "Login as user",
+        "operationId": "login",
         "security": [
           {
-            "main_auth": ["read:users"]
-          },
-          {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -76,15 +73,66 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": ["user"],
-        "summary": "Create a new user",
-        "description": "Create a new user",
-        "operationId": "createAUser",
+      }
+    },
+    "/logout/{id}": {
+      "get": {
+        "tags": ["authentication"],
+        "summary": "Logout as user",
+        "description": "Logout as user",
+        "operationId": "logout",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Get a single user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
-            "api_key": []
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reset-password": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Reset a user password",
+        "description": "Reset password",
+        "operationId": "resetPassword",
+        "security": [
+          {
+            "bearer": []
           }
         ],
         "responses": {
@@ -127,7 +175,94 @@
         }
       }
     },
-    "/user/{id}": {
+    "/users": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get all user",
+        "description": "Get all users \n",
+        "operationId": "getUsers",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["user"],
+        "summary": "Create a new user",
+        "description": "Create a new user",
+        "operationId": "createAUser",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Expires-After": {
+                "$ref": "#/components/headers/ExpiresAfter"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "description": "requestBody description",
+          "required": true
+        }
+      }
+    },
+    "/users/{id}": {
       "get": {
         "tags": ["user"],
         "summary": "Get a user",
@@ -146,10 +281,7 @@
         ],
         "security": [
           {
-            "main_auth": ["read:users"]
-          },
-          {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -196,7 +328,7 @@
         ],
         "security": [
           {
-            "main_auth": ["write:users"]
+            "bearer": []
           }
         ],
         "responses": {
@@ -243,7 +375,7 @@
         ],
         "security": [
           {
-            "main_auth": ["write:users"]
+            "bearer": []
           }
         ],
         "responses": {
@@ -299,10 +431,7 @@
         "operationId": "getAllExercises",
         "security": [
           {
-            "main_auth": ["read:users"]
-          },
-          {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -338,7 +467,7 @@
         "operationId": "createExcerise",
         "security": [
           {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -376,6 +505,7 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -383,8 +513,7 @@
               }
             }
           },
-          "description": "requestBody description",
-          "required": true
+          "description": "requestBody description"
         }
       }
     },
@@ -407,7 +536,7 @@
         ],
         "security": [
           {
-            "main_auth": ["write:users"]
+            "bearer": []
           }
         ],
         "responses": {
@@ -472,7 +601,7 @@
         ],
         "security": [
           {
-            "main_auth": ["write:users"]
+            "bearer": []
           }
         ],
         "responses": {
@@ -521,10 +650,7 @@
         ],
         "security": [
           {
-            "main_auth": ["read:users"]
-          },
-          {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -554,15 +680,15 @@
         }
       }
     },
-    "/exercises/planned-workouts": {
+    "/workouts": {
       "get": {
-        "tags": ["planned workouts"],
-        "summary": "Get all planned workouts",
-        "description": "Get all planned workouts created",
-        "operationId": "getAllPlannedWorkout",
+        "tags": ["workouts"],
+        "summary": "Get all workouts",
+        "description": "Get all workouts created",
+        "operationId": "getAllWorkouts",
         "security": [
           {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -601,13 +727,13 @@
         }
       },
       "post": {
-        "tags": ["planned workouts"],
-        "summary": "Create a planned workout",
-        "description": "Create a planned workout based off user's preferences and table of exercises in database",
-        "operationId": "createPlannedWorkout",
+        "tags": ["workouts"],
+        "summary": "Create a workout",
+        "description": "Create a workout based off user's preferences and table of exercises in database",
+        "operationId": "createWorkout",
         "security": [
           {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -664,17 +790,17 @@
         }
       }
     },
-    "/exercises/planned-workouts/{id}": {
+    "/workouts/{id}": {
       "get": {
-        "tags": ["planned workouts"],
-        "summary": "Get a planned workouts",
-        "description": "Get a planned workouts",
-        "operationId": "getPlannedWorkout",
+        "tags": ["workouts"],
+        "summary": "Get a workouts",
+        "description": "Get a workouts",
+        "operationId": "getWorkout",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "The id of the planned workout to get",
+            "description": "The id of the workout to get",
             "required": true,
             "schema": {
               "type": "string"
@@ -683,7 +809,7 @@
         ],
         "security": [
           {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -722,15 +848,15 @@
         }
       },
       "patch": {
-        "tags": ["planned workouts"],
-        "summary": "Update a planned workout",
-        "description": "Update a planned workout",
-        "operationId": "updatePlannedWorkout",
+        "tags": ["workouts"],
+        "summary": "Update a workout",
+        "description": "Update a workout",
+        "operationId": "updateWorkout",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "The id of the planned workout that needs to be updated",
+            "description": "The id of the workout that needs to be updated",
             "required": true,
             "schema": {
               "type": "string"
@@ -739,7 +865,7 @@
         ],
         "security": [
           {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -806,10 +932,10 @@
         }
       },
       "delete": {
-        "tags": ["planned workouts"],
-        "summary": "Delete a planned workout by ID",
-        "description": "Delete a planned workout by ID",
-        "operationId": "deletePlannedWorkout",
+        "tags": ["workouts"],
+        "summary": "Delete a workout by ID",
+        "description": "Delete a workout by ID",
+        "operationId": "deleteWorkout",
         "parameters": [
           {
             "name": "id",
@@ -823,7 +949,7 @@
         ],
         "security": [
           {
-            "api_key": []
+            "bearer": []
           }
         ],
         "responses": {
@@ -866,156 +992,13 @@
           }
         }
       }
-    },
-    "/login": {
-      "get": {
-        "tags": ["authentication"],
-        "summary": "Login as user",
-        "description": "Login as user",
-        "operationId": "login",
-        "security": [
-          {
-            "main_auth": ["read:users"]
-          },
-          {
-            "api_key": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "NOT_FOUND",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFound"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/logout/{id}": {
-      "get": {
-        "tags": ["authentication"],
-        "summary": "Logout as user",
-        "description": "Logout as user",
-        "operationId": "logout",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Get a single user",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "security": [
-          {
-            "main_auth": ["read:users"]
-          },
-          {
-            "api_key": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "NOT_FOUND",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFound"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/reset-password": {
-      "post": {
-        "tags": ["user"],
-        "summary": "Reset a user password",
-        "description": "Reset password",
-        "operationId": "resetPassword",
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Expires-After": {
-                "$ref": "#/components/headers/ExpiresAfter"
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "BAD_REQUEST",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BadRequest"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "description": "requestBody description",
-          "required": true
-        }
-      }
     }
   },
   "components": {
     "schemas": {
       "PlannedWorkout": {
         "type": "object",
+        "required": ["name", "averageTime", "scheduledDay", "intensityRating", "completedStatus"],
         "properties": {
           "name": {
             "type": "string",
@@ -1047,6 +1030,18 @@
       },
       "Exercise": {
         "type": "object",
+        "required": [
+          "name",
+          "description",
+          "restTime",
+          "recommendedRepRange",
+          "category",
+          "intensity",
+          "isCompound",
+          "exerciseTime",
+          "video",
+          "variations"
+        ],
         "properties": {
           "name": {
             "description": "Name of the exercise",
@@ -1077,7 +1072,8 @@
           "intensity": {
             "description": "The intensity rating of the exercise",
             "type": "number",
-            "example": 1
+            "example": 1,
+            "maximum": 10
           },
           "isCompound": {
             "description": "If the exercise is a compound exercise",
@@ -1099,13 +1095,25 @@
             "items": {
               "type": "string"
             },
-            "example": ["Bent over row", "Lat fly"]
+            "example": ["Bent over row", "Lat fly"],
+            "uniqueItems": true
           }
         }
       },
       "User": {
         "type": "object",
         "title": "user",
+        "required": [
+          "name",
+          "age",
+          "email",
+          "password",
+          "levelOfAccess",
+          "premium",
+          "completedWorkouts",
+          "permissions",
+          "workoutPreference"
+        ],
         "properties": {
           "name": {
             "description": "The name of the user",
@@ -1128,7 +1136,7 @@
           "levelOfAccess": {
             "description": "User's access type",
             "type": "string",
-            "example": "Subscriber"
+            "example": "subscriber"
           },
           "premium": {
             "description": "Premium band user is on",
@@ -1151,9 +1159,6 @@
           "workoutPreference": {
             "description": "The exercises completed by the user",
             "type": "object",
-            "items": {
-              "type": "string"
-            },
             "example": {
               "monday": "LOWER",
               "tuesday": "CARDIO",
@@ -1207,10 +1212,10 @@
           }
         }
       },
-      "api_key": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "api_key"
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     },
     "headers": {

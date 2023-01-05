@@ -16,8 +16,17 @@ const express_session_1 = __importDefault(require("express-session"));
 const oauth2_1 = __importDefault(require("./oauth2"));
 const api = new openapi_backend_1.default({
     definition: schema_1.document,
-    handlers: index_1.handlers
+    // handlers, // Validation will be triggered once handlers are set up here
+    handlers: index_1.handlers,
+    validate: true,
+    strict: true
 });
+function validationFailHandler(c, req, res) {
+    console.log('running via validation fail', c);
+    return res.status(400).json({ status: 400, err: c.validation.errors });
+}
+api.register('validationFail', validationFailHandler);
+api.init();
 dotenv_1.default.config();
 exports.app = (0, express_1.default)();
 exports.app.use((0, express_session_1.default)({
@@ -49,7 +58,7 @@ exports.app.use((request, response, next) => {
 exports.app.use(body_parser_1.default.json());
 exports.app.use(body_parser_1.default.urlencoded({ extended: true }));
 exports.app.use(routes_1.router);
-exports.app.use((req, res, next) => api.handleRequest(req, req, res, next));
+exports.app.use((c, req, res, next) => api.handleRequest(req, req, res, next, c));
 exports.app.listen(3030, () => {
     console.log(`App running on port 3030.`);
 });

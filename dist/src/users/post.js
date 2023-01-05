@@ -11,6 +11,7 @@ const createUser = async (request, response) => {
   ON CONFLICT (id) DO NOTHING 
   `;
     let model = request.body;
+    (0, security_1.passwordValidation)(request.body.password, response, server_1.client);
     model = {
         ...request.body,
         password: await (0, security_1.saltAndHash)(request.body.password),
