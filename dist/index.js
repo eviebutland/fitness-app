@@ -14,19 +14,6 @@ const index_1 = require("./src/index");
 const schema_1 = require("./schema/schema");
 const express_session_1 = __importDefault(require("express-session"));
 const oauth2_1 = __importDefault(require("./oauth2"));
-const api = new openapi_backend_1.default({
-    definition: schema_1.document,
-    // handlers, // Validation will be triggered once handlers are set up here
-    handlers: index_1.handlers,
-    validate: true,
-    strict: true
-});
-function validationFailHandler(c, req, res) {
-    console.log('running via validation fail', c);
-    return res.status(400).json({ status: 400, err: c.validation.errors });
-}
-api.register('validationFail', validationFailHandler);
-api.init();
 dotenv_1.default.config();
 exports.app = (0, express_1.default)();
 exports.app.use((0, express_session_1.default)({
@@ -58,7 +45,28 @@ exports.app.use((request, response, next) => {
 exports.app.use(body_parser_1.default.json());
 exports.app.use(body_parser_1.default.urlencoded({ extended: true }));
 exports.app.use(routes_1.router);
-exports.app.use((c, req, res, next) => api.handleRequest(req));
+const api = new openapi_backend_1.default({
+    definition: schema_1.document,
+    handlers: {
+        ...index_1.handlers,
+        validationFail: validationFailHandler
+    },
+    validate: true,
+    strict: true
+});
+async function validationFailHandler(c, req, res) {
+    console.log('running via validation fail', c.request.path);
+    console.log(res);
+    return res.status(400).json({ status: 400, err: c.validation.errors });
+}
+// TODO use this instead of homemade authorization
+// function unauthorizedHandler(c, req, res) {
+//   return res.status(401).json({ status: 401, err: 'Please authenticate first' })
+// }
+// api.registerHandler('validationFail', validationFailHandler)
+// api.registerHandler('unauthorizedHandler', unauthorizedHandler)
+api.init();
+exports.app.use((c, req, res) => api.handleRequest(req, res));
 exports.app.listen(3030, () => {
     console.log(`App running on port 3030.`);
 });
