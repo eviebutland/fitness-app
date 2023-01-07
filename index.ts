@@ -67,9 +67,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(router)
 
-app.use((c: Context, req: Request, res: Response, next: NextFunction) =>
-  api.handleRequest(req as OpenAPIRequest, req, res, next, c)
-)
+app.use((c: Context, req: Request, res: Response, next: NextFunction) => api.handleRequest(req as OpenAPIRequest))
 
 app.listen(3030, (): void => {
   console.log(`App running on port 3030.`)
