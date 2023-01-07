@@ -46,10 +46,6 @@ app.use((request: Request, response: Response, next: NextFunction) => {
 //   })
 // )
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(router)
-
 const api = new OpenApiBackend({
   definition: document,
   handlers: {
@@ -61,9 +57,6 @@ const api = new OpenApiBackend({
 })
 
 async function validationFailHandler(c: Context, req: ParsedRequest, res: Response) {
-  console.log('running via validation fail', c.request.path)
-
-  console.log(res)
   return res.status(400).json({ status: 400, err: c.validation.errors })
 }
 
@@ -72,13 +65,16 @@ async function validationFailHandler(c: Context, req: ParsedRequest, res: Respon
 //   return res.status(401).json({ status: 401, err: 'Please authenticate first' })
 // }
 
-// api.registerHandler('validationFail', validationFailHandler)
 // api.registerHandler('unauthorizedHandler', unauthorizedHandler)
 
 api.init()
 
-app.use((c: Context, req: Request, res: Response) => api.handleRequest(req as OpenAPIRequest, res))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+// API handle request will trigger handlers (and validation fail)
+app.use((req, res) => api.handleRequest(req as OpenAPIRequest, req, res))
 
+// app.use(router)
 app.listen(3030, (): void => {
   console.log(`App running on port 3030.`)
 })
