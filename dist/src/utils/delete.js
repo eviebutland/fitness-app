@@ -28,6 +28,14 @@ const archiveDocument = async (dataToArchive, archiveDatabase) => {
         const keyString = (0, format_request_body_1.formatKeyValueStrings)(keys);
         const archiveRes = await server_1.client.query(`INSERT INTO ${archiveDatabase} (${keyString})
         VALUES (${valueString})`, [...Object.values(dataToArchive)]);
+        //   'INSERT INTO documents(id, doc) VALUES(${id}, ${this})', {
+        //     id: 123,
+        //     body: 'some text'
+        // }
+        // ('INSERT INTO users(first_name, last_name, age) VALUES(${name.first}, $<name.last>, $/age/)', {
+        //   name: { first: 'John', last: 'Dow' },
+        //   age: 30
+        // })
         return archiveRes;
     }
     catch (error) {

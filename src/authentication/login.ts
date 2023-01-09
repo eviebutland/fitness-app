@@ -8,6 +8,7 @@ import bcrypt from 'bcrypt'
 
 let failedLoginAttempts = 0
 export const login = async (request: Request, response: Response): Promise<void> => {
+  console.log(response)
   const query = `
   SELECT * FROM users
   WHERE email = $1

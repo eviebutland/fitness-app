@@ -219,7 +219,7 @@ exports.document = {
                 tags: ['user'],
                 summary: 'Create a new user',
                 description: 'Create a new user',
-                operationId: 'createAUser',
+                operationId: 'createUser',
                 security: [
                     {
                         bearer: []
@@ -798,7 +798,7 @@ exports.document = {
                 tags: ['workouts'],
                 summary: 'Get a workouts',
                 description: 'Get a workouts',
-                operationId: 'getWorkout',
+                operationId: 'getWorkoutByID',
                 parameters: [
                     {
                         name: 'id',

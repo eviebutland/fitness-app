@@ -1,8 +1,8 @@
-import { Context } from 'vm'
+import { Context } from 'vm' // unsure on this
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
 import { login, logout, resetPassword } from './authentication'
 
-import { getUsers, updateUser, deleteUser, getAUser } from './users/index'
+import { getUsers, updateUser, deleteUser, getAUser, createUser } from './users/index'
 import {
   getAllWorkouts,
   getWorkoutByID,
@@ -21,12 +21,12 @@ export const handlers: Context = {
   updateExercise,
   deleteExercise,
   getUsers,
-  // createUser,
+  createUser,
   updateUser,
   deleteUser,
   getAUser,
   getAllWorkouts,
-  // getWorkoutByID,
+  getWorkoutByID,
   getAllExercisesInCatergory,
   updateWorkout,
   deleteWorkout,

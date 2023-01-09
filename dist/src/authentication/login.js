@@ -10,6 +10,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 let failedLoginAttempts = 0;
 const login = async (request, response) => {
+    console.log(response);
     const query = `
   SELECT * FROM users
   WHERE email = $1
