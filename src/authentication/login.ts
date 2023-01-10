@@ -7,8 +7,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 let failedLoginAttempts = 0
-export const login = async (request: Request, response: Response): Promise<void> => {
-  console.log(response)
+export const login = async (api: unknown, request: Request, response: Response): Promise<void> => {
   const query = `
   SELECT * FROM users
   WHERE email = $1

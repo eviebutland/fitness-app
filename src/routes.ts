@@ -8,7 +8,8 @@ import {
   getAllExercisesInCatergory,
   updateWorkout,
   deleteWorkout,
-  createWorkout
+  createWorkout,
+  getTodaysWorkout
 } from './workouts'
 // import passport from '../oauth2'
 
@@ -123,6 +124,14 @@ router.get(
     isAuthorized(req, res, next, 'r:workouts')
   },
   getWorkoutByID
+)
+
+router.get(
+  '/workouts/today',
+  (req: Request, res: Response, next: NextFunction) => {
+    isAuthorized(req, res, next, 'r:workouts')
+  },
+  getTodaysWorkout
 )
 
 router.get(

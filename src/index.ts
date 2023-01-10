@@ -7,6 +7,7 @@ import {
   getAllWorkouts,
   getWorkoutByID,
   getAllExercisesInCatergory,
+  getTodaysWorkout,
   updateWorkout,
   deleteWorkout,
   createWorkout
@@ -27,6 +28,7 @@ export const handlers: Context = {
   getAUser,
   getAllWorkouts,
   getWorkoutByID,
+  getTodaysWorkout,
   getAllExercisesInCatergory,
   updateWorkout,
   deleteWorkout,

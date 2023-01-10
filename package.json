@@ -14,6 +14,7 @@
   "author": "Evie Butland",
   "license": "ISC",
   "dependencies": {
+    "@trycourier/courier": "^4.1.0",
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/pg": "^8.6.5",
     "bcrypt": "^5.1.0",

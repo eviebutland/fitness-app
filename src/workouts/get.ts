@@ -3,6 +3,7 @@ import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { WorkoutFormatted } from '../lib/types/workouts'
 import { rollback } from '../utils/rollback'
+import { CourierClient } from '@trycourier/courier'
 
 const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
 e.description AS set_1_description,
@@ -129,6 +130,29 @@ const formatWorkoutJoin = (results: QueryResult) => {
   })
 }
 
-export const getTodaysWorkout = () => {
+export const getTodaysWorkout = async (api: unknown, request: Request, response: Response) => {
   // Based off the user's logged in workout preference find a workout that matches
+
+  const courier = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
+
+  try {
+    const { requestId } = await courier.send({
+      message: {
+        to: {
+          email: 'evie.butland@gmail.com'
+        },
+        template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
+        data: {
+          recipientName: 'Evie'
+        }
+      }
+    })
+
+    console.log(requestId)
+    response.status(200).json({ message: 'Succesfully emailed' })
+  } catch (error) {
+    console.log(error)
+    rollback(client)
+    response.status(500).json({ message: 'Something went wrong', error })
+  }
 }

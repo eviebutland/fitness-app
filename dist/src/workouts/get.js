@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTodaysWorkout = exports.getAllExercisesInCatergory = exports.getWorkoutByID = exports.getAllWorkouts = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
+const courier_1 = require("@trycourier/courier");
 const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
 e.description AS set_1_description,
 e.recommendedreprange AS set_1_repranage,
@@ -119,7 +120,28 @@ const formatWorkoutJoin = (results) => {
         return result.id !== null ? result : null;
     });
 };
-const getTodaysWorkout = () => {
+const getTodaysWorkout = async (api, request, response) => {
     // Based off the user's logged in workout preference find a workout that matches
+    const courier = (0, courier_1.CourierClient)({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' });
+    try {
+        const { requestId } = await courier.send({
+            message: {
+                to: {
+                    email: 'evie.butland@gmail.com'
+                },
+                template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
+                data: {
+                    recipientName: 'Evie'
+                }
+            }
+        });
+        console.log(requestId);
+        response.status(200).json({ message: 'Succesfully emailed' });
+    }
+    catch (error) {
+        console.log(error);
+        (0, rollback_1.rollback)(server_1.client);
+        response.status(500).json({ message: 'Something went wrong', error });
+    }
 };
 exports.getTodaysWorkout = getTodaysWorkout;

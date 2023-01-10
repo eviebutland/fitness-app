@@ -7,6 +7,7 @@ exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const routes_1 = require("./src/routes");
 const server_1 = require("./server");
 const openapi_backend_1 = __importDefault(require("openapi-backend"));
 const index_1 = require("./src/index");
@@ -31,16 +32,6 @@ exports.app.use((request, response, next) => {
         ? next()
         : oauth2_1.default.authenticate('bearer', { session: false })(request, response, next);
 });
-// app.use(
-//   passport.authenticate('oauth2Bearer', (error, done, next) => {
-//     console.log('using bearer token to authorise', error)
-//     // error prints null
-//     // done prints false
-//     // next prints Bearer realm="Users" ??
-//     console.log(done)
-//     console.log(next)
-//   })
-// )
 const api = new openapi_backend_1.default({
     definition: schema_1.document,
     handlers: {
@@ -63,7 +54,7 @@ exports.app.use(body_parser_1.default.json());
 exports.app.use(body_parser_1.default.urlencoded({ extended: true }));
 // API handle request will trigger handlers (and validation fail)
 exports.app.use((req, res) => api.handleRequest(req, req, res));
-// app.use(router)
+exports.app.use(routes_1.router);
 exports.app.listen(3030, () => {
     console.log(`App running on port 3030.`);
 });

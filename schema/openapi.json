@@ -790,12 +790,59 @@
         }
       }
     },
+    "/workouts/today": {
+      "get": {
+        "tags": ["workouts"],
+        "summary": "Get todays workout",
+        "description": "Get today workouts",
+        "operationId": "getTodaysWorkout",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Rate-Limit": {
+                "description": "calls per hour allowed by the user",
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "X-Expires-After": {
+                "$ref": "#/components/headers/ExpiresAfter"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlannedWorkout"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/workouts/{id}": {
       "get": {
         "tags": ["workouts"],
         "summary": "Get a workouts",
         "description": "Get a workouts",
-        "operationId": "getWorkout",
+        "operationId": "getWorkoutById",
         "parameters": [
           {
             "name": "id",

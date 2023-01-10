@@ -70,3 +70,7 @@ Currently, these workouts are hardcoded for specific exercises but would like to
 I have looked into using the google OAuth2 stratergy offered by [PassportJS](https://www.passportjs.org/) but soon realised that this required a front end to allow the users to enter the google account information in. I then moved to use passport-http-bearer instead which allowed me to authenticate by using a bearer token, generated using [JWT](https://www.npmjs.com/package/jsonwebtoken)
 
 I learnt that OAuth2 is about allowing a service to make use of another service for authentication on behalf of the user. This can be helful for users that don't want to make a new account per website, but make use of an existing one such as Facebook or Google. For example, this is made use of on ASOS website. I have decided this is functionality I would like to add once I have a UI. [OAuth2orize](https://github.com/jaredhanson/oauth2orize)
+
+#### Email providers
+
+I am using [courier](https://www.courier.com/), this is an API that can manage multiple communications in one place. Initially, I have set up for Gmail API to send my daily emails. However, it can allow for intergrations to allow for SMS, push notifications, slack messages and more. This was relatively simple to set up and can be updated easily to use a different provider if needed. I intend to customise the templates to provide the workouts in a simple but effective style.

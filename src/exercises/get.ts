@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import OpenAPIBackend, { Context, Document } from 'openapi-backend'
 import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { Exercise } from '../lib/types/exercise'

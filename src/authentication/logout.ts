@@ -4,7 +4,7 @@ import { client } from '../../server'
 import { User } from '../lib/types/user'
 import { rollback } from '../utils/rollback'
 
-export const logout = async (request: Request, response: Response) => {
+export const logout = async (api: unknown, request: Request, response: Response) => {
   if (request.params.id === ':id') {
     response.status(404).json({ message: 'Please provide an id' })
     return

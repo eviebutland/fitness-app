@@ -62,6 +62,9 @@ exports.router.get('/workouts', (req, res, next) => {
 exports.router.get('/workouts/:id', (req, res, next) => {
     isAuthorized(req, res, next, 'r:workouts');
 }, workouts_1.getWorkoutByID);
+exports.router.get('/workouts/today', (req, res, next) => {
+    isAuthorized(req, res, next, 'r:workouts');
+}, workouts_1.getTodaysWorkout);
 exports.router.get('/workouts/catergory/:catergory', (req, res, next) => {
     isAuthorized(req, res, next, 'r:workouts');
 }, workouts_1.getAllExercisesInCatergory);

@@ -35,17 +35,6 @@ app.use((request: Request, response: Response, next: NextFunction) => {
     : passport.authenticate('bearer', { session: false })(request, response, next)
 })
 
-// app.use(
-//   passport.authenticate('oauth2Bearer', (error, done, next) => {
-//     console.log('using bearer token to authorise', error)
-//     // error prints null
-//     // done prints false
-//     // next prints Bearer realm="Users" ??
-//     console.log(done)
-//     console.log(next)
-//   })
-// )
-
 const api = new OpenApiBackend({
   definition: document,
   handlers: {
@@ -74,7 +63,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // API handle request will trigger handlers (and validation fail)
 app.use((req, res) => api.handleRequest(req as OpenAPIRequest, req, res))
 
-// app.use(router)
+app.use(router)
 app.listen(3030, (): void => {
   console.log(`App running on port 3030.`)
 })

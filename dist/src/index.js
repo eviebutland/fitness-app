@@ -20,6 +20,7 @@ exports.handlers = {
     getAUser: index_1.getAUser,
     getAllWorkouts: workouts_1.getAllWorkouts,
     getWorkoutByID: workouts_1.getWorkoutByID,
+    getTodaysWorkout: workouts_1.getTodaysWorkout,
     getAllExercisesInCatergory: workouts_1.getAllExercisesInCatergory,
     updateWorkout: workouts_1.updateWorkout,
     deleteWorkout: workouts_1.deleteWorkout,
