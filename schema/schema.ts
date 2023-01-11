@@ -634,7 +634,7 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
-    '/exercise/catergory/{catergory}': {
+    '/workouts/catergory/{catergory}': {
       get: {
         tags: ['exercises'],
         summary: 'Get all exercises in a catergory',

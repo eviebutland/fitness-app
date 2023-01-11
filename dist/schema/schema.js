@@ -634,7 +634,7 @@ exports.document = {
                 }
             }
         },
-        '/exercise/catergory/{catergory}': {
+        '/workouts/catergory/{catergory}': {
             get: {
                 tags: ['exercises'],
                 summary: 'Get all exercises in a catergory',

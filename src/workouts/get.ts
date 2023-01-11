@@ -82,7 +82,14 @@ export const getAllExercisesInCatergory = async (
   request: Request,
   response: Response
 ): Promise<void> => {
-  const query = workoutJoinQuery + ` WHERE w.name = '${request.params.catergory}'`
+  let query = workoutJoinQuery
+
+  if (api.request.params.catergory) {
+    query = workoutJoinQuery + ` WHERE w.name = '${api.request.params.catergory}'`
+  } else {
+    response.status(404).json({ message: 'Please provide a catergory to search by' })
+    return
+  }
 
   try {
     await client.query('BEGIN TRANSACTION')

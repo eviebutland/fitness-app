@@ -71,7 +71,14 @@ const getWorkoutByID = async (api, request, response) => {
 };
 exports.getWorkoutByID = getWorkoutByID;
 const getAllExercisesInCatergory = async (api, request, response) => {
-    const query = workoutJoinQuery + ` WHERE w.name = '${request.params.catergory}'`;
+    let query = workoutJoinQuery;
+    if (api.request.params.catergory) {
+        query = workoutJoinQuery + ` WHERE w.name = '${api.request.params.catergory}'`;
+    }
+    else {
+        response.status(404).json({ message: 'Please provide a catergory to search by' });
+        return;
+    }
     try {
         await server_1.client.query('BEGIN TRANSACTION');
         const results = await server_1.client.query(query);
