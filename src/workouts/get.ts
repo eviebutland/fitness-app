@@ -82,23 +82,19 @@ export const getAllExercisesInCatergory = async (
   request: Request,
   response: Response
 ): Promise<void> => {
-  let query = workoutJoinQuery
-
-  if (api.request.params.catergory) {
-    query = workoutJoinQuery + ` WHERE w.name = '${api.request.params.catergory}'`
-  } else {
-    response.status(404).json({ message: 'Please provide a catergory to search by' })
-    return
-  }
-
   try {
-    await client.query('BEGIN TRANSACTION')
-    const results: QueryResult<WorkoutFormatted> = await client.query(query)
+    let results = {}
+    if (api.request.params.catergory) {
+      await client.query('BEGIN TRANSACTION')
+      results = await handleSelectAllExercisesInCategory(api.request.params.catergory, response)
+    } else {
+      response.status(404).json({ message: 'Please provide a catergory to search by' })
+      return
+    }
 
     await client.query('COMMIT TRANSACTION')
-    const formattedResult: (WorkoutFormatted | null)[] = formatWorkoutJoin(results).filter(value => value !== null)
 
-    response.status(200).json({ data: formattedResult, total: formattedResult.length })
+    response.status(200).json(results)
   } catch (error) {
     rollback(client)
     console.log(error)
@@ -144,6 +140,11 @@ const formatWorkoutJoin = (results: QueryResult) => {
 
 export const getTodaysWorkout = async (api: Context, request: Request, response: Response) => {
   // Based off the user's logged in workout preference find a workout that matches
+  const userWorkoutPreference = JSON.parse(api.request.user.workoutpreference)
+  const todaysDay = new Date().toLocaleString('en-gb', { weekday: 'long' })
+
+  const todaysWorkoutCatergory = userWorkoutPreference[todaysDay.toLowerCase()]
+  const workout = await handleSelectAllExercisesInCategory(todaysWorkoutCatergory.toLowerCase(), response)
 
   const courier = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
 
@@ -155,16 +156,33 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
         },
         template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
         data: {
-          recipientName: 'Evie'
+          recipientName: 'Evie',
+          workoutName: workout?.data.workoutName // Fix data being sent
         }
       }
     })
 
     console.log(requestId)
-    response.status(200).json({ message: 'Succesfully emailed' })
+    response.status(200).json({ message: 'Succesfully emailed', workout })
   } catch (error) {
     console.log(error)
     rollback(client)
+    response.status(500).json({ message: 'Something went wrong', error })
+  }
+}
+
+const handleSelectAllExercisesInCategory = async (category: string, response: Response) => {
+  const query = workoutJoinQuery + ` WHERE w.name = '${category}'`
+
+  try {
+    const results: QueryResult<WorkoutFormatted> = await client.query(query)
+
+    const formattedResult: (WorkoutFormatted | null)[] = formatWorkoutJoin(results).filter(value => value !== null)
+
+    return { data: formattedResult, total: formattedResult.length }
+  } catch (error) {
+    rollback(client)
+    console.log(error)
     response.status(500).json({ message: 'Something went wrong', error })
   }
 }

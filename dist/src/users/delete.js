@@ -5,7 +5,7 @@ const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const delete_1 = require("../utils/delete");
 const deleteUser = async (api, request, response) => {
-    if (request.params.id === ':id') {
+    if (api.request.params.id === ':id') {
         response.send({ message: 'Error: Please provide an ID' });
         return;
     }
@@ -14,20 +14,20 @@ const deleteUser = async (api, request, response) => {
     WHERE id = $1`;
     try {
         await server_1.client.query('BEGIN TRANSACTION');
-        const res = await server_1.client.query(query, [request.params.id]);
-        const rowToArchive = res.rows.find(row => row.id == request.params.id);
+        const res = await server_1.client.query(query, [api.request.params.id]);
+        const rowToArchive = res.rows.find(row => row.id == api.request.params.id);
         if (rowToArchive) {
             await (0, delete_1.archiveDocument)(rowToArchive, 'users_archive');
-            const deletedRes = await (0, delete_1.deleteDocument)(request.params.id, 'users');
+            const deletedRes = await (0, delete_1.deleteDocument)(api.request.params.id, 'users');
             await server_1.client.query('COMMIT TRANSACTION');
             response.status(200).json({
-                message: `User with ID: ${request.params.id} has been successfully deleted`,
+                message: `User with ID: ${api.request.params.id} has been successfully deleted`,
                 result: deletedRes
             });
         }
         else {
             response.json({
-                message: `There is no user with ID: ${request.params.id}`
+                message: `There is no user with ID: ${api.request.params.id}`
             });
             return;
         }
