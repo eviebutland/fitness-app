@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
+import { Context } from 'openapi-backend'
 import { client } from '../../server'
 import { rollback } from '../utils/rollback'
 
-export const createWorkout = async (api: unknown, request: Request, response: Response): Promise<void> => {
+export const createWorkout = async (api: Context, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
 

@@ -8,14 +8,14 @@ const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_e
 e.description AS set_1_description,
 e.recommendedreprange AS set_1_repranage,
 e.intensity AS set_1_intensity,
-e.exerciseTime AS set_1_excercisetime,
+e.exercisetime AS set_1_excercisetime,
 e.video AS set_1_video,
 e.variations AS set_1_variations,
 
 e2.name AS set_2_exercise_name, e2.description  AS set_2_description, 
 e2.recommendedreprange AS set_2_repranage,
 e2.intensity AS set_2_intensity,
-e2.exerciseTime AS set_2_excercisetime,
+e2.exercisetime AS set_2_excercisetime,
 e2.video AS set_2_video,
 e2.variations AS set_2_variations,
 
@@ -23,7 +23,7 @@ e3.name AS set_3_exercise_name,
 e3.description AS set_3_description,
 e3.recommendedreprange AS set_3_repranage,
 e3.intensity AS set_3_intensity,
-e3.exerciseTime AS set_3_excercisetime,
+e3.exercisetime AS set_3_excercisetime,
 e3.video AS set_3_video,
 e3.variations AS set_3_variations,
 e.resttime FROM workouts w
@@ -51,13 +51,14 @@ const getAllWorkouts = async (api, request, response) => {
 };
 exports.getAllWorkouts = getAllWorkouts;
 const getWorkoutByID = async (api, request, response) => {
-    if (request.params.id === ':id') {
+    if (api.request.params.id === ':id') {
         response.status(400).json({ message: 'Please provide an ID' });
+        return;
     }
     try {
         await server_1.client.query('BEGIN TRANSACTION');
-        const query = workoutJoinQuery + ` WHERE w.ID = ${request.params.id}`;
-        const results = await server_1.client.query(query);
+        const query = workoutJoinQuery + ' WHERE w.ID = $1';
+        const results = await server_1.client.query(query, [api.request.params.id]);
         const formattedResult = formatWorkoutJoin(results).filter(value => value !== null);
         await server_1.client.query('COMMIT TRANSACTION');
         response.status(200).json({ data: formattedResult });

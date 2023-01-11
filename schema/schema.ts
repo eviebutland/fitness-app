@@ -644,7 +644,7 @@ export const document: OpenAPIV3.Document = {
           {
             name: 'catergory',
             in: 'path',
-            description: 'The exercise that needs to be deleted',
+            description: 'Getting hold of all exercises with this category/type',
             required: true,
             schema: {
               type: 'string'
@@ -667,8 +667,8 @@ export const document: OpenAPIV3.Document = {
               }
             }
           },
-          '403': {
-            description: 'Forbidden'
+          '401': {
+            description: 'Unauthorised'
           },
           '404': {
             description: 'NOT_FOUND',

@@ -4,19 +4,20 @@ import { client } from '../../server'
 import { WorkoutFormatted } from '../lib/types/workouts'
 import { rollback } from '../utils/rollback'
 import { CourierClient } from '@trycourier/courier'
+import OpenAPIBackend, { Context } from 'openapi-backend'
 
 const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
 e.description AS set_1_description,
 e.recommendedreprange AS set_1_repranage,
 e.intensity AS set_1_intensity,
-e.exerciseTime AS set_1_excercisetime,
+e.exercisetime AS set_1_excercisetime,
 e.video AS set_1_video,
 e.variations AS set_1_variations,
 
 e2.name AS set_2_exercise_name, e2.description  AS set_2_description, 
 e2.recommendedreprange AS set_2_repranage,
 e2.intensity AS set_2_intensity,
-e2.exerciseTime AS set_2_excercisetime,
+e2.exercisetime AS set_2_excercisetime,
 e2.video AS set_2_video,
 e2.variations AS set_2_variations,
 
@@ -24,7 +25,7 @@ e3.name AS set_3_exercise_name,
 e3.description AS set_3_description,
 e3.recommendedreprange AS set_3_repranage,
 e3.intensity AS set_3_intensity,
-e3.exerciseTime AS set_3_excercisetime,
+e3.exercisetime AS set_3_excercisetime,
 e3.video AS set_3_video,
 e3.variations AS set_3_variations,
 e.resttime FROM workouts w
@@ -36,7 +37,7 @@ RIGHT JOIN exercises e3 on w.set_3 = e3.id`
 // RIGHT JOIN exercises e ON w.set_1 = e.id
 // RIGHT JOIN exercises e2 on w.set_2 = e2.id
 // RIGHT JOIN exercises e3 on w.set_3 = e3.id`
-export const getAllWorkouts = async (api: unknown, request: Request, response: Response): Promise<void> => {
+export const getAllWorkouts = async (api: Context, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
 
@@ -54,15 +55,16 @@ export const getAllWorkouts = async (api: unknown, request: Request, response: R
   }
 }
 
-export const getWorkoutByID = async (api: unknown, request: Request, response: Response): Promise<void> => {
-  if (request.params.id === ':id') {
+export const getWorkoutByID = async (api: Context, request: Request, response: Response): Promise<void> => {
+  if (api.request.params.id === ':id') {
     response.status(400).json({ message: 'Please provide an ID' })
+    return
   }
   try {
     await client.query('BEGIN TRANSACTION')
-    const query = workoutJoinQuery + ` WHERE w.ID = ${request.params.id}`
+    const query = workoutJoinQuery + ' WHERE w.ID = $1'
 
-    const results: QueryResult<WorkoutFormatted> = await client.query(query)
+    const results: QueryResult = await client.query(query, [api.request.params.id])
 
     const formattedResult: (WorkoutFormatted | null)[] = formatWorkoutJoin(results).filter(value => value !== null)
 
@@ -76,7 +78,7 @@ export const getWorkoutByID = async (api: unknown, request: Request, response: R
 }
 
 export const getAllExercisesInCatergory = async (
-  api: unknown,
+  api: Context,
   request: Request,
   response: Response
 ): Promise<void> => {
@@ -133,7 +135,7 @@ const formatWorkoutJoin = (results: QueryResult) => {
   })
 }
 
-export const getTodaysWorkout = async (api: unknown, request: Request, response: Response) => {
+export const getTodaysWorkout = async (api: Context, request: Request, response: Response) => {
   // Based off the user's logged in workout preference find a workout that matches
 
   const courier = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })

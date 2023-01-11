@@ -1,11 +1,12 @@
 import { Request, Response } from 'express'
+import { Context } from 'openapi-backend'
 import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { Exercise } from '../lib/types/exercise'
 import { archiveDocument, deleteDocument } from '../utils/delete'
 import { rollback } from '../utils/rollback'
 
-export const deleteExercise = async (api: unknown, request: Request, response: Response): Promise<void> => {
+export const deleteExercise = async (api: Context, request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(404).json({ message: 'Please provide an ID to delete' })
     return

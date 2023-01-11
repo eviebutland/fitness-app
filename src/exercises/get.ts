@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
+import { Context } from 'openapi-backend'
 import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { Exercise } from '../lib/types/exercise'
 import { rollback } from '../utils/rollback'
 
-export const getAllExercises = async (api: unknown, request: Request, response: Response): Promise<void> => {
+export const getAllExercises = async (api: Context, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
 

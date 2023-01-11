@@ -4,8 +4,9 @@ import { client } from '../../server'
 import { rollback } from '../utils/rollback'
 import { User } from '../lib/types/user'
 import { archiveDocument, deleteDocument } from '../utils/delete'
+import { Context } from 'openapi-backend'
 
-export const deleteUser = async (api: unknown, request: Request, response: Response): Promise<void> => {
+export const deleteUser = async (api: Context, request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.send({ message: 'Error: Please provide an ID' })
     return

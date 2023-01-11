@@ -4,8 +4,9 @@ import { rollback } from '../utils/rollback'
 import { formatResponse } from '../utils/format-response'
 import { QueryResult } from 'pg'
 import { User } from '../lib/types/user'
+import { Context } from 'openapi-backend'
 
-export const getUsers = async (api: unknown, request: Request, response: Response): Promise<void> => {
+export const getUsers = async (api: Context, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
 
@@ -24,7 +25,7 @@ export const getUsers = async (api: unknown, request: Request, response: Respons
   }
 }
 
-export const getAUser = async (api: unknown, request: Request, response: Response): Promise<void> => {
+export const getAUser = async (api: Context, request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(404)
     response.send({ message: 'Error: Please provide an ID' })

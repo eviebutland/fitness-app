@@ -5,8 +5,9 @@ import { rollback } from '../utils/rollback'
 import { User } from '../lib/types/user'
 import { formatPatchBody } from '../utils/format-request-body'
 import { passwordValidation, saltAndHash } from '../utils/security'
+import { Context } from 'openapi-backend'
 
-export const updateUser = async (api: unknown, request: Request, response: Response): Promise<void> => {
+export const updateUser = async (api: Context, request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(404).json({ message: 'Please provide an id' })
     return
