@@ -10,12 +10,12 @@ const createUser = async (api, request, response) => {
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, '', 'active')
   ON CONFLICT (id) DO NOTHING 
   `;
-    let model = request.body;
-    (0, security_1.passwordValidation)(request.body.password, response, server_1.client);
+    let model = api.request.body;
+    (0, security_1.passwordValidation)(api.request.body.password, response, server_1.client);
     model = {
-        ...request.body,
-        password: await (0, security_1.saltAndHash)(request.body.password),
-        workoutPreference: JSON.stringify(request.body.workoutPreference)
+        ...api.request.body,
+        password: await (0, security_1.saltAndHash)(api.request.body.password),
+        workoutPreference: JSON.stringify(api.request.body.workoutPreference)
     };
     try {
         await server_1.client.query('BEGIN TRANSACTION');

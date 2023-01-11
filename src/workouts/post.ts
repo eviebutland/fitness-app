@@ -10,12 +10,12 @@ export const createWorkout = async (api: Context, request: Request, response: Re
     const query = `INSERT INTO workouts (name, set_1, set_2, set_3)
     VALUES ($1, $2, $3, $4)`
 
-    const values: string[] = Object.values(request.body)
+    const values: string[] = Object.values(api.request.body)
 
     await client.query(query, [...values])
     await client.query('COMMIT TRANSACTION')
 
-    response.status(201).json({ message: 'Successfully created new workout', data: request.body })
+    response.status(201).json({ message: 'Successfully created new workout', data: api.request.body })
   } catch (error) {
     rollback(client)
     console.log(error)

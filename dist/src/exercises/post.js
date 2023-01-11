@@ -7,10 +7,10 @@ const createExcerise = async (api, request, response) => {
     const query = `
   INSERT INTO exercises (name, description, restTime, recommendedRepRange, catergory, intensity, isCompound, exerciseTime, video, variations)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
-    let model = request.body;
+    let model = api.request.body;
     model = {
-        ...request.body,
-        variations: JSON.stringify(request.body.variations)
+        ...api.request.body,
+        variations: JSON.stringify(api.request.body.variations)
     };
     try {
         await server_1.client.query('BEGIN TRANSACTION');

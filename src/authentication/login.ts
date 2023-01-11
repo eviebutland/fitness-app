@@ -16,7 +16,7 @@ export const login = async (api: Context, request: Request, response: Response):
 
   try {
     await client.query('BEGIN TRANSACTION')
-    const result: QueryResult<User> = await client.query(query, [request.body.username])
+    const result: QueryResult<User> = await client.query(query, [api.request.body.username])
 
     if (result.rows[0]?.status === 'inactive') {
       await client.query('COMMIT TRANSACTION')
@@ -42,7 +42,7 @@ export const login = async (api: Context, request: Request, response: Response):
       return
     }
 
-    const comparePassword = await bcrypt.compare(request.body.password, result.rows[0]?.password)
+    const comparePassword = await bcrypt.compare(api.request.body.password, result.rows[0]?.password)
 
     if (!result.rowCount) {
       response.status(404).send({ message: 'No users found with match details' })

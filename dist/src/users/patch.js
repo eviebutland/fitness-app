@@ -6,23 +6,23 @@ const rollback_1 = require("../utils/rollback");
 const format_request_body_1 = require("../utils/format-request-body");
 const security_1 = require("../utils/security");
 const updateUser = async (api, request, response) => {
-    if (request.params.id === ':id') {
+    if (api.request.params.id === ':id') {
         response.status(404).json({ message: 'Please provide an id' });
         return;
     }
-    let data = request.body;
+    let data = api.request.body;
     const columns = Object.keys(data);
     if (columns.includes('password')) {
-        (0, security_1.passwordValidation)(request.body.password, response, server_1.client);
+        (0, security_1.passwordValidation)(api.request.body.password, response, server_1.client);
         // Reset status if password is updated
-        data = { ...request.body, password: await (0, security_1.saltAndHash)(request.body.password), status: 'active' };
+        data = { ...api.request.body, password: await (0, security_1.saltAndHash)(api.request.body.password), status: 'active' };
     }
     const values = Object.values(data);
     const set = (0, format_request_body_1.formatPatchBody)(columns);
     const query = `
     UPDATE users
     SET ${set}
-    WHERE id = ${request.params.id}
+    WHERE id = ${api.request.params.id}
     `;
     try {
         await server_1.client.query('BEGIN TRANSACTION');

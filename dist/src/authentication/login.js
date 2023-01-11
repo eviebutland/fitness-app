@@ -16,7 +16,7 @@ const login = async (api, request, response) => {
   `;
     try {
         await server_1.client.query('BEGIN TRANSACTION');
-        const result = await server_1.client.query(query, [request.body.username]);
+        const result = await server_1.client.query(query, [api.request.body.username]);
         if (result.rows[0]?.status === 'inactive') {
             await server_1.client.query('COMMIT TRANSACTION');
             response.status(401).send({ message: 'Your account is locked out, please reset your password' });
@@ -37,7 +37,7 @@ const login = async (api, request, response) => {
             failedLoginAttempts = 0;
             return;
         }
-        const comparePassword = await bcrypt_1.default.compare(request.body.password, result.rows[0]?.password);
+        const comparePassword = await bcrypt_1.default.compare(api.request.body.password, result.rows[0]?.password);
         if (!result.rowCount) {
             response.status(404).send({ message: 'No users found with match details' });
         }

@@ -5,7 +5,7 @@ const server_1 = require("../../server");
 const delete_1 = require("../utils/delete");
 const rollback_1 = require("../utils/rollback");
 const deleteWorkout = async (api, request, response) => {
-    if (request.params.id === ':id') {
+    if (api.request.params.id === ':id') {
         response.status(404).json({ message: 'Please provide an id' });
         return;
     }
@@ -14,14 +14,14 @@ const deleteWorkout = async (api, request, response) => {
         // Get hold of workout to delete
         const getWorkoutQuery = `SELECT * FROM workouts
     WHERE id = $1`;
-        const workoutToDelete = await server_1.client.query(getWorkoutQuery, [request.params.id]);
+        const workoutToDelete = await server_1.client.query(getWorkoutQuery, [api.request.params.id]);
         if (workoutToDelete.rows[0]) {
             // Move to archive collection
             await (0, delete_1.archiveDocument)(workoutToDelete.rows[0], 'workouts_archive');
-            const deletedWorkout = await (0, delete_1.deleteDocument)(request.params.id, 'workouts');
+            const deletedWorkout = await (0, delete_1.deleteDocument)(api.request.params.id, 'workouts');
             // Delete from main workout table
             response.status(200).json({
-                message: `Workout with ID: ${request.params.id} has been successfully deleted`,
+                message: `Workout with ID: ${api.request.params.id} has been successfully deleted`,
                 result: deletedWorkout
             });
         }

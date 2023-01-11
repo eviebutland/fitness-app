@@ -6,7 +6,7 @@ import { User } from '../lib/types/user'
 import { rollback } from '../utils/rollback'
 
 export const logout = async (api: Context, request: Request, response: Response) => {
-  if (request.params.id === ':id') {
+  if (api.request.params.id === ':id') {
     response.status(404).json({ message: 'Please provide an id' })
     return
   }
@@ -16,7 +16,7 @@ export const logout = async (api: Context, request: Request, response: Response)
     const query = `
     UPDATE users
     SET token = null
-    WHERE id = ${request.params.id}
+    WHERE id = ${api.request.params.id}
     `
 
     const result: QueryResult<User> = await client.query(query)

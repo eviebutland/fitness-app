@@ -11,15 +11,15 @@ const resetPassword = async (api, request, response) => {
     WHERE email = $1
     `;
         await server_1.client.query('BEGIN TRANSACTION');
-        const existingUser = await server_1.client.query(query, [request.body.email]);
+        const existingUser = await server_1.client.query(query, [api.request.body.email]);
         // Reset the password
         const updateQuery = `
     UPDATE users
     SET password = $1, status = $2
     WHERE id = ${existingUser.rows[0].id}
     `;
-        (0, security_1.passwordValidation)(request.body.newPassword, response, server_1.client);
-        const password = await (0, security_1.saltAndHash)(request.body.newPassword);
+        (0, security_1.passwordValidation)(api.request.body.newPassword, response, server_1.client);
+        const password = await (0, security_1.saltAndHash)(api.request.body.newPassword);
         const updatedUser = await server_1.client.query(updateQuery, [password, 'active']);
         await server_1.client.query('COMMIT TRANSACTION');
         response.status(200).json({ message: 'Successfully updated password' });

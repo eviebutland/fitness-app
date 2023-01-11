@@ -10,11 +10,11 @@ export const createExcerise = async (api: Context, request: Request, response: R
   INSERT INTO exercises (name, description, restTime, recommendedRepRange, catergory, intensity, isCompound, exerciseTime, video, variations)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 
-  let model: Exercise = request.body
+  let model: Exercise = api.request.body
 
   model = {
-    ...request.body,
-    variations: JSON.stringify(request.body.variations)
+    ...api.request.body,
+    variations: JSON.stringify(api.request.body.variations)
   }
 
   try {

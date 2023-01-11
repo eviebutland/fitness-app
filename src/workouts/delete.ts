@@ -7,7 +7,7 @@ import { archiveDocument, deleteDocument } from '../utils/delete'
 import { rollback } from '../utils/rollback'
 
 export const deleteWorkout = async (api: Context, request: Request, response: Response): Promise<void> => {
-  if (request.params.id === ':id') {
+  if (api.request.params.id === ':id') {
     response.status(404).json({ message: 'Please provide an id' })
     return
   }
@@ -18,20 +18,20 @@ export const deleteWorkout = async (api: Context, request: Request, response: Re
     const getWorkoutQuery = `SELECT * FROM workouts
     WHERE id = $1`
 
-    const workoutToDelete: QueryResult<WorkoutPlain> = await client.query(getWorkoutQuery, [request.params.id])
+    const workoutToDelete: QueryResult<WorkoutPlain> = await client.query(getWorkoutQuery, [api.request.params.id])
 
     if (workoutToDelete.rows[0]) {
       // Move to archive collection
       await archiveDocument(workoutToDelete.rows[0], 'workouts_archive')
 
       const deletedWorkout: QueryResult<WorkoutPlain> | ErrorEvent = await deleteDocument(
-        request.params.id,
+        api.request.params.id,
         'workouts'
       )
 
       // Delete from main workout table
       response.status(200).json({
-        message: `Workout with ID: ${request.params.id} has been successfully deleted`,
+        message: `Workout with ID: ${api.request.params.id} has been successfully deleted`,
         result: deletedWorkout
       })
     }

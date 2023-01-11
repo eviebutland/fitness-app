@@ -13,14 +13,14 @@ export const createUser = async (api: Context, request: Request, response: Respo
   ON CONFLICT (id) DO NOTHING 
   `
 
-  let model: User = request.body
+  let model: User = api.request.body
 
-  passwordValidation(request.body.password, response, client)
+  passwordValidation(api.request.body.password, response, client)
 
   model = {
-    ...request.body,
-    password: await saltAndHash(request.body.password),
-    workoutPreference: JSON.stringify(request.body.workoutPreference)
+    ...api.request.body,
+    password: await saltAndHash(api.request.body.password),
+    workoutPreference: JSON.stringify(api.request.body.workoutPreference)
   }
 
   try {

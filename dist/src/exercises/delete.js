@@ -5,7 +5,7 @@ const server_1 = require("../../server");
 const delete_1 = require("../utils/delete");
 const rollback_1 = require("../utils/rollback");
 const deleteExercise = async (api, request, response) => {
-    if (request.params.id === ':id') {
+    if (api.request.params.id === ':id') {
         response.status(404).json({ message: 'Please provide an ID to delete' });
         return;
     }
@@ -14,22 +14,22 @@ const deleteExercise = async (api, request, response) => {
         // Get hold of record
         const findQuery = `SELECT * FROM exercises
     WHERE id = $1`;
-        const exerciseToDelete = await server_1.client.query(findQuery, [request.params.id]);
+        const exerciseToDelete = await server_1.client.query(findQuery, [api.request.params.id]);
         if (exerciseToDelete.rows.length > 0) {
             // Insert into archive database
             await (0, delete_1.archiveDocument)(exerciseToDelete.rows[0], 'exercises_archive');
         }
         else {
             response.json({
-                message: `There is no exercise with ID: ${request.params.id}`
+                message: `There is no exercise with ID: ${api.request.params.id}`
             });
             return;
         }
         // remove from current database
-        const deletedRes = await (0, delete_1.deleteDocument)(request.params.id, 'exercises');
+        const deletedRes = await (0, delete_1.deleteDocument)(api.request.params.id, 'exercises');
         await server_1.client.query('COMMIT TRANSACTION');
         response.status(200).json({
-            message: `Exercise with ID: ${request.params.id} has been successfully deleted`,
+            message: `Exercise with ID: ${api.request.params.id} has been successfully deleted`,
             result: deletedRes
         });
     }

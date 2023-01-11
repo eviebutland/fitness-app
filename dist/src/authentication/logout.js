@@ -4,7 +4,7 @@ exports.logout = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const logout = async (api, request, response) => {
-    if (request.params.id === ':id') {
+    if (api.request.params.id === ':id') {
         response.status(404).json({ message: 'Please provide an id' });
         return;
     }
@@ -14,7 +14,7 @@ const logout = async (api, request, response) => {
         const query = `
     UPDATE users
     SET token = null
-    WHERE id = ${request.params.id}
+    WHERE id = ${api.request.params.id}
     `;
         const result = await server_1.client.query(query);
         await server_1.client.query('COMMIT TRANSACTION');

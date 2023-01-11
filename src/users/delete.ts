@@ -7,7 +7,7 @@ import { archiveDocument, deleteDocument } from '../utils/delete'
 import { Context } from 'openapi-backend'
 
 export const deleteUser = async (api: Context, request: Request, response: Response): Promise<void> => {
-  if (request.params.id === ':id') {
+  if (api.request.params.id === ':id') {
     response.send({ message: 'Error: Please provide an ID' })
     return
   }
@@ -19,22 +19,22 @@ export const deleteUser = async (api: Context, request: Request, response: Respo
   try {
     await client.query('BEGIN TRANSACTION')
 
-    const res: QueryResult<User> = await client.query(query, [request.params.id])
-    const rowToArchive: User | undefined = res.rows.find(row => row.id == request.params.id)
+    const res: QueryResult<User> = await client.query(query, [api.request.params.id])
+    const rowToArchive: User | undefined = res.rows.find(row => row.id == api.request.params.id)
 
     if (rowToArchive) {
       await archiveDocument(rowToArchive, 'users_archive')
 
-      const deletedRes: QueryResult<User> | ErrorEvent = await deleteDocument(request.params.id, 'users')
+      const deletedRes: QueryResult<User> | ErrorEvent = await deleteDocument(api.request.params.id, 'users')
 
       await client.query('COMMIT TRANSACTION')
       response.status(200).json({
-        message: `User with ID: ${request.params.id} has been successfully deleted`,
+        message: `User with ID: ${api.request.params.id} has been successfully deleted`,
         result: deletedRes
       })
     } else {
       response.json({
-        message: `There is no user with ID: ${request.params.id}`
+        message: `There is no user with ID: ${api.request.params.id}`
       })
 
       return

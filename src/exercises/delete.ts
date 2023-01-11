@@ -7,7 +7,7 @@ import { archiveDocument, deleteDocument } from '../utils/delete'
 import { rollback } from '../utils/rollback'
 
 export const deleteExercise = async (api: Context, request: Request, response: Response): Promise<void> => {
-  if (request.params.id === ':id') {
+  if (api.request.params.id === ':id') {
     response.status(404).json({ message: 'Please provide an ID to delete' })
     return
   }
@@ -16,25 +16,25 @@ export const deleteExercise = async (api: Context, request: Request, response: R
     // Get hold of record
     const findQuery = `SELECT * FROM exercises
     WHERE id = $1`
-    const exerciseToDelete: QueryResult<Exercise> = await client.query(findQuery, [request.params.id])
+    const exerciseToDelete: QueryResult<Exercise> = await client.query(findQuery, [api.request.params.id])
 
     if (exerciseToDelete.rows.length > 0) {
       // Insert into archive database
       await archiveDocument(exerciseToDelete.rows[0], 'exercises_archive')
     } else {
       response.json({
-        message: `There is no exercise with ID: ${request.params.id}`
+        message: `There is no exercise with ID: ${api.request.params.id}`
       })
 
       return
     }
 
     // remove from current database
-    const deletedRes: QueryResult<Exercise> | ErrorEvent = await deleteDocument(request.params.id, 'exercises')
+    const deletedRes: QueryResult<Exercise> | ErrorEvent = await deleteDocument(api.request.params.id, 'exercises')
 
     await client.query('COMMIT TRANSACTION')
     response.status(200).json({
-      message: `Exercise with ID: ${request.params.id} has been successfully deleted`,
+      message: `Exercise with ID: ${api.request.params.id} has been successfully deleted`,
       result: deletedRes
     })
   } catch (error) {

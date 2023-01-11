@@ -26,9 +26,8 @@ export const getUsers = async (api: Context, request: Request, response: Respons
 }
 
 export const getAUser = async (api: Context, request: Request, response: Response): Promise<void> => {
-  if (request.params.id === ':id') {
-    response.status(404)
-    response.send({ message: 'Error: Please provide an ID' })
+  if (api.request.params.id === ':id') {
+    response.status(404).json({ message: 'Error: Please provide an ID' })
     return
   }
 
@@ -38,13 +37,13 @@ export const getAUser = async (api: Context, request: Request, response: Respons
   try {
     await client.query('BEGIN TRANSACTION')
 
-    const result: QueryResult<User> = await client.query(query, [request.params.id])
+    const result: QueryResult<User> = await client.query(query, [api.request.params.id])
 
     const data: User[] = formatResponse(result, 'workoutpreference')
 
     await client.query('COMMIT TRANSACTION')
 
-    response.send({ data: data[0] })
+    response.status(200).json({ data: data[0] })
   } catch (error) {
     rollback(client)
     console.log(error)

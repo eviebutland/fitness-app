@@ -8,10 +8,10 @@ const createWorkout = async (api, request, response) => {
         await server_1.client.query('BEGIN TRANSACTION');
         const query = `INSERT INTO workouts (name, set_1, set_2, set_3)
     VALUES ($1, $2, $3, $4)`;
-        const values = Object.values(request.body);
+        const values = Object.values(api.request.body);
         await server_1.client.query(query, [...values]);
         await server_1.client.query('COMMIT TRANSACTION');
-        response.status(201).json({ message: 'Successfully created new workout', data: request.body });
+        response.status(201).json({ message: 'Successfully created new workout', data: api.request.body });
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);

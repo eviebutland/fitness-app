@@ -8,19 +8,19 @@ import { passwordValidation, saltAndHash } from '../utils/security'
 import { Context } from 'openapi-backend'
 
 export const updateUser = async (api: Context, request: Request, response: Response): Promise<void> => {
-  if (request.params.id === ':id') {
+  if (api.request.params.id === ':id') {
     response.status(404).json({ message: 'Please provide an id' })
     return
   }
 
-  let data = request.body
+  let data = api.request.body
   const columns: string[] = Object.keys(data)
 
   if (columns.includes('password')) {
-    passwordValidation(request.body.password, response, client)
+    passwordValidation(api.request.body.password, response, client)
 
     // Reset status if password is updated
-    data = { ...request.body, password: await saltAndHash(request.body.password), status: 'active' }
+    data = { ...api.request.body, password: await saltAndHash(api.request.body.password), status: 'active' }
   }
 
   const values: string[] = Object.values(data)
@@ -29,7 +29,7 @@ export const updateUser = async (api: Context, request: Request, response: Respo
   const query = `
     UPDATE users
     SET ${set}
-    WHERE id = ${request.params.id}
+    WHERE id = ${api.request.params.id}
     `
   try {
     await client.query('BEGIN TRANSACTION')

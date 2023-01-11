@@ -14,7 +14,7 @@ export const resetPassword = async (api: Context, request: Request, response: Re
     `
 
     await client.query('BEGIN TRANSACTION')
-    const existingUser: QueryResult<User> = await client.query(query, [request.body.email])
+    const existingUser: QueryResult<User> = await client.query(query, [api.request.body.email])
 
     // Reset the password
     const updateQuery = `
@@ -23,9 +23,9 @@ export const resetPassword = async (api: Context, request: Request, response: Re
     WHERE id = ${existingUser.rows[0].id}
     `
 
-    passwordValidation(request.body.newPassword, response, client)
+    passwordValidation(api.request.body.newPassword, response, client)
 
-    const password = await saltAndHash(request.body.newPassword)
+    const password = await saltAndHash(api.request.body.newPassword)
 
     const updatedUser: QueryResult<User> = await client.query(updateQuery, [password, 'active'])
 

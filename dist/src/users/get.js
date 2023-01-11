@@ -20,19 +20,18 @@ const getUsers = async (api, request, response) => {
 };
 exports.getUsers = getUsers;
 const getAUser = async (api, request, response) => {
-    if (request.params.id === ':id') {
-        response.status(404);
-        response.send({ message: 'Error: Please provide an ID' });
+    if (api.request.params.id === ':id') {
+        response.status(404).json({ message: 'Error: Please provide an ID' });
         return;
     }
     const query = `SELECT * FROM users
   WHERE id = $1`;
     try {
         await server_1.client.query('BEGIN TRANSACTION');
-        const result = await server_1.client.query(query, [request.params.id]);
+        const result = await server_1.client.query(query, [api.request.params.id]);
         const data = (0, format_response_1.formatResponse)(result, 'workoutpreference');
         await server_1.client.query('COMMIT TRANSACTION');
-        response.send({ data: data[0] });
+        response.status(200).json({ data: data[0] });
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
