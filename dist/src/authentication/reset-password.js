@@ -4,7 +4,7 @@ exports.resetPassword = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const security_1 = require("../utils/security");
-const resetPassword = async (request, response) => {
+const resetPassword = async (api, request, response) => {
     try {
         // Get hold of user by email
         const query = `SELECT * FROM users

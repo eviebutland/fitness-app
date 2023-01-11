@@ -4,7 +4,7 @@ import { client } from '../../server'
 import { Exercise } from '../lib/types/exercise'
 import { rollback } from '../utils/rollback'
 
-export const createExcerise = async (request: Request, response: Response): Promise<void> => {
+export const createExcerise = async (api: unknown, request: Request, response: Response): Promise<void> => {
   const query = `
   INSERT INTO exercises (name, description, restTime, recommendedRepRange, catergory, intensity, isCompound, exerciseTime, video, variations)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`

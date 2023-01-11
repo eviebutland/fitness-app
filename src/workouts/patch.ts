@@ -3,7 +3,7 @@ import { client } from '../../server'
 import { formatPatchBody } from '../utils/format-request-body'
 import { rollback } from '../utils/rollback'
 
-export const updateWorkout = async (request: Request, response: Response): Promise<void> => {
+export const updateWorkout = async (api: unknown, request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(400).json({ message: 'Please provide an ID to update' })
     return

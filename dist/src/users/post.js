@@ -4,7 +4,7 @@ exports.createUser = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const security_1 = require("../utils/security");
-const createUser = async (request, response) => {
+const createUser = async (api, request, response) => {
     const query = `
   INSERT INTO users (name, age, email, password, levelOfAccess, premium, completedWorkouts, permissions, workoutPreference, token, status)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, '', 'active')

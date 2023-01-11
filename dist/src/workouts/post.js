@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createWorkout = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
-const createWorkout = async (request, response) => {
+const createWorkout = async (api, request, response) => {
     try {
         await server_1.client.query('BEGIN TRANSACTION');
         const query = `INSERT INTO workouts (name, set_1, set_2, set_3)

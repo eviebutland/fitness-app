@@ -4,7 +4,7 @@ exports.deleteExercise = void 0;
 const server_1 = require("../../server");
 const delete_1 = require("../utils/delete");
 const rollback_1 = require("../utils/rollback");
-const deleteExercise = async (request, response) => {
+const deleteExercise = async (api, request, response) => {
     if (request.params.id === ':id') {
         response.status(404).json({ message: 'Please provide an ID to delete' });
         return;

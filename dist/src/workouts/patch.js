@@ -4,7 +4,7 @@ exports.updateWorkout = void 0;
 const server_1 = require("../../server");
 const format_request_body_1 = require("../utils/format-request-body");
 const rollback_1 = require("../utils/rollback");
-const updateWorkout = async (request, response) => {
+const updateWorkout = async (api, request, response) => {
     if (request.params.id === ':id') {
         response.status(400).json({ message: 'Please provide an ID to update' });
         return;

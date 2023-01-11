@@ -4,7 +4,7 @@ exports.getAUser = exports.getUsers = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const format_response_1 = require("../utils/format-response");
-const getUsers = async (request, response) => {
+const getUsers = async (api, request, response) => {
     try {
         await server_1.client.query('BEGIN TRANSACTION');
         const res = await server_1.client.query('SELECT id, name, email, age, password, levelofaccess, premium, completedworkouts, permissions, workoutpreference FROM users');
@@ -19,7 +19,7 @@ const getUsers = async (request, response) => {
     }
 };
 exports.getUsers = getUsers;
-const getAUser = async (request, response) => {
+const getAUser = async (api, request, response) => {
     if (request.params.id === ':id') {
         response.status(404);
         response.send({ message: 'Error: Please provide an ID' });

@@ -36,7 +36,7 @@ RIGHT JOIN exercises e3 on w.set_3 = e3.id`
 // RIGHT JOIN exercises e ON w.set_1 = e.id
 // RIGHT JOIN exercises e2 on w.set_2 = e2.id
 // RIGHT JOIN exercises e3 on w.set_3 = e3.id`
-export const getAllWorkouts = async (request: Request, response: Response): Promise<void> => {
+export const getAllWorkouts = async (api: unknown, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
 
@@ -54,8 +54,7 @@ export const getAllWorkouts = async (request: Request, response: Response): Prom
   }
 }
 
-// get by name also?
-export const getWorkoutByID = async (request: Request, response: Response): Promise<void> => {
+export const getWorkoutByID = async (api: unknown, request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(400).json({ message: 'Please provide an ID' })
   }
@@ -76,7 +75,11 @@ export const getWorkoutByID = async (request: Request, response: Response): Prom
   }
 }
 
-export const getAllExercisesInCatergory = async (request: Request, response: Response): Promise<void> => {
+export const getAllExercisesInCatergory = async (
+  api: unknown,
+  request: Request,
+  response: Response
+): Promise<void> => {
   const query = workoutJoinQuery + ` WHERE w.name = '${request.params.catergory}'`
 
   try {

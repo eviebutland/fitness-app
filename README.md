@@ -1,10 +1,18 @@
 ### Fitness App
 
+Requirements:
+
+- Create an bank of exercises that can be used to make up workouts
+- Send a daily email to the user based off their workout preferences
+- Restrict users access based on their permissions or level of cover (as if it was a subscription model)
+
 ## Database
 
 PostgreSQL is the database for this project. I have decided to use postgreSQL to build my knowledge of relational databases. It is free to use and [links well](https://insights.stackoverflow.com/survey/2020#correlated-technologies) to Python which I would like to learn soon. Postgres is a general purpose object-relational database
 
 I have created a single client instead of creating a pool to ensure ACID transcations. A pool means there are multiple clients that can be used, this is the default use of node-postgres.
+
+After starting to build out various tables and join these where needed, I have found that I need the shape of the workout table to be more flexible to fit the requirements. In this case, I believe a document database would provide a more flexible structure for a group of data that does not follow a strict pattern.
 
 ## node-postgres
 
@@ -74,3 +82,6 @@ I learnt that OAuth2 is about allowing a service to make use of another service 
 #### Email providers
 
 I am using [courier](https://www.courier.com/), this is an API that can manage multiple communications in one place. Initially, I have set up for Gmail API to send my daily emails. However, it can allow for intergrations to allow for SMS, push notifications, slack messages and more. This was relatively simple to set up and can be updated easily to use a different provider if needed. I intend to customise the templates to provide the workouts in a simple but effective style.
+
+Generating workouts:
+My initial thoughts on this project was to have the workouts generate themselves based off of exercise types (i.e select 3 upper body exercises and this would be a workout). However, since researching more into existing workout guides available, I have found that most, if not all, are structured in a plan. This is where there are 8/12 weeks worth of exercises premade and ready to use. However, since I have collected user data on workout preference, I will continue to use the current set up.

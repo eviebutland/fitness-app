@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createExcerise = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
-const createExcerise = async (request, response) => {
+const createExcerise = async (api, request, response) => {
     const query = `
   INSERT INTO exercises (name, description, restTime, recommendedRepRange, catergory, intensity, isCompound, exerciseTime, video, variations)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;

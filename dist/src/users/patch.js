@@ -5,7 +5,7 @@ const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const format_request_body_1 = require("../utils/format-request-body");
 const security_1 = require("../utils/security");
-const updateUser = async (request, response) => {
+const updateUser = async (api, request, response) => {
     if (request.params.id === ':id') {
         response.status(404).json({ message: 'Please provide an id' });
         return;

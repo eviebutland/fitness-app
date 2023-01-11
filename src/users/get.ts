@@ -5,7 +5,7 @@ import { formatResponse } from '../utils/format-response'
 import { QueryResult } from 'pg'
 import { User } from '../lib/types/user'
 
-export const getUsers = async (request: Request, response: Response): Promise<void> => {
+export const getUsers = async (api: unknown, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
 
@@ -24,7 +24,7 @@ export const getUsers = async (request: Request, response: Response): Promise<vo
   }
 }
 
-export const getAUser = async (request: Request, response: Response): Promise<void> => {
+export const getAUser = async (api: unknown, request: Request, response: Response): Promise<void> => {
   if (request.params.id === ':id') {
     response.status(404)
     response.send({ message: 'Error: Please provide an ID' })

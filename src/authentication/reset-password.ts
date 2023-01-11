@@ -5,7 +5,7 @@ import { User } from '../lib/types/user'
 import { rollback } from '../utils/rollback'
 import { passwordValidation, saltAndHash } from '../utils/security'
 
-export const resetPassword = async (request: Request, response: Response) => {
+export const resetPassword = async (api: unknown, request: Request, response: Response) => {
   try {
     // Get hold of user by email
     const query = `SELECT * FROM users

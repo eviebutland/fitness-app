@@ -4,7 +4,7 @@ exports.deleteUser = void 0;
 const server_1 = require("../../server");
 const rollback_1 = require("../utils/rollback");
 const delete_1 = require("../utils/delete");
-const deleteUser = async (request, response) => {
+const deleteUser = async (api, request, response) => {
     if (request.params.id === ':id') {
         response.send({ message: 'Error: Please provide an ID' });
         return;

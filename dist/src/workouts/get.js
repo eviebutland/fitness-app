@@ -34,7 +34,7 @@ RIGHT JOIN exercises e3 on w.set_3 = e3.id`;
 // RIGHT JOIN exercises e ON w.set_1 = e.id
 // RIGHT JOIN exercises e2 on w.set_2 = e2.id
 // RIGHT JOIN exercises e3 on w.set_3 = e3.id`
-const getAllWorkouts = async (request, response) => {
+const getAllWorkouts = async (api, request, response) => {
     try {
         await server_1.client.query('BEGIN TRANSACTION');
         const results = await server_1.client.query(workoutJoinQuery);
@@ -50,8 +50,7 @@ const getAllWorkouts = async (request, response) => {
     }
 };
 exports.getAllWorkouts = getAllWorkouts;
-// get by name also?
-const getWorkoutByID = async (request, response) => {
+const getWorkoutByID = async (api, request, response) => {
     if (request.params.id === ':id') {
         response.status(400).json({ message: 'Please provide an ID' });
     }
@@ -70,7 +69,7 @@ const getWorkoutByID = async (request, response) => {
     }
 };
 exports.getWorkoutByID = getWorkoutByID;
-const getAllExercisesInCatergory = async (request, response) => {
+const getAllExercisesInCatergory = async (api, request, response) => {
     const query = workoutJoinQuery + ` WHERE w.name = '${request.params.catergory}'`;
     try {
         await server_1.client.query('BEGIN TRANSACTION');
