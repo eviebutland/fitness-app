@@ -148,6 +148,9 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
 
   const courier = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
 
+  // Don't send a workout that is already in the completed list on the user account for that week?
+  // We need to update user account with completed workouts
+  // clear user completed workouts each week??
   try {
     const { requestId } = await courier.send({
       message: {
