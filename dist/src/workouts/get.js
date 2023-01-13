@@ -72,17 +72,16 @@ const getWorkoutByID = async (api, request, response) => {
 exports.getWorkoutByID = getWorkoutByID;
 const getAllExercisesInCatergory = async (api, request, response) => {
     try {
-        let results = {};
-        if (api.request.params.catergory) {
+        if (typeof api.request.params.catergory === 'string' && api.request.params.catergory) {
             await server_1.client.query('BEGIN TRANSACTION');
-            results = await handleSelectAllExercisesInCategory(api.request.params.catergory, response);
+            const results = await handleSelectAllExercisesInCategory(api.request.params.catergory, response);
+            response.status(200).json(results);
         }
         else {
             response.status(404).json({ message: 'Please provide a catergory to search by' });
             return;
         }
         await server_1.client.query('COMMIT TRANSACTION');
-        response.status(200).json(results);
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);
@@ -127,25 +126,32 @@ const formatWorkoutJoin = (results) => {
 };
 const getTodaysWorkout = async (api, request, response) => {
     // Based off the user's logged in workout preference find a workout that matches
-    const userWorkoutPreference = JSON.parse(api.request.user.workoutpreference);
+    const user = api.request.user;
+    const userWorkoutPreference = JSON.parse(user.workoutpreference);
     const todaysDay = new Date().toLocaleString('en-gb', { weekday: 'long' });
     const todaysWorkoutCatergory = userWorkoutPreference[todaysDay.toLowerCase()];
+    console.log(todaysWorkoutCatergory);
     const workout = await handleSelectAllExercisesInCategory(todaysWorkoutCatergory.toLowerCase(), response);
     const courier = (0, courier_1.CourierClient)({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' });
+    console.log(workout?.data);
+    // Don't send a workout that is already in the completed list on the user account for that week?
+    // We need to update user account with completed workouts
+    // clear user completed workouts each week??
+    console.log(user.completedworkouts);
     try {
-        const { requestId } = await courier.send({
-            message: {
-                to: {
-                    email: 'evie.butland@gmail.com'
-                },
-                template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
-                data: {
-                    recipientName: 'Evie',
-                    workoutName: workout?.data.workoutName // Fix data being sent
-                }
-            }
-        });
-        console.log(requestId);
+        // const { requestId } = await courier.send({
+        //   message: {
+        //     to: {
+        //       email: 'evie.butland@gmail.com'
+        //     },
+        //     template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
+        //     data: {
+        //       recipientName: 'Evie',
+        //       workoutName: workout?.data?.workoutName ?? workout?.data // Fix data being sent
+        //     }
+        //   }
+        // })
+        // console.log(requestId)
         response.status(200).json({ message: 'Succesfully emailed', workout });
     }
     catch (error) {
@@ -159,8 +165,14 @@ const handleSelectAllExercisesInCategory = async (category, response) => {
     const query = workoutJoinQuery + ` WHERE w.name = '${category}'`;
     try {
         const results = await server_1.client.query(query);
-        const formattedResult = formatWorkoutJoin(results).filter(value => value !== null);
-        return { data: formattedResult, total: formattedResult.length };
+        if (results.rows.length) {
+            const formattedResult = formatWorkoutJoin(results).filter(value => value !== null);
+            const response = { data: formattedResult, total: formattedResult.length };
+            return response;
+        }
+        else {
+            return { data: 'Rest day, take it easy!', total: 0 };
+        }
     }
     catch (error) {
         (0, rollback_1.rollback)(server_1.client);

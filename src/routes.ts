@@ -15,6 +15,10 @@ import {
 
 export const router: Router = express.Router()
 
+// interface RequestWithUserPermissions extends Express.AuthInfo {
+//   scope: string
+// }
+
 export function isAuthorized(req: Request, res: Response, next: NextFunction, permission: string) {
   const access = permission.split(':')[0]
   const area = permission.split(':')[1]

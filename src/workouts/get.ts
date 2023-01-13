@@ -3,8 +3,9 @@ import { QueryResult } from 'pg'
 import { client } from '../../server'
 import { WorkoutFormatted } from '../lib/types/workouts'
 import { rollback } from '../utils/rollback'
-import { CourierClient } from '@trycourier/courier'
-import OpenAPIBackend, { Context } from 'openapi-backend'
+import { CourierClient, ICourierClient } from '@trycourier/courier'
+import OpenAPIBackend, { Context, ParsedRequest } from 'openapi-backend'
+import { User } from '../lib/types/user'
 
 const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
 e.description AS set_1_description,
@@ -83,18 +84,19 @@ export const getAllExercisesInCatergory = async (
   response: Response
 ): Promise<void> => {
   try {
-    let results = {}
-    if (api.request.params.catergory) {
+    if (typeof api.request.params.catergory === 'string' && api.request.params.catergory) {
       await client.query('BEGIN TRANSACTION')
-      results = await handleSelectAllExercisesInCategory(api.request.params.catergory, response)
+      const results: WorkoutResults | undefined = await handleSelectAllExercisesInCategory(
+        api.request.params.catergory,
+        response
+      )
+      response.status(200).json(results)
     } else {
       response.status(404).json({ message: 'Please provide a catergory to search by' })
       return
     }
 
     await client.query('COMMIT TRANSACTION')
-
-    response.status(200).json(results)
   } catch (error) {
     rollback(client)
     console.log(error)
@@ -140,32 +142,41 @@ const formatWorkoutJoin = (results: QueryResult) => {
 
 export const getTodaysWorkout = async (api: Context, request: Request, response: Response) => {
   // Based off the user's logged in workout preference find a workout that matches
-  const userWorkoutPreference = JSON.parse(api.request.user.workoutpreference)
+  const user: User = api.request.user
+  const userWorkoutPreference = JSON.parse(user.workoutpreference)
   const todaysDay = new Date().toLocaleString('en-gb', { weekday: 'long' })
 
   const todaysWorkoutCatergory = userWorkoutPreference[todaysDay.toLowerCase()]
-  const workout = await handleSelectAllExercisesInCategory(todaysWorkoutCatergory.toLowerCase(), response)
+  console.log(todaysWorkoutCatergory)
+  const workout: WorkoutResults | undefined = await handleSelectAllExercisesInCategory(
+    todaysWorkoutCatergory.toLowerCase(),
+    response
+  )
 
-  const courier = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
+  const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
+
+  console.log(workout?.data)
 
   // Don't send a workout that is already in the completed list on the user account for that week?
   // We need to update user account with completed workouts
   // clear user completed workouts each week??
-  try {
-    const { requestId } = await courier.send({
-      message: {
-        to: {
-          email: 'evie.butland@gmail.com'
-        },
-        template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
-        data: {
-          recipientName: 'Evie',
-          workoutName: workout?.data.workoutName // Fix data being sent
-        }
-      }
-    })
 
-    console.log(requestId)
+  console.log(user.completedworkouts)
+  try {
+    // const { requestId } = await courier.send({
+    //   message: {
+    //     to: {
+    //       email: 'evie.butland@gmail.com'
+    //     },
+    //     template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
+    //     data: {
+    //       recipientName: 'Evie',
+    //       workoutName: workout?.data?.workoutName ?? workout?.data // Fix data being sent
+    //     }
+    //   }
+    // })
+
+    // console.log(requestId)
     response.status(200).json({ message: 'Succesfully emailed', workout })
   } catch (error) {
     console.log(error)
@@ -174,15 +185,26 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
   }
 }
 
+interface WorkoutResults {
+  data: (WorkoutFormatted | null)[] | string
+  total: number
+}
 const handleSelectAllExercisesInCategory = async (category: string, response: Response) => {
   const query = workoutJoinQuery + ` WHERE w.name = '${category}'`
 
   try {
     const results: QueryResult<WorkoutFormatted> = await client.query(query)
 
-    const formattedResult: (WorkoutFormatted | null)[] = formatWorkoutJoin(results).filter(value => value !== null)
+    if (results.rows.length) {
+      const formattedResult: (WorkoutFormatted | null)[] = formatWorkoutJoin(results).filter(
+        value => value !== null
+      )
 
-    return { data: formattedResult, total: formattedResult.length }
+      const response: WorkoutResults | undefined = { data: formattedResult, total: formattedResult.length }
+      return response
+    } else {
+      return { data: 'Rest day, take it easy!', total: 0 }
+    }
   } catch (error) {
     rollback(client)
     console.log(error)

@@ -25,7 +25,10 @@ export const deleteUser = async (api: Context, request: Request, response: Respo
     if (rowToArchive) {
       await archiveDocument(rowToArchive, 'users_archive')
 
-      const deletedRes: QueryResult<User> | ErrorEvent = await deleteDocument(api.request.params.id, 'users')
+      const deletedRes: QueryResult<User> | ErrorEvent = await deleteDocument(
+        api.request.params.id as string,
+        'users'
+      )
 
       await client.query('COMMIT TRANSACTION')
       response.status(200).json({

@@ -25,7 +25,7 @@ export const deleteWorkout = async (api: Context, request: Request, response: Re
       await archiveDocument(workoutToDelete.rows[0], 'workouts_archive')
 
       const deletedWorkout: QueryResult<WorkoutPlain> | ErrorEvent = await deleteDocument(
-        api.request.params.id,
+        api.request.params.id as string,
         'workouts'
       )
 

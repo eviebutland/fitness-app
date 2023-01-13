@@ -30,7 +30,10 @@ export const deleteExercise = async (api: Context, request: Request, response: R
     }
 
     // remove from current database
-    const deletedRes: QueryResult<Exercise> | ErrorEvent = await deleteDocument(api.request.params.id, 'exercises')
+    const deletedRes: QueryResult<Exercise> | ErrorEvent = await deleteDocument(
+      api.request.params.id as string,
+      'exercises'
+    )
 
     await client.query('COMMIT TRANSACTION')
     response.status(200).json({

@@ -29,7 +29,8 @@ const getAUser = async (api, request, response) => {
     try {
         await server_1.client.query('BEGIN TRANSACTION');
         const result = await server_1.client.query(query, [api.request.params.id]);
-        const data = (0, format_response_1.formatResponse)(result, 'workoutpreference');
+        const data = (0, format_response_1.formatResponse)(result, ['workoutpreference', 'completedworkouts']);
+        console.log('formatted', data);
         await server_1.client.query('COMMIT TRANSACTION');
         response.status(200).json({ data: data[0] });
     }

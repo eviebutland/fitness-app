@@ -11,6 +11,9 @@ const index_1 = require("./users/index");
 const workouts_1 = require("./workouts");
 // import passport from '../oauth2'
 exports.router = express_1.default.Router();
+// interface RequestWithUserPermissions extends Express.AuthInfo {
+//   scope: string
+// }
 function isAuthorized(req, res, next, permission) {
     const access = permission.split(':')[0];
     const area = permission.split(':')[1];

@@ -39,7 +39,8 @@ export const getAUser = async (api: Context, request: Request, response: Respons
 
     const result: QueryResult<User> = await client.query(query, [api.request.params.id])
 
-    const data: User[] = formatResponse(result, 'workoutpreference')
+    const data: User[] = formatResponse(result, ['workoutpreference', 'completedworkouts'])
+    console.log('formatted', data)
 
     await client.query('COMMIT TRANSACTION')
 
