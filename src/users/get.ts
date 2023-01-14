@@ -14,7 +14,7 @@ export const getUsers = async (api: Context, request: Request, response: Respons
       'SELECT id, name, email, age, password, levelofaccess, premium, completedworkouts, permissions, workoutpreference FROM users'
     )
 
-    const data: User[] = formatResponse(res, 'workoutpreference')
+    const data: User[] = formatResponse(res, ['workoutpreference'])
 
     await client.query('COMMIT TRANSACTION')
     response.json({ data, total: res.rows.length })

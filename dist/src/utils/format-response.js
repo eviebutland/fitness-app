@@ -7,14 +7,13 @@ const composeObject = (data) => {
 exports.composeObject = composeObject;
 const formatResponse = (data, fields) => {
     return data.rows.map(row => {
-        // needs some work
+        const formattedField = {};
+        fields.forEach((field) => {
+            formattedField[field] = JSON.parse(row[field]);
+        });
         return {
             ...row,
-            ...fields.flatMap(field => {
-                return {
-                    [field]: JSON.parse(row[field])
-                };
-            })
+            ...formattedField
         };
     });
 };

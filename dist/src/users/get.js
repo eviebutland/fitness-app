@@ -8,7 +8,7 @@ const getUsers = async (api, request, response) => {
     try {
         await server_1.client.query('BEGIN TRANSACTION');
         const res = await server_1.client.query('SELECT id, name, email, age, password, levelofaccess, premium, completedworkouts, permissions, workoutpreference FROM users');
-        const data = (0, format_response_1.formatResponse)(res, 'workoutpreference');
+        const data = (0, format_response_1.formatResponse)(res, ['workoutpreference']);
         await server_1.client.query('COMMIT TRANSACTION');
         response.json({ data, total: res.rows.length });
     }
