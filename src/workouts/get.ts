@@ -4,7 +4,7 @@ import { client } from '../../server'
 import { WorkoutFormatted } from '../lib/types/workouts'
 import { rollback } from '../utils/rollback'
 import { CourierClient, ICourierClient } from '@trycourier/courier'
-import OpenAPIBackend, { Context, ParsedRequest } from 'openapi-backend'
+import { Context, ParsedRequest } from 'openapi-backend'
 import { User } from '../lib/types/user'
 
 const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
@@ -143,11 +143,13 @@ const formatWorkoutJoin = (results: QueryResult) => {
 export const getTodaysWorkout = async (api: Context, request: Request, response: Response) => {
   // Based off the user's logged in workout preference find a workout that matches
   const user: User = api.request.user
-  const userWorkoutPreference = JSON.parse(user.workoutpreference)
+
+  const userWorkoutPreference =
+    typeof user.workoutpreference === 'string' ? JSON.parse(user.workoutpreference) : user?.workoutpreference
   const todaysDay = new Date().toLocaleString('en-gb', { weekday: 'long' })
 
   const todaysWorkoutCatergory = userWorkoutPreference[todaysDay.toLowerCase()]
-  console.log(todaysWorkoutCatergory)
+
   const workout: WorkoutResults | undefined = await handleSelectAllExercisesInCategory(
     todaysWorkoutCatergory.toLowerCase(),
     response
@@ -155,13 +157,23 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
 
   const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
 
-  console.log(workout?.data)
+  let selectedWorkout: WorkoutFormatted | {} = {}
 
-  // Don't send a workout that is already in the completed list on the user account for that week?
-  // We need to update user account with completed workouts
-  // clear user completed workouts each week??
+  const userCompletedWorkouts =
+    typeof user.completedworkouts === 'string' ? JSON.parse(user.completedworkouts) : user.completedworkouts
+  if (typeof workout?.data !== 'string' && workout?.data.length) {
+    // check if any of the workouts have been completed yet
 
-  console.log(user.completedworkouts)
+    userCompletedWorkouts.forEach((completedWorkout: number) => {
+      selectedWorkout =
+        workout.data.find((workout: WorkoutFormatted) => completedWorkout !== Number(workout.id)) ?? []
+    })
+
+    // console.log(selectedWorkout)
+  }
+
+  // add selected workout to completedWorkouts with API call
+
   try {
     // const { requestId } = await courier.send({
     //   message: {
@@ -175,9 +187,22 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
     //     }
     //   }
     // })
-
     // console.log(requestId)
-    response.status(200).json({ message: 'Succesfully emailed', workout })
+
+    // Update user to have completed the workout
+    const updatedCompletedWorkouts = [...userCompletedWorkouts, Number(selectedWorkout?.id)]
+
+    console.log(updatedCompletedWorkouts)
+    // await client.query(
+    //   `UPDATE users
+    //   SET completedworkouts = $1
+    //   WHERE id = ${api.request.user.id}
+    //   `,
+    //   [JSON.stringify(updatedCompletedWorkouts)]
+    // )
+
+    // await client.query('COMMIT TRANSACTION')
+    // response.status(200).json({ message: 'Succesfully emailed', workout })
   } catch (error) {
     console.log(error)
     rollback(client)
@@ -191,7 +216,6 @@ interface WorkoutResults {
 }
 const handleSelectAllExercisesInCategory = async (category: string, response: Response) => {
   const query = workoutJoinQuery + ` WHERE w.name = '${category}'`
-
   try {
     const results: QueryResult<WorkoutFormatted> = await client.query(query)
 

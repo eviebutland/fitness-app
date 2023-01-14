@@ -8,6 +8,16 @@ type Status = 'active' | 'inactive'
 // w -> workouts
 // e -> exercises
 
+interface WorkoutPreference {
+  monday: string
+  tuesday: string
+  wednesday: string
+  thursday: string
+  friday: string
+  saturday: string
+  sunday: string
+}
+
 export interface User {
   id: string
   name: string
@@ -16,8 +26,8 @@ export interface User {
   password: string
   levelofaccess: LevelOfAccess
   premium: Premium
-  completedworkouts: string[]
+  completedworkouts: string | number[]
   permissions: string
-  workoutpreference: string
+  workoutpreference: string | WorkoutPreference
   status: Status
 }

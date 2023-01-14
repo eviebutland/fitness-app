@@ -127,17 +127,22 @@ const formatWorkoutJoin = (results) => {
 const getTodaysWorkout = async (api, request, response) => {
     // Based off the user's logged in workout preference find a workout that matches
     const user = api.request.user;
-    const userWorkoutPreference = JSON.parse(user.workoutpreference);
+    const userWorkoutPreference = typeof user.workoutpreference === 'string' ? JSON.parse(user.workoutpreference) : user?.workoutpreference;
     const todaysDay = new Date().toLocaleString('en-gb', { weekday: 'long' });
     const todaysWorkoutCatergory = userWorkoutPreference[todaysDay.toLowerCase()];
-    console.log(todaysWorkoutCatergory);
     const workout = await handleSelectAllExercisesInCategory(todaysWorkoutCatergory.toLowerCase(), response);
     const courier = (0, courier_1.CourierClient)({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' });
-    console.log(workout?.data);
-    // Don't send a workout that is already in the completed list on the user account for that week?
-    // We need to update user account with completed workouts
-    // clear user completed workouts each week??
-    console.log(user.completedworkouts);
+    let selectedWorkout = {};
+    const userCompletedWorkouts = typeof user.completedworkouts === 'string' ? JSON.parse(user.completedworkouts) : user.completedworkouts;
+    if (typeof workout?.data !== 'string' && workout?.data.length) {
+        // check if any of the workouts have been completed yet
+        userCompletedWorkouts.forEach((completedWorkout) => {
+            selectedWorkout =
+                workout.data.find((workout) => completedWorkout !== Number(workout.id)) ?? [];
+        });
+        // console.log(selectedWorkout)
+    }
+    // add selected workout to completedWorkouts with API call
     try {
         // const { requestId } = await courier.send({
         //   message: {
@@ -152,7 +157,18 @@ const getTodaysWorkout = async (api, request, response) => {
         //   }
         // })
         // console.log(requestId)
-        response.status(200).json({ message: 'Succesfully emailed', workout });
+        // Update user to have completed the workout
+        const updatedCompletedWorkouts = [...userCompletedWorkouts, Number(selectedWorkout?.id)];
+        console.log(updatedCompletedWorkouts);
+        // await client.query(
+        //   `UPDATE users
+        //   SET completedworkouts = $1
+        //   WHERE id = ${api.request.user.id}
+        //   `,
+        //   [JSON.stringify(updatedCompletedWorkouts)]
+        // )
+        // await client.query('COMMIT TRANSACTION')
+        // response.status(200).json({ message: 'Succesfully emailed', workout })
     }
     catch (error) {
         console.log(error);
