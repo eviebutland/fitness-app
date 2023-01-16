@@ -4,7 +4,7 @@ import { client } from '../../server'
 import { WorkoutFormatted } from '../lib/types/workouts'
 import { rollback } from '../utils/rollback'
 import { CourierClient, ICourierClient } from '@trycourier/courier'
-import { Context, ParsedRequest } from 'openapi-backend'
+import { Context } from 'openapi-backend'
 import { User } from '../lib/types/user'
 
 const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
@@ -157,52 +157,55 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
 
   const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
 
-  let selectedWorkout: WorkoutFormatted | {} = {}
+  let selectedWorkout: WorkoutFormatted = {}
 
   const userCompletedWorkouts =
     typeof user.completedworkouts === 'string' ? JSON.parse(user.completedworkouts) : user.completedworkouts
-  if (typeof workout?.data !== 'string' && workout?.data.length) {
-    // check if any of the workouts have been completed yet
 
+  if (workout?.data.length && typeof workout?.data !== 'string') {
+    // check if any of the workouts have been completed yet
     userCompletedWorkouts.forEach((completedWorkout: number) => {
       selectedWorkout =
         workout.data.find((workout: WorkoutFormatted) => completedWorkout !== Number(workout.id)) ?? []
     })
-
-    // console.log(selectedWorkout)
   }
 
   // add selected workout to completedWorkouts with API call
 
   try {
-    // const { requestId } = await courier.send({
-    //   message: {
-    //     to: {
-    //       email: 'evie.butland@gmail.com'
-    //     },
-    //     template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
-    //     data: {
-    //       recipientName: 'Evie',
-    //       workoutName: workout?.data?.workoutName ?? workout?.data // Fix data being sent
-    //     }
-    //   }
-    // })
-    // console.log(requestId)
+    const emailData = workout?.data[0] as WorkoutFormatted
 
-    // Update user to have completed the workout
-    const updatedCompletedWorkouts = [...userCompletedWorkouts, Number(selectedWorkout?.id)]
+    const { requestId } = await courier.send({
+      message: {
+        to: {
+          email: 'evie.butland@gmail.com'
+        },
+        template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
+        data: {
+          recipientName: 'Evie',
+          workoutName: emailData.workoutName,
+          set1: emailData.set1,
+          set2: emailData.set2,
+          set3: emailData.set3
+        }
+      }
+    })
+    console.log(requestId)
 
-    console.log(updatedCompletedWorkouts)
-    // await client.query(
-    //   `UPDATE users
-    //   SET completedworkouts = $1
-    //   WHERE id = ${api.request.user.id}
-    //   `,
-    //   [JSON.stringify(updatedCompletedWorkouts)]
-    // )
+    if (selectedWorkout?.id) {
+      const updatedCompletedWorkouts = [...userCompletedWorkouts, Number(selectedWorkout?.id)]
 
-    // await client.query('COMMIT TRANSACTION')
-    // response.status(200).json({ message: 'Succesfully emailed', workout })
+      // Update user to have completed the workout
+      await client.query(
+        `UPDATE users
+        SET completedworkouts = $1
+        WHERE id = ${api.request.user.id}
+        `,
+        [JSON.stringify(updatedCompletedWorkouts)]
+      )
+      await client.query('COMMIT TRANSACTION')
+    }
+    response.status(200).json({ message: 'Succesfully emailed', workout })
   } catch (error) {
     console.log(error)
     rollback(client)
