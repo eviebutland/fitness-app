@@ -96,5 +96,6 @@ My initial thoughts on this project was to have the workouts generate themselves
 ## Design
 
 I used [colours](https://coolors.co/palettes/trending) to help come up with a theme for the app.
+In order to come up with the app design, I used figma. The (design)[https://www.figma.com/file/59aPmG1T2pi5FI4jkeCiCb/Fitness-app?node-id=0%3A1&t=7VFoLryLTXKuyfNq-0] was inspired by a fitness app I currently use and pay a subscription for. I also used (Dribbble)[https://dribbble.com/] to help my idea come to life. For the logo/main icon, I used (Humaaans)[https://www.humaaans.com/]
 
 </details>
