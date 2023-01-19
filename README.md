@@ -6,6 +6,8 @@ Requirements:
 - Send a daily email to the user based off their workout preferences
 - Restrict users access based on their permissions or level of cover (as if it was a subscription model)
 
+<details>
+  <summary>Backend:</summary>
 ## Database
 
 PostgreSQL is the database for this project. I have decided to use postgreSQL to build my knowledge of relational databases. It is free to use and [links well](https://insights.stackoverflow.com/survey/2020#correlated-technologies) to Python which I would like to learn soon. Postgres is a general purpose object-relational database
@@ -85,3 +87,14 @@ I am using [courier](https://www.courier.com/), this is an API that can manage m
 
 Generating workouts:
 My initial thoughts on this project was to have the workouts generate themselves based off of exercise types (i.e select 3 upper body exercises and this would be a workout). However, since researching more into existing workout guides available, I have found that most, if not all, are structured in a plan. This is where there are 8/12 weeks worth of exercises premade and ready to use. However, since I have collected user data on workout preference, I will continue to use the current set up.
+
+</details>
+
+<details>
+	<summary>Front end:</summary>
+
+## Design
+
+I used [colours](https://coolors.co/palettes/trending) to help come up with a theme for the app.
+
+</details>
