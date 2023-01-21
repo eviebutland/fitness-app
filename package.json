@@ -6,8 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "build": "npx tsc",
-    "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "start": "node API/dist/index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q API/dist/index.js\"",
     "start:DB": "brew services start postgresql",
     "stop:DB": "brew services stop postgresql"
   },
@@ -30,7 +30,9 @@
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.6.1",
     "pg": "^8.8.0",
-    "pg-pool": "^3.5.2"
+    "pg-pool": "^3.5.2",
+    "react": "^18.2.0",
+    "react-native": "^0.71.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
