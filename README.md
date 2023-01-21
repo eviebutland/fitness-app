@@ -5,9 +5,11 @@ Requirements:
 - Create an bank of exercises that can be used to make up workouts
 - Send a daily email to the user based off their workout preferences
 - Restrict users access based on their permissions or level of cover (as if it was a subscription model)
+- Build IOS app to be freely available on App store
 
 <details>
-  <summary>Backend:</summary>
+  <summary>Backend</summary>
+
 ## Database
 
 PostgreSQL is the database for this project. I have decided to use postgreSQL to build my knowledge of relational databases. It is free to use and [links well](https://insights.stackoverflow.com/survey/2020#correlated-technologies) to Python which I would like to learn soon. Postgres is a general purpose object-relational database
@@ -91,11 +93,22 @@ My initial thoughts on this project was to have the workouts generate themselves
 </details>
 
 <details>
-	<summary>Front end:</summary>
+	<summary>Front end</summary>
 
 ## Design
 
 I used [colours](https://coolors.co/palettes/trending) to help come up with a theme for the app.
 In order to come up with the app design, I used figma. The (design)[https://www.figma.com/file/59aPmG1T2pi5FI4jkeCiCb/Fitness-app?node-id=0%3A1&t=7VFoLryLTXKuyfNq-0] was inspired by a fitness app I currently use and pay a subscription for. I also used (Dribbble)[https://dribbble.com/] to help my idea come to life. For the logo/main icon, I used (Humaaans)[https://www.humaaans.com/]
+
+## Framework
+
+When deciding what framework to use, I had 3 in mind.
+
+1. (Capacitor)[https://capacitorjs.com/docs/ios]
+   I have used capacitor at my work place to wrap up a nuxt SPA into a mobile app. This seemed like the most natural option as already have experience using it. However, I wanted to try something new and experiment
+2. (Native script and Vue)[https://nativescript-vue.org/]
+   My next option would to make use of a Nativescript plugin that allows you to use Vue.js.
+3. React Native
+   I decided on using React native as they have a large support and lots of documentation.
 
 </details>
