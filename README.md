@@ -104,11 +104,11 @@ In order to come up with the app design, I used figma. The (design)[https://www.
 
 When deciding what framework to use, I had 3 in mind.
 
-1. (Capacitor)[https://capacitorjs.com/docs/ios]
+1. [Capacitor](https://capacitorjs.com/docs/ios) -
    I have used capacitor at my work place to wrap up a nuxt SPA into a mobile app. This seemed like the most natural option as already have experience using it. However, I wanted to try something new and experiment
-2. (Native script and Vue)[https://nativescript-vue.org/]
+2. [Native script and Vue](https://nativescript-vue.org/) -
    My next option would to make use of a Nativescript plugin that allows you to use Vue.js.
-3. React Native
+3. React Native -
    I decided on using React native as they have a large support and lots of documentation.
 
 </details>
