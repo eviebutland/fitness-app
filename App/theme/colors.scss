@@ -1,0 +1,15 @@
+$primary: #1B4332;
+$highlight: #52B788;
+$highlight_lighter: #B7E4C7;
+$text: #1E1E1E;
+
+
+h1, h2, h3, h4, h5, h6, p {
+    color: $text;
+}
+
+button {
+    background-color: #52B788;
+    border: #52B788;
+    border-radius: 5px;
+}

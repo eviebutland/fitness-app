@@ -1,13 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 
 const PricingScreen = ({ navigation, title }) => {
   return (
-    <>
-      <View>
-        <Text>Pricing page</Text>
-      </View>
-    </>
+    <ScrollView>
+      <Text>Pricing page</Text>
+    </ScrollView>
   )
 }
 

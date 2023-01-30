@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 
 interface TitleProps {
   title: string
@@ -15,7 +15,11 @@ export const Title = (props: TitleProps) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 60,
-    color: 'red'
+    fontSize: 25,
+    color: '#081C15',
+    textAlign: 'center',
+    paddingTop: 20,
+    paddingBottom: 20,
+    fontWeight: 'bold'
   }
 })
