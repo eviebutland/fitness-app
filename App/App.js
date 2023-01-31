@@ -12,8 +12,7 @@ export default function App() {
       <Navigator>
         <Group
           screenOptions={({ navigation }) => ({
-            presentation: 'modal',
-            headerLeft: () => <BaseButton title="Go back" onPress={navigation.goBack} isTransparent />
+            headerLeft: () => <BaseButton text="Go back" onPress={navigation.goBack} isTransparent />
           })}
         >
           <Screen name="Register" component={RegisterScreen}></Screen>
