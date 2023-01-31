@@ -1,12 +1,18 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Button } from 'react-native'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
 
 type Pricing = 'monthly' | 'quarterly' | 'annually'
 
+interface PricingMatrix {
+  [key: Pricing]: {
+    price: number
+  }
+}
+
 const PricingScreen = ({ navigation }) => {
-  const pricingMatrix = {
+  const pricingMatrix: PricingMatrix = {
     monthly: {
       price: 9.99
     },
@@ -17,6 +23,11 @@ const PricingScreen = ({ navigation }) => {
       price: 74.99
     }
   }
+
+  const handleSelectPricing = (selectedPrice: PricingMatrix) => {
+    console.log('selected:', selectedPrice)
+  }
+
   return (
     <Container footer={<ProgressBar percentage={75} />}>
       <View>
@@ -29,14 +40,20 @@ const PricingScreen = ({ navigation }) => {
         </View>
 
         {Object.entries(pricingMatrix).map(matrixItem => (
-          <View style={[styles.tile, styles[matrixItem[0] as Pricing]]}>
-            {matrixItem[0] === 'quarterly' && (
-              <View style={styles.feature}>
-                <Text style={styles.text_small}>50p per workout!</Text>
-              </View>
-            )}
-            <Text style={styles.text}>£{matrixItem[1].price}</Text>
-            <Text style={styles.text_small}>{matrixItem[0]}</Text>
+          <View
+            style={[styles.tile, styles[matrixItem[0] as Pricing]]}
+            role="button"
+            onPress={handleSelectPricing}
+          >
+            <View>
+              {matrixItem[0] === 'quarterly' && (
+                <View style={styles.feature}>
+                  <Text style={styles.text_small}>50p per workout!</Text>
+                </View>
+              )}
+              <Text style={styles.text}>£{matrixItem[1].price}</Text>
+              <Text style={styles.text_small}>{matrixItem[0]}</Text>
+            </View>
           </View>
         ))}
       </View>
