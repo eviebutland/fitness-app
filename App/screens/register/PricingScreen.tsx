@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, Button } from 'react-native'
+import { View, Text, StyleSheet, Image, Button, Pressable } from 'react-native'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
+import { BaseButton } from '../../components/base/Button'
 
 type Pricing = 'monthly' | 'quarterly' | 'annually'
 
@@ -26,6 +27,8 @@ const PricingScreen = ({ navigation }) => {
 
   const handleSelectPricing = (selectedPrice: PricingMatrix) => {
     console.log('selected:', selectedPrice)
+    // set this to state and move to next step
+    navigation.navigate('WorkoutPreference')
   }
 
   return (
@@ -40,22 +43,24 @@ const PricingScreen = ({ navigation }) => {
         </View>
 
         {Object.entries(pricingMatrix).map(matrixItem => (
-          <View
-            style={[styles.tile, styles[matrixItem[0] as Pricing]]}
-            role="button"
-            onPress={handleSelectPricing}
+          <Pressable
+            style={[styles.tiles, styles[matrixItem[0] as Pricing]]}
+            onPress={() => handleSelectPricing(matrixItem[0])}
           >
-            <View>
-              {matrixItem[0] === 'quarterly' && (
-                <View style={styles.feature}>
-                  <Text style={styles.text_small}>50p per workout!</Text>
-                </View>
-              )}
+            {matrixItem[0] === 'quarterly' && (
+              <View style={styles.feature}>
+                <Text style={styles.text_small}>50p per workout!</Text>
+              </View>
+            )}
+            <View style={styles.tile}>
               <Text style={styles.text}>£{matrixItem[1].price}</Text>
               <Text style={styles.text_small}>{matrixItem[0]}</Text>
             </View>
-          </View>
+          </Pressable>
         ))}
+
+        {/* Do we show this button as soon as state is selected? */}
+        {/* <BaseButton text="Next step" onPress={() => navigation.navigate('WorkoutPreference')} /> */}
       </View>
     </Container>
   )
@@ -65,9 +70,11 @@ const styles = StyleSheet.create({
   tile: {
     borderRadius: 5,
     padding: 30,
-    marginBottom: 30,
     alignItems: 'center',
     color: '#212825'
+  },
+  tiles: {
+    marginBottom: 30
   },
   imageContainer: {
     alignItems: 'center',
@@ -83,24 +90,20 @@ const styles = StyleSheet.create({
   },
   text_small: {
     fontSize: 15,
-    fontWeight: '400',
-    color: 'inherit'
+    fontWeight: '400'
   },
   feature: {
     backgroundColor: '#56919C',
-    color: '#ffffff',
-    borderRadius: 22,
-    padding: 10,
-    position: 'absolute',
-    right: -10,
-    top: -20
+    color: 'white',
+    padding: 5,
+    alignItems: 'center'
   },
   monthly: {
     backgroundColor: '#52B788',
     borderColor: '#52B788'
   },
   quarterly: {
-    backgroundColor: '#74C69D',
+    backgroundColor: '#D8F3DC',
     borderColor: '#74C69D'
   },
   annually: {

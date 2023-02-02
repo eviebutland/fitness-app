@@ -20,7 +20,9 @@ export const Container = (props: ContainerProps) => {
 
 const styles = StyleSheet.create({
   children: {
-    padding: 30
+    paddingHorizontal: 15,
+    paddingVertical: 30,
+    marginBottom: 30
   },
   container: {},
   footer: {

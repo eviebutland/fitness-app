@@ -4,6 +4,8 @@ import RegisterScreen from './screens/register/RegisterScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import PricingScreen from './screens/register/PricingScreen'
 import { BaseButton } from './components/base/Button'
+import WorkoutPreference from './screens/register/WorkoutPreferenceScreen'
+
 const { Navigator, Screen, Group } = createNativeStackNavigator()
 
 export default function App() {
@@ -17,6 +19,7 @@ export default function App() {
         >
           <Screen name="Register" component={RegisterScreen}></Screen>
           <Screen name="Pricing" component={PricingScreen} options={{ title: 'Pricing' }}></Screen>
+          <Screen name="WorkoutPreference" component={WorkoutPreference}></Screen>
         </Group>
       </Navigator>
     </NavigationContainer>
