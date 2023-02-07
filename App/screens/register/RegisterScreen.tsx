@@ -6,11 +6,12 @@ import { Input } from '../../components/base/Input'
 import { ProgressBar } from '../../components/base/ProgressBar'
 import { Title } from '../../components/base/Title'
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation, prop }) => {
   const [name, setName] = useState('')
   const [age, setAge] = useState(null)
   const [email, setEmail] = useState('')
 
+  console.log(prop)
   return (
     <Container footer={<ProgressBar percentage={50} />}>
       <View>

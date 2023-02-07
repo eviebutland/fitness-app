@@ -25,8 +25,9 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
 
   const handleOnPressWorkout = (day: Day, workout: Workout) => {
     // Use state management here
+    console.log({ [day]: workout })
     setUserPreference({ ...userPreference, [day]: workout })
-    console.log(userPreference)
+    console.log('STATE', userPreference)
   }
 
   return (
@@ -43,8 +44,8 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
         <Title text={'Workout Preference'} />
 
         <View style={styles.workouts}>
-          {days.map(day => (
-            <View>
+          {days.map((day, index) => (
+            <View key={index}>
               <Text style={styles.day}>{day}</Text>
               <View style={styles.workoutContainer}>
                 {availableWorkouts.map((workout: Workout) => (

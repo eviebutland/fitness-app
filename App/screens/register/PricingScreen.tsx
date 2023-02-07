@@ -12,7 +12,7 @@ interface PricingMatrix {
   }
 }
 
-const PricingScreen = ({ navigation }) => {
+const PricingScreen = ({ navigation, prop }) => {
   const pricingMatrix: PricingMatrix = {
     monthly: {
       price: 9.99
@@ -34,6 +34,7 @@ const PricingScreen = ({ navigation }) => {
   return (
     <Container footer={<ProgressBar percentage={75} />}>
       <View>
+        {prop}
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
