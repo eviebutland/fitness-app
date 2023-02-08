@@ -21,7 +21,7 @@ interface WorkoutPreference {
 export interface User {
   id: string
   name: string
-  age: number
+  age: number | null
   email: string
   password: string
   levelofaccess: LevelOfAccess

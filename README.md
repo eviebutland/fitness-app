@@ -111,4 +111,35 @@ When deciding what framework to use, I had 3 in mind.
 3. React Native -
    I decided on using React native as they have a large support and lots of documentation.
 
+## State management
+
+In order to provide some state management across the app, I looked into redux, using the [context API](https://beta.reactjs.org/reference/react/useContext) and [Recoil](https://recoiljs.org/docs/introduction/getting-started).
+
+I decided against using Redux as felt it was too heavy duty for this size of application.
+Recoil uses 'Atoms', these are unique functions that return an object containing state. They must have a unique key. In order to get and set this, we use useRecoilState().
+
+```
+const textState = atom({
+  key: 'textState', // unique ID (with respect to other atoms/selectors)
+  default: '', // default value (aka initial value)
+});
+...
+ const [text, setText] = useRecoilState(textState);
+```
+
+Selectors are similar to computed functions in Vue, where we can transform and manipulate data. In order to access this, we call useRecoilValue().
+
+```
+const charCountState = selector({
+  key: 'charCountState', // unique ID (with respect to other atoms/selectors)
+  get: ({get}) => {
+    const text = get(textState); // refrences the atom here
+
+    return text.length;
+  },
+});
+...
+const count = useRecoilValue(charCountState)
+```
+
 </details>
