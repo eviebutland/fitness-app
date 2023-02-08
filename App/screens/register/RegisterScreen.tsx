@@ -1,17 +1,22 @@
 import React, { useState } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
+import { useRecoilState } from 'recoil'
 import { BaseButton } from '../../components/base/Button'
 import { Container } from '../../components/base/Container'
 import { Input } from '../../components/base/Input'
 import { ProgressBar } from '../../components/base/ProgressBar'
 import { Title } from '../../components/base/Title'
+import { newUserState } from '../../state/register'
 
-const RegisterScreen = ({ navigation, prop }) => {
-  const [name, setName] = useState('')
-  const [age, setAge] = useState(null)
+const RegisterScreen = ({ navigation }) => {
+  const [newUser, setNewUser] = useRecoilState(newUserState)
   const [email, setEmail] = useState('')
 
-  console.log(prop)
+  console.log('new user', newUser)
+
+  const handleSubmit = () => {
+    navigation.navigate('Pricing')
+  }
   return (
     <Container footer={<ProgressBar percentage={50} />}>
       <View>
@@ -21,11 +26,11 @@ const RegisterScreen = ({ navigation, prop }) => {
 
         <Title text={'Create an account'}></Title>
 
-        <Input onChangeText={setName} label="Name" value={name} inputMode="text" />
-        <Input onChangeText={setAge} label="Age" value={age} inputMode="numeric" />
+        <Input onChangeText={setNewUser} label="Name" value={{ name: newUser.name }} inputMode="text" />
+        <Input onChangeText={setNewUser} label="Age" value={newUser.age} inputMode="numeric" />
         <Input onChangeText={setEmail} label="Email" value={email} inputMode="email" />
 
-        <BaseButton text="Next step" onPress={() => navigation.navigate('Pricing')} />
+        <BaseButton text="Next step" onPress={handleSubmit} />
       </View>
     </Container>
   )

@@ -1,8 +1,9 @@
-import { createContext } from 'react'
+import { atom } from 'recoil'
+
 import { User } from '../../API/src/lib/types/user'
 
 const newUser: Partial<User> = {
-  age: undefined,
+  age: null,
   email: undefined,
   password: undefined,
   levelofaccess: undefined,
@@ -11,7 +12,10 @@ const newUser: Partial<User> = {
   permissions: undefined,
   workoutpreference: undefined,
   status: undefined,
-  name: ''
+  name: undefined
 }
 
-export const RegisterContext = createContext(newUser)
+export const newUserState = atom({
+  key: 'newUserState',
+  default: newUser
+})

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { RegisterContext } from '../../context/RegistrationContext'
 import { NavigationContainer } from '@react-navigation/native'
 import RegisterScreen from '../../screens/register/RegisterScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -11,8 +10,6 @@ import WorkoutPreference from '../../screens/register/WorkoutPreferenceScreen'
 const { Navigator, Screen, Group } = createNativeStackNavigator()
 
 const RegistrationForm = () => {
-  //   const newUser = useContext(RegisterContext)
-  //   console.log(newUser)
   //   const navigationRef = useNavigationContainerRef()
   //   console.log(navigationRef)
 

@@ -1,10 +1,11 @@
 import React from 'react'
 import { TextInput, Text, StyleSheet, View, InputModeOptions } from 'react-native'
+import { SetterOrUpdater } from 'recoil'
 
 interface TextInputProps {
-  onChangeText: (text: string) => void
+  onChangeText: SetterOrUpdater<any>
   label: string
-  value: string
+  value: string | number | undefined | null
   inputMode: InputModeOptions
 }
 
