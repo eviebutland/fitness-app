@@ -1,19 +1,25 @@
 import React, { useState } from 'react'
 import { View, Image, StyleSheet, Text, Pressable } from 'react-native'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { WorkoutPreference } from '../../../API/src/lib/types/user'
 import { BaseButton } from '../../components/base/Button'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
 import { Title } from '../../components/base/Title'
+import { newUserState } from '../../state/register'
 
 type Day = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 type Workout = 'LOWER' | 'FULL BODY' | 'UPPER' | 'GLUTES' | 'REST'
 
 const WorkoutPreferenceScreen = ({ navigation }) => {
+  // const newUser = useRecoilValue(newUserGetter)
+  const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
+
   const days: Day[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
   // TODO These should come from an API call
   const availableWorkouts: Workout[] = ['LOWER', 'FULL BODY', 'UPPER', 'GLUTES', 'REST']
 
-  const [userPreference, setUserPreference] = useState({
+  const initialPreference: WorkoutPreference = {
     monday: null,
     tuesday: null,
     wednesday: null,
@@ -21,13 +27,17 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
     friday: null,
     saturday: null,
     sunday: null
-  })
+  }
+  const [userPreference, setUserPreference] = useState(initialPreference)
 
   const handleOnPressWorkout = (day: Day, workout: Workout) => {
-    // Use state management here
-    console.log({ [day]: workout })
     setUserPreference({ ...userPreference, [day]: workout })
-    console.log('STATE', userPreference)
+  }
+
+  const handleSubmit = () => {
+    setRegisterDetails({ ...registerDetails, workoutpreference: userPreference })
+
+    navigation.navigate('')
   }
 
   return (
@@ -57,7 +67,7 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
             </View>
           ))}
         </View>
-        <BaseButton text="Save" onPress={() => navigation.navigate('')} />
+        <BaseButton text="Save" onPress={handleSubmit} />
       </View>
     </Container>
   )

@@ -5,8 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import PricingScreen from './screens/register/PricingScreen'
 import { BaseButton } from './components/base/Button'
 import WorkoutPreference from './screens/register/WorkoutPreferenceScreen'
-import RegistrationForm from './components/forms/RegistrationForm'
-import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil'
+import { RecoilRoot } from 'recoil'
 
 const { Navigator, Screen, Group } = createNativeStackNavigator()
 
@@ -17,7 +16,10 @@ export default function App() {
         <Navigator>
           <Group
             screenOptions={({ navigation }) => ({
-              headerLeft: () => <BaseButton text="Go back" onPress={navigation.goBack} isTransparent />
+              headerLeft: () => {
+                // console.log(navigation)
+                return <BaseButton text="Go back" onPress={navigation.goBack} isTransparent />
+              }
             })}
           >
             {/* <RegistrationForm></RegistrationForm> */}

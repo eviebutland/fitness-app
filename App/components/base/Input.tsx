@@ -10,6 +10,7 @@ interface TextInputProps {
 }
 
 export const Input = ({ onChangeText, value, label, inputMode }: TextInputProps) => {
+  console.log(value)
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>

@@ -2,17 +2,20 @@ import React from 'react'
 import { View, Text, StyleSheet, Image, Button, Pressable } from 'react-native'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
-import { BaseButton } from '../../components/base/Button'
-
-type Pricing = 'monthly' | 'quarterly' | 'annually'
+import { useRecoilState } from 'recoil'
+import { newUserState } from '../../state/register'
+import { Premium } from '../../../API/src/lib/types/user'
 
 interface PricingMatrix {
-  [key: Pricing]: {
+  [key: Premium]: {
     price: number
   }
 }
 
-const PricingScreen = ({ navigation, prop }) => {
+const PricingScreen = ({ navigation }) => {
+  const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
+
+  // const newUser = useRecoilValue(newUserGetter)
   const pricingMatrix: PricingMatrix = {
     monthly: {
       price: 9.99
@@ -25,16 +28,16 @@ const PricingScreen = ({ navigation, prop }) => {
     }
   }
 
-  const handleSelectPricing = (selectedPrice: PricingMatrix) => {
-    console.log('selected:', selectedPrice)
-    // set this to state and move to next step
-    navigation.navigate('WorkoutPreference')
+  const handleSelectPricing = (selectedPrice: Premium) => {
+    if (selectedPrice) {
+      setRegisterDetails({ ...registerDetails, premium: selectedPrice })
+      navigation.navigate('WorkoutPreference')
+    }
   }
 
   return (
     <Container footer={<ProgressBar percentage={75} />}>
       <View>
-        {prop}
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
@@ -43,8 +46,9 @@ const PricingScreen = ({ navigation, prop }) => {
           />
         </View>
 
-        {Object.entries(pricingMatrix).map(matrixItem => (
+        {Object.entries(pricingMatrix).map((matrixItem, index) => (
           <Pressable
+            key={`matrixItem-${index}`}
             style={[styles.tiles, styles[matrixItem[0] as Pricing]]}
             onPress={() => handleSelectPricing(matrixItem[0])}
           >
@@ -59,9 +63,6 @@ const PricingScreen = ({ navigation, prop }) => {
             </View>
           </Pressable>
         ))}
-
-        {/* Do we show this button as soon as state is selected? */}
-        {/* <BaseButton text="Next step" onPress={() => navigation.navigate('WorkoutPreference')} /> */}
       </View>
     </Container>
   )
