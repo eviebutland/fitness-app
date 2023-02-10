@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
 import { View, Image, StyleSheet, Text, Pressable } from 'react-native'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { WorkoutPreference } from '../../../API/src/lib/types/user'
 import { BaseButton } from '../../components/base/Button'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
 import { Title } from '../../components/base/Title'
 import { newUserState } from '../../state/register'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 
 type Day = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 type Workout = 'LOWER' | 'FULL BODY' | 'UPPER' | 'GLUTES' | 'REST'
 
 const WorkoutPreferenceScreen = ({ navigation }) => {
-  // const newUser = useRecoilValue(newUserGetter)
   const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
 
   const days: Day[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
@@ -34,10 +35,21 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
     setUserPreference({ ...userPreference, [day]: workout })
   }
 
-  const handleSubmit = () => {
+  const handleTriggerActivationEmail = async () => {
+    // TODO API call here to fire email off
+    console.log('send email for activation code')
+    await setTimeout(() => 3000)
+    // add activation code to state
+  }
+  const handleSubmit = async () => {
     setRegisterDetails({ ...registerDetails, workoutpreference: userPreference })
 
-    navigation.navigate('')
+    try {
+      await handleTriggerActivationEmail()
+      navigation.navigate('Confirmation')
+    } catch (error) {
+      console.log('error sending activation code')
+    }
   }
 
   return (
@@ -54,13 +66,17 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
         <Title text={'Workout Preference'} />
 
         <View style={styles.workouts}>
-          {days.map((day, index) => (
+          {days.map((day: Day, index: number) => (
             <View key={index}>
               <Text style={styles.day}>{day}</Text>
               <View style={styles.workoutContainer}>
-                {availableWorkouts.map((workout: Workout) => (
-                  <Pressable style={styles.workout} onPress={() => handleOnPressWorkout(day, workout)}>
-                    <Text>{workout.toLowerCase()}</Text>
+                {availableWorkouts.map((workout: Workout, index: number) => (
+                  <Pressable key={index} style={styles.workout} onPress={() => handleOnPressWorkout(day, workout)}>
+                    {userPreference[day] === workout ? (
+                      <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />
+                    ) : (
+                      <Text>{workout.toLowerCase()}</Text>
+                    )}
                   </Pressable>
                 ))}
               </View>
@@ -97,9 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row'
   },
-  //   'workout:first-child': {
-  //     marginLeft: 5
-  //   },
+
   workout: {
     backgroundColor: '#D8F3DC',
     borderRadius: 5,

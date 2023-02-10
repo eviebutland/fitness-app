@@ -6,6 +6,8 @@ import PricingScreen from './screens/register/PricingScreen'
 import { BaseButton } from './components/base/Button'
 import WorkoutPreference from './screens/register/WorkoutPreferenceScreen'
 import { RecoilRoot } from 'recoil'
+import ConfirmationScreen from './screens/register/ConfirmationScreen'
+import DashboardScreen from './screens/DashboardScreen'
 
 const { Navigator, Screen, Group } = createNativeStackNavigator()
 
@@ -17,15 +19,18 @@ export default function App() {
           <Group
             screenOptions={({ navigation }) => ({
               headerLeft: () => {
-                // console.log(navigation)
                 return <BaseButton text="Go back" onPress={navigation.goBack} isTransparent />
               }
             })}
           >
-            {/* <RegistrationForm></RegistrationForm> */}
             <Screen name="Register" component={RegisterScreen}></Screen>
             <Screen name="Pricing" component={PricingScreen} options={{ title: 'Pricing' }}></Screen>
             <Screen name="WorkoutPreference" component={WorkoutPreference}></Screen>
+            <Screen name="Confirmation" component={ConfirmationScreen}></Screen>
+          </Group>
+
+          <Group>
+            <Screen name="Dashboard" component={DashboardScreen}></Screen>
           </Group>
         </Navigator>
       </NavigationContainer>

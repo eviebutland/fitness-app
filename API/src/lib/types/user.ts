@@ -1,4 +1,4 @@
-type Premium = 'standard' | 'gold'
+export type Premium = 'monthly' | 'quarterly' | 'annually'
 type LevelOfAccess = 'subscriber' | 'admin'
 type Status = 'active' | 'inactive'
 // Permissions
@@ -8,14 +8,14 @@ type Status = 'active' | 'inactive'
 // w -> workouts
 // e -> exercises
 
-interface WorkoutPreference {
-  monday: string
-  tuesday: string
-  wednesday: string
-  thursday: string
-  friday: string
-  saturday: string
-  sunday: string
+export interface WorkoutPreference {
+  monday: string | null
+  tuesday: string | null
+  wednesday: string | null
+  thursday: string | null
+  friday: string | null
+  saturday: string | null
+  sunday: string | null
 }
 
 export interface User {
