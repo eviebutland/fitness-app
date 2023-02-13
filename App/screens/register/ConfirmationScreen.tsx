@@ -20,7 +20,7 @@ const ConfirmationScreen = ({ navigation }) => {
     // 2. Update user with password
     // 3. Automatically log user in here
     // 4. Once logged in -> redirect
-    navigation.navigate('Dashboard')
+    navigation.navigate('Entry')
   }
   return (
     <Container footer={<ProgressBar percentage={100} />}>
@@ -47,7 +47,7 @@ const ConfirmationScreen = ({ navigation }) => {
 
         <Input
           onChangeText={e => setActive({ password: e, activationCode })}
-          label="Activation code"
+          label="Create password"
           value={password}
           inputMode="text"
         />

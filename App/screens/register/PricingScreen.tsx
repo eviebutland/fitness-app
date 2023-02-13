@@ -49,8 +49,8 @@ const PricingScreen = ({ navigation }) => {
         {Object.entries(pricingMatrix).map((matrixItem, index) => (
           <Pressable
             key={`matrixItem-${index}`}
-            style={[styles.tiles, styles[matrixItem[0] as Pricing]]}
-            onPress={() => handleSelectPricing(matrixItem[0])}
+            style={[styles.tiles, styles[matrixItem[0]]]}
+            onPress={() => handleSelectPricing(matrixItem[0] as Premium)}
           >
             {matrixItem[0] === 'quarterly' && (
               <View style={styles.feature}>

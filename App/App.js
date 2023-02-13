@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useRoute, getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import RegisterScreen from './screens/register/RegisterScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import PricingScreen from './screens/register/PricingScreen'
@@ -8,10 +8,15 @@ import WorkoutPreference from './screens/register/WorkoutPreferenceScreen'
 import { RecoilRoot } from 'recoil'
 import ConfirmationScreen from './screens/register/ConfirmationScreen'
 import DashboardScreen from './screens/DashboardScreen'
+import EntryScreen from './screens/Entry'
+import LoginScreen from './screens/login/Login'
+import PasswordResetScreen from './screens/login/PasswordReset'
 
 const { Navigator, Screen, Group } = createNativeStackNavigator()
 
 export default function App() {
+  // const currentRoute = useRoute()
+
   return (
     <RecoilRoot>
       <NavigationContainer>
@@ -19,7 +24,21 @@ export default function App() {
           <Group
             screenOptions={({ navigation }) => ({
               headerLeft: () => {
-                return <BaseButton text="Go back" onPress={navigation.goBack} isTransparent />
+                const route = useRoute()
+
+                return (
+                  <BaseButton
+                    text="Go back"
+                    onPress={() => {
+                      if (route.name === 'Register') {
+                        navigation.navigate('Login')
+                      } else {
+                        navigation.goBack()
+                      }
+                    }}
+                    isTransparent
+                  />
+                )
               }
             })}
           >
@@ -30,6 +49,12 @@ export default function App() {
           </Group>
 
           <Group>
+            <Screen name="Login" component={LoginScreen}></Screen>
+            <Screen name="ResetPassword" component={PasswordResetScreen}></Screen>
+          </Group>
+
+          <Group>
+            <Screen name="Entry" component={EntryScreen}></Screen>
             <Screen name="Dashboard" component={DashboardScreen}></Screen>
           </Group>
         </Navigator>
