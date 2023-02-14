@@ -41,7 +41,7 @@ export const document: OpenAPIV3.Document = {
   ],
   paths: {
     '/login': {
-      get: {
+      post: {
         tags: ['authentication'],
         summary: 'Login as user',
         description: 'Login as user',

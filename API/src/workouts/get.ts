@@ -4,7 +4,7 @@ import { client } from '../../server'
 import { WorkoutFormatted } from '../lib/types/workouts'
 import { rollback } from '../utils/rollback'
 import { CourierClient, ICourierClient } from '@trycourier/courier'
-import { Context } from 'openapi-backend'
+import { Context, ParsedRequest } from 'openapi-backend'
 import { User } from '../lib/types/user'
 
 const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
@@ -142,7 +142,8 @@ const formatWorkoutJoin = (results: QueryResult) => {
 
 export const getTodaysWorkout = async (api: Context, request: Request, response: Response) => {
   // Based off the user's logged in workout preference find a workout that matches
-  const user: User = api.request.user
+  console.log(api.request.requestBody.user)
+  const user: User = api.request.requestBody.user
 
   const userWorkoutPreference =
     typeof user.workoutpreference === 'string' ? JSON.parse(user.workoutpreference) : user?.workoutpreference
@@ -157,17 +158,21 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
 
   const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
 
-  let selectedWorkout: WorkoutFormatted = {}
+  let selectedWorkout: WorkoutFormatted | Record<string, string> = {}
 
   const userCompletedWorkouts =
     typeof user.completedworkouts === 'string' ? JSON.parse(user.completedworkouts) : user.completedworkouts
 
   if (workout?.data.length && typeof workout?.data !== 'string') {
     // check if any of the workouts have been completed yet
-    userCompletedWorkouts.forEach((completedWorkout: number) => {
-      selectedWorkout =
-        workout.data.find((workout: WorkoutFormatted) => completedWorkout !== Number(workout.id)) ?? []
-    })
+    // userCompletedWorkouts.forEach((completedWorkout: number) => {
+    //   if (workout.data.length && typeof workout.data !== 'string') {
+    //     selectedWorkout =
+    //       workout.data.find((workout: WorkoutFormatted) => completedWorkout !== Number(workout.id)) ?? {}
+    //   } else {
+    //     selectedWorkout = {}
+    //   }
+    // })
   }
 
   // add selected workout to completedWorkouts with API call
@@ -175,7 +180,7 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
   try {
     const emailData = workout?.data[0] as WorkoutFormatted
 
-    const { requestId } = await courier.send({
+    await courier.send({
       message: {
         to: {
           email: 'evie.butland@gmail.com'
@@ -190,20 +195,19 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
         }
       }
     })
-    console.log(requestId)
 
     if (selectedWorkout?.id) {
       const updatedCompletedWorkouts = [...userCompletedWorkouts, Number(selectedWorkout?.id)]
 
-      // Update user to have completed the workout
       await client.query(
         `UPDATE users
         SET completedworkouts = $1
-        WHERE id = ${api.request.user.id}
+        WHERE id = ${api.request.requestBody.user.id}
         `,
         [JSON.stringify(updatedCompletedWorkouts)]
       )
       await client.query('COMMIT TRANSACTION')
+      // Update user to have completed the workout
     }
     response.status(200).json({ message: 'Succesfully emailed', workout })
   } catch (error) {

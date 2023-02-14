@@ -23,7 +23,7 @@ export const resetPassword = async (api: Context, request: Request, response: Re
     WHERE id = ${existingUser.rows[0].id}
     `
 
-    passwordValidation(api.request.body.newPassword, response, client)
+    passwordValidation(api.request.body.newPassword)
 
     const password = await saltAndHash(api.request.body.newPassword)
 

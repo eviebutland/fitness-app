@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 195,
-    resizeMode: 'contain'
+    resizeMode: 'contain',
+    alignSelf: 'center'
   },
   day: {
     color: '#1B4332',

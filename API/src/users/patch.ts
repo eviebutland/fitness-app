@@ -17,7 +17,7 @@ export const updateUser = async (api: Context, request: Request, response: Respo
   const columns: string[] = Object.keys(data)
 
   if (columns.includes('password')) {
-    passwordValidation(api.request.body.password, response, client)
+    passwordValidation(api.request.body.password)
 
     // Reset status if password is updated
     data = { ...api.request.body, password: await saltAndHash(api.request.body.password), status: 'active' }

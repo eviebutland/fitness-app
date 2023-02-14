@@ -22,6 +22,7 @@ export const router: Router = express.Router()
 export function isAuthorized(req: Request, res: Response, next: NextFunction, permission: string) {
   const access = permission.split(':')[0]
   const area = permission.split(':')[1]
+  // @ts-ignore
   const userPermissions = req?.authInfo?.scope
 
   const permissionToCheck = JSON.parse(userPermissions).find((userPermission: string) =>
@@ -34,7 +35,7 @@ export function isAuthorized(req: Request, res: Response, next: NextFunction, pe
 }
 
 // Authentication
-router.get('/login', login)
+router.post('/login', login)
 router.get('/logout/:id', logout)
 router.post('/reset-password', resetPassword)
 

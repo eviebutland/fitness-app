@@ -4,7 +4,7 @@ import { ProgressBar } from './ProgressBar'
 
 interface ContainerProps {
   children: ReactElement
-  footer: ReactElement
+  footer?: ReactElement
 }
 
 export const Container = (props: ContainerProps) => {
