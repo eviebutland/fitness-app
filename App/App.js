@@ -15,12 +15,29 @@ import PasswordResetScreen from './screens/login/PasswordReset'
 const { Navigator, Screen, Group } = createNativeStackNavigator()
 
 export default function App() {
-  // const currentRoute = useRoute()
-
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <Navigator>
+        <Navigator initialRouteName="Login">
+          <Group>
+            <Screen name="Login" component={LoginScreen}></Screen>
+            <Screen
+              name="ResetPassword"
+              component={PasswordResetScreen}
+              options={({ navigation }) => ({
+                headerLeft: () => (
+                  <BaseButton
+                    text="Go back"
+                    onPress={() => {
+                      navigation.navigate('Login')
+                    }}
+                    isTransparent
+                  />
+                )
+              })}
+            ></Screen>
+          </Group>
+
           <Group
             screenOptions={({ navigation }) => ({
               headerLeft: () => {
@@ -48,13 +65,9 @@ export default function App() {
             <Screen name="Confirmation" component={ConfirmationScreen}></Screen>
           </Group>
 
-          <Group>
-            <Screen name="Login" component={LoginScreen}></Screen>
-            <Screen name="ResetPassword" component={PasswordResetScreen}></Screen>
-          </Group>
-
-          <Group>
-            <Screen name="Entry" component={EntryScreen}></Screen>
+          {/* check login status in here? */}
+          <Group screenOptions={{ headerLeft: () => {} }}>
+            <Screen name="Entry" component={EntryScreen} options={{ title: '', headerTitle: '' }}></Screen>
             <Screen name="Dashboard" component={DashboardScreen}></Screen>
           </Group>
         </Navigator>

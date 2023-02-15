@@ -2,7 +2,11 @@ import { atom, selector } from 'recoil'
 
 import { User } from '../../API/src/lib/types/user'
 
-const user: Partial<User> = {
+interface LoggedInUser extends Partial<User> {
+  token: string | undefined
+}
+
+const user: LoggedInUser = {
   age: null,
   email: undefined,
   password: undefined,
@@ -12,7 +16,8 @@ const user: Partial<User> = {
   permissions: undefined,
   workoutpreference: undefined,
   status: undefined,
-  name: undefined
+  name: undefined,
+  token: undefined
 }
 
 export const userState = atom({

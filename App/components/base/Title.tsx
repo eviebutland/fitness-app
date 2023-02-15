@@ -1,14 +1,15 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React, { ReactElement } from 'react'
+import React from 'react'
 
 interface TitleProps {
   text: string
+  styles?: Record<string, number>[]
 }
 
 export const Title = (props: TitleProps) => {
   return (
     <View>
-      <Text style={[styles.title]}>{props.text}</Text>
+      <Text style={[styles.title, props.styles]}>{props.text}</Text>
     </View>
   )
 }

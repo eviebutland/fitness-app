@@ -1,28 +1,37 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { BaseButton } from '../../components/base/Button'
 import { userState } from '../../state/user'
 import { Input } from '../../components/base/Input'
 import { Container } from '../../components/base/Container'
 import axios from 'axios'
+
 const LoginScreen = ({ navigation }) => {
   const [{ username, password }, setLoginDetails] = useState({ username: '', password: '' })
+  const [user, setUser] = useRecoilState(userState)
   const handleLogin = async () => {
     console.log(username, password)
 
     try {
-      const response = await axios.post('http://localhost:3030/login', {
+      const { data } = await axios.post('http://localhost:3030/login', {
         username: 'somehing@df.eesr',
         password: 'Password!23'
       })
-      console.log(response)
+      console.log(data)
+
+      if (data.user) {
+        setUser(data.user)
+        navigation.navigate('Entry')
+      }
     } catch (error) {
       console.log(error)
+      // set an error message on screen
     }
-    // API call to login
-    // then navigate to dashboard
-    // navigation.navigate('Dashboard')
+  }
+
+  const handleNavigate = (screen: string) => {
+    navigation.navigate(screen)
   }
   return (
     <Container>
@@ -49,6 +58,16 @@ const LoginScreen = ({ navigation }) => {
           inputMode="text"
         />
 
+        <View style={styles.linkContainer}>
+          <Text style={styles.link} onPress={handleNavigate('Register')}>
+            {"Don't have an account?"}
+          </Text>
+
+          <Text style={styles.link} onPress={handleNavigate('ResetPassword')}>
+            {'Reset password'}
+          </Text>
+        </View>
+
         <BaseButton text="Let's go!" onPress={handleLogin}></BaseButton>
       </View>
     </Container>
@@ -68,5 +87,14 @@ const styles = StyleSheet.create({
     height: 195,
     resizeMode: 'contain',
     alignSelf: 'center'
+  },
+  linkContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  link: {
+    display: 'flex',
+    textDecorationLine: 'underline',
+    marginBottom: 10
   }
 })

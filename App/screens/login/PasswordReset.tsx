@@ -20,7 +20,6 @@ export default PasswordResetScreen
 
 const styles = StyleSheet.create({
   imageContainer: {
-    display: 'flex',
     justifyContent: 'center',
     padding: 20,
     alignContent: 'center'
