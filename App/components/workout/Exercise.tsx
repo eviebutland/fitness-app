@@ -1,4 +1,4 @@
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
@@ -54,14 +54,12 @@ const Exercise = (props: ExerciseProps) => {
             <Text style={{ fontWeight: '500', paddingRight: 10, fontSize: 20 }}>{props.exercise.name}</Text>
 
             <View onTouchStart={handleClickTooltip}>
-              <FontAwesomeIcon icon={faCheckCircle} color={'#2D6A4F'} size={20} />
+              <FontAwesomeIcon icon={faInfoCircle} color={'#2D6A4F'} size={20} />
             </View>
           </View>
 
           <View style={{ flexDirection: 'row', paddingBottom: 10, alignItems: 'center' }}>
-            <Text style={{ paddingRight: 20, fontSize: 20, fontWeight: '500' }}>
-              {/* {props.exercise.exerciseTime}s */}
-            </Text>
+            <Text style={{ paddingRight: 20, fontSize: 20, fontWeight: '500' }}>{props.time}s</Text>
             <Text>{`Repeat ${
               intensityToSet[parseInt(props.exercise.intensity) as keyof IntensityToSet]
             } times`}</Text>

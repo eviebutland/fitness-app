@@ -7,23 +7,6 @@ interface WorkoutProps {
   workout: WorkoutFormatted
 }
 
-interface IntensityToSet {
-  [key: number]: number
-}
-
-const intensityToSet: IntensityToSet = {
-  1: 5,
-  2: 5,
-  3: 5,
-  4: 4,
-  5: 4,
-  6: 4,
-  7: 3,
-  8: 3,
-  9: 3,
-  10: 2
-}
-
 const Workout = (props: WorkoutProps) => {
   return (
     <View>
