@@ -142,8 +142,7 @@ const formatWorkoutJoin = (results: QueryResult) => {
 
 export const getTodaysWorkout = async (api: Context, request: Request, response: Response) => {
   // Based off the user's logged in workout preference find a workout that matches
-  console.log(api.request.requestBody.user)
-  const user: User = api.request.requestBody.user
+  const user: User = api.request.user
 
   const userWorkoutPreference =
     typeof user.workoutpreference === 'string' ? JSON.parse(user.workoutpreference) : user?.workoutpreference
@@ -165,14 +164,14 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
 
   if (workout?.data.length && typeof workout?.data !== 'string') {
     // check if any of the workouts have been completed yet
-    // userCompletedWorkouts.forEach((completedWorkout: number) => {
-    //   if (workout.data.length && typeof workout.data !== 'string') {
-    //     selectedWorkout =
-    //       workout.data.find((workout: WorkoutFormatted) => completedWorkout !== Number(workout.id)) ?? {}
-    //   } else {
-    //     selectedWorkout = {}
-    //   }
-    // })
+    userCompletedWorkouts.forEach((completedWorkout: number) => {
+      if (workout.data.length && typeof workout.data !== 'string') {
+        selectedWorkout =
+          workout.data.find((workout: WorkoutFormatted) => completedWorkout !== Number(workout.id)) ?? {}
+      } else {
+        selectedWorkout = {}
+      }
+    })
   }
 
   // add selected workout to completedWorkouts with API call
@@ -180,21 +179,21 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
   try {
     const emailData = workout?.data[0] as WorkoutFormatted
 
-    await courier.send({
-      message: {
-        to: {
-          email: 'evie.butland@gmail.com'
-        },
-        template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
-        data: {
-          recipientName: 'Evie',
-          workoutName: emailData.workoutName,
-          set1: emailData.set1,
-          set2: emailData.set2,
-          set3: emailData.set3
-        }
-      }
-    })
+    // await courier.send({
+    //   message: {
+    //     to: {
+    //       email: 'evie.butland@gmail.com'
+    //     },
+    //     template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
+    //     data: {
+    //       recipientName: 'Evie',
+    //       workoutName: emailData.workoutName,
+    //       set1: emailData.set1,
+    //       set2: emailData.set2,
+    //       set3: emailData.set3
+    //     }
+    //   }
+    // })
 
     if (selectedWorkout?.id) {
       const updatedCompletedWorkouts = [...userCompletedWorkouts, Number(selectedWorkout?.id)]
@@ -202,7 +201,7 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
       await client.query(
         `UPDATE users
         SET completedworkouts = $1
-        WHERE id = ${api.request.requestBody.user.id}
+        WHERE id = ${api.request.user.id}
         `,
         [JSON.stringify(updatedCompletedWorkouts)]
       )
