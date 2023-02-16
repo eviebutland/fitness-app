@@ -24,7 +24,10 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     marginBottom: 30
   },
-  container: {},
+  container: {
+    // flexWrap: 'wrap'
+    // maxWidth: 340
+  },
   footer: {
     position: 'absolute',
     bottom: 0

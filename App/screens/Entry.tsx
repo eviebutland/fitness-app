@@ -17,7 +17,7 @@ const EntryScreen = ({ navigation }) => {
           <Title styles={[{ ...styles.title }]} text={`Hi, ${user.name}`}></Title>
           <View style={styles.icon}></View>
         </View>
-        <Text style={styles.subtitle}>{"Are you ready for today's workout?"}</Text>
+        <Text style={styles.subtitle}>Are you ready for today's workout?</Text>
         <Image style={styles.image} source={require('../assets/ladyIcon.png')} accessibilityLabel="App icon" />
         <BaseButton text="Let's go!" onPress={() => navigation.navigate('Dashboard')}></BaseButton>
       </View>

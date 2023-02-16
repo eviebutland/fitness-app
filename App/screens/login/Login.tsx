@@ -10,6 +10,7 @@ import axios from 'axios'
 const LoginScreen = ({ navigation }) => {
   const [{ username, password }, setLoginDetails] = useState({ username: '', password: '' })
   const [user, setUser] = useRecoilState(userState)
+
   const handleLogin = async () => {
     console.log(username, password)
 
@@ -60,11 +61,11 @@ const LoginScreen = ({ navigation }) => {
 
         <View style={styles.linkContainer}>
           <Text style={styles.link} onPress={handleNavigate('Register')}>
-            {"Don't have an account?"}
+            Don't have an account?
           </Text>
 
           <Text style={styles.link} onPress={handleNavigate('ResetPassword')}>
-            {'Reset password'}
+            Reset password
           </Text>
         </View>
 

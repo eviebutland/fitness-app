@@ -1,16 +1,21 @@
 import React, { useEffect, useRef } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { userGetter } from '../state/user'
 import { Title } from '../components/base/Title'
 import { BaseButton } from '../components/base/Button'
-import { Calendar } from '../components/calendar'
+import { Calendar } from '../components/Calendar'
 import axios from 'axios'
+import { todaysWorkoutGetter, todaysWorkoutState } from '../state/workouts'
+import Workout from '../components/workout/Workout'
+import { Container } from '../components/base/Container'
 
 const DashboardScreen = ({ navigation }) => {
   const user = useRecoilValue(userGetter)
 
-  const todaysWorkout = useRef([])
+  const [todaysWorkout, setTodaysWorkout] = useRecoilState(todaysWorkoutState)
+  const workout = useRecoilValue(todaysWorkoutGetter)
+
   const fetchTodaysWorkout = async () => {
     // API call to get todays workout
     try {
@@ -20,16 +25,17 @@ const DashboardScreen = ({ navigation }) => {
         }
       })
 
-      todaysWorkout.current = data.workout.data
+      setTodaysWorkout(data.workout.data)
     } catch (error) {
       console.log(error)
     }
   }
 
-  // useEffect(() => {
-  //   console.log(todaysWorkout.current)
-  // })
-  fetchTodaysWorkout()
+  console.log('FROM GETTER', workout)
+
+  if (!workout.length) {
+    fetchTodaysWorkout()
+  }
 
   const handleStartTimer = () => {
     console.log('start workout timer')
@@ -40,14 +46,17 @@ const DashboardScreen = ({ navigation }) => {
     // Update UI to show workout has been completed
   }
   return (
-    <View>
-      <Title text="Calendar"></Title>
-      {/* Calendar on press fetches that day's workout  */}
-      <Calendar></Calendar>
-      {/* <Text>{todaysWorkout.current}</Text> */}
-      <BaseButton text="Start workout" onPress={handleStartTimer}></BaseButton>
-      <BaseButton text="Complete workout" onPress={handleCompleteWorkout}></BaseButton>
-    </View>
+    <Container>
+      <View>
+        <Title text="Calendar"></Title>
+        {/* Calendar on press fetches that day's workout  */}
+        <Calendar></Calendar>
+        {/* <Text>{todaysWorkout.current.id}</Text> */}
+        <Workout workout={workout[0]}></Workout>
+        <BaseButton text="Start workout" onPress={handleStartTimer}></BaseButton>
+        <BaseButton text="Complete workout" onPress={handleCompleteWorkout}></BaseButton>
+      </View>
+    </Container>
   )
 }
 
