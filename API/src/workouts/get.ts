@@ -146,9 +146,8 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
   const query = api.request.query.day as string
   const userWorkoutPreference =
     typeof user.workoutpreference === 'string' ? JSON.parse(user.workoutpreference) : user?.workoutpreference
-  const todaysDay = query ?? new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
 
-  const todaysWorkoutCatergory = userWorkoutPreference[todaysDay]
+  const todaysWorkoutCatergory = userWorkoutPreference[query]
 
   const workout: WorkoutResults | undefined = await handleSelectAllExercisesInCategory(
     todaysWorkoutCatergory.toLowerCase(),

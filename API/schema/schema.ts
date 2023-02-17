@@ -793,7 +793,7 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
-    '/workouts/today': {
+    '/workouts/day': {
       get: {
         tags: ['workouts'],
         summary: 'Get todays workout',

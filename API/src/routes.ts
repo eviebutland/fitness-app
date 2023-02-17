@@ -132,7 +132,7 @@ router.get(
 )
 
 router.get(
-  '/workouts/today',
+  '/workouts/day',
   (req: Request, res: Response, next: NextFunction) => {
     isAuthorized(req, res, next, 'r:workouts')
   },

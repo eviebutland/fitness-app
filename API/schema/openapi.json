@@ -790,7 +790,7 @@
         }
       }
     },
-    "/workouts/today": {
+    "/workouts/day": {
       "get": {
         "tags": ["workouts"],
         "summary": "Get todays workout",
