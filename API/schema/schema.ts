@@ -799,6 +799,17 @@ export const document: OpenAPIV3.Document = {
         summary: 'Get todays workout',
         description: 'Get today workouts',
         operationId: 'getTodaysWorkout',
+        parameters: [
+          {
+            name: 'day',
+            in: 'query',
+            description: 'The day of the workout to get',
+            required: true,
+            schema: {
+              type: 'string'
+            }
+          }
+        ],
         security: [
           {
             bearer: []

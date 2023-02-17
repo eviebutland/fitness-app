@@ -142,20 +142,20 @@ const formatWorkoutJoin = (results: QueryResult) => {
 
 export const getTodaysWorkout = async (api: Context, request: Request, response: Response) => {
   // Based off the user's logged in workout preference find a workout that matches
-  const user: User = api.request.user
-
+  const user: User = api.request?.user
+  const query = api.request.query.day as string
   const userWorkoutPreference =
     typeof user.workoutpreference === 'string' ? JSON.parse(user.workoutpreference) : user?.workoutpreference
-  const todaysDay = new Date().toLocaleString('en-gb', { weekday: 'long' })
+  const todaysDay = query ?? new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
 
-  const todaysWorkoutCatergory = userWorkoutPreference[todaysDay.toLowerCase()]
+  const todaysWorkoutCatergory = userWorkoutPreference[todaysDay]
 
   const workout: WorkoutResults | undefined = await handleSelectAllExercisesInCategory(
     todaysWorkoutCatergory.toLowerCase(),
     response
   )
 
-  const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
+  // const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
 
   let selectedWorkout: WorkoutFormatted | Record<string, string> = {}
 
@@ -173,8 +173,6 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
       }
     })
   }
-
-  // add selected workout to completedWorkouts with API call
 
   try {
     const emailData = workout?.data[0] as WorkoutFormatted
