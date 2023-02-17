@@ -16,10 +16,17 @@ const DashboardScreen = ({ navigation }) => {
   const [todaysWorkout, setTodaysWorkout] = useRecoilState(todaysWorkoutState)
   const workout = useRecoilValue(todaysWorkoutGetter)
 
-  const fetchTodaysWorkout = async () => {
+  console.log(new Date())
+  const today = new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
+  const fetchTodaysWorkout = async (day: string) => {
     // API call to get todays workout
+    let queryString = day
+    if (day === 'today') {
+      queryString = today
+    }
+
     try {
-      const { data } = await axios.get('http://localhost:3030/workouts/today', {
+      const { data } = await axios.get(`http://localhost:3030/workouts/day?day=${queryString}`, {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
@@ -34,7 +41,7 @@ const DashboardScreen = ({ navigation }) => {
   console.log('FROM GETTER', workout)
 
   if (!workout.length) {
-    fetchTodaysWorkout()
+    fetchTodaysWorkout('today')
   }
 
   const handleStartTimer = () => {
@@ -50,11 +57,17 @@ const DashboardScreen = ({ navigation }) => {
       <View>
         <Title text="Calendar"></Title>
         {/* Calendar on press fetches that day's workout  */}
-        <Calendar></Calendar>
-        {/* <Text>{todaysWorkout.current.id}</Text> */}
-        <Workout workout={workout[0]}></Workout>
-        <BaseButton text="Start workout" onPress={handleStartTimer}></BaseButton>
-        <BaseButton text="Complete workout" onPress={handleCompleteWorkout}></BaseButton>
+        <Calendar initialDay={new Date()}></Calendar>
+
+        {typeof workout === 'string' ? (
+          <Text>{workout}</Text>
+        ) : (
+          <View>
+            <Workout workout={workout[0]}></Workout>
+            <BaseButton text="Start workout" onPress={handleStartTimer}></BaseButton>
+            <BaseButton text="Complete workout" onPress={handleCompleteWorkout}></BaseButton>
+          </View>
+        )}
       </View>
     </Container>
   )

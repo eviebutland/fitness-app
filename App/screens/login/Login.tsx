@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { BaseButton } from '../../components/base/Button'
 import { userState } from '../../state/user'
 import { Input } from '../../components/base/Input'

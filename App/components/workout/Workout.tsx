@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { WorkoutFormatted } from '../../../API/src/lib/types/workouts'
-import Exercise from './exercise'
+import Exercise from './Exercise'
 
 interface WorkoutProps {
   workout: WorkoutFormatted
