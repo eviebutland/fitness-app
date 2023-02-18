@@ -1,38 +1,44 @@
 import { View, StyleSheet, Text } from 'react-native'
 import React, { useState } from 'react'
+import dayjs from 'dayjs'
 
 interface CalendarProps {
   initialDay: Date
+  handleSelectedDate: Function
 }
 
-const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+const today = dayjs().day()
 
 export const Calendar = (props: CalendarProps) => {
   const [activeDay, setActiveDay] = useState(
     props.initialDay.toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
   )
 
-  console.log()
   const handleChangeDate = (day: string) => {
-    // This component will emit what day it is asking for
-    console.log('change date')
     setActiveDay(day)
+    props.handleSelectedDate(day)
   }
-  console.log(activeDay)
-  console.log(new Date())
+
+  const composeDays = (index: number) => {
+    const day = dayjs().add(index - 2, 'day')
+    return {
+      date: day.date(),
+      long: day.format('dddd'),
+      short: day.format('ddd')
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.pill} onTouchStart={() => handleChangeDate('monday')}>
-        <Text style={styles.date}>15</Text>
-        <Text>Mon</Text>
-      </View>
-      <View
-        style={[activeDay === 'tuesday' && styles.active, styles.pill]}
-        onTouchStart={() => handleChangeDate('tuesday')}
-      >
-        <Text style={styles.date}>16</Text>
-        <Text>Tues</Text>
-      </View>
+      {[0, 1, 2, 3, 4].map(index => (
+        <View
+          style={[activeDay === composeDays(index).long.toLowerCase() && styles.active, styles.pill]}
+          onTouchStart={() => handleChangeDate(composeDays(index).long.toLowerCase())}
+        >
+          <Text style={styles.date}>{composeDays(index).date}</Text>
+          <Text>{composeDays(index).short}</Text>
+        </View>
+      ))}
     </View>
   )
 }

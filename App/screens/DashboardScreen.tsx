@@ -16,7 +16,6 @@ const DashboardScreen = ({ navigation }) => {
   const [todaysWorkout, setTodaysWorkout] = useRecoilState(todaysWorkoutState)
   const workout = useRecoilValue(todaysWorkoutGetter)
 
-  console.log(new Date())
   const today = new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
   const fetchTodaysWorkout = async (day: string) => {
     // API call to get todays workout
@@ -38,33 +37,28 @@ const DashboardScreen = ({ navigation }) => {
     }
   }
 
-  console.log('FROM GETTER', workout)
-
   if (!workout.length) {
     fetchTodaysWorkout('today')
-  }
-
-  const handleStartTimer = () => {
-    console.log('start workout timer')
   }
 
   const handleCompleteWorkout = () => {
     // API call to set workout as completed
     // Update UI to show workout has been completed
   }
+
   return (
     <Container>
       <View>
         <Title text="Calendar"></Title>
-        {/* Calendar on press fetches that day's workout  */}
-        <Calendar initialDay={new Date()}></Calendar>
+
+        <Calendar initialDay={new Date()} handleSelectedDate={fetchTodaysWorkout}></Calendar>
 
         {typeof workout === 'string' ? (
           <Text>{workout}</Text>
         ) : (
           <View>
             <Workout workout={workout[0]}></Workout>
-            <BaseButton text="Start workout" onPress={handleStartTimer}></BaseButton>
+
             <BaseButton text="Complete workout" onPress={handleCompleteWorkout}></BaseButton>
           </View>
         )}

@@ -45,13 +45,13 @@ const Exercise = (props: ExerciseProps) => {
         <View style={styles.video}>
           <Text>
             Video here
-            {props.exercise.video}
+            {props.exercise?.video}
           </Text>
         </View>
 
         <View style={styles.description}>
           <View style={{ flexDirection: 'row', paddingBottom: 10, alignItems: 'center' }}>
-            <Text style={{ fontWeight: '500', paddingRight: 10, fontSize: 20 }}>{props.exercise.name}</Text>
+            <Text style={{ fontWeight: '500', paddingRight: 10, fontSize: 20 }}>{props.exercise?.name}</Text>
 
             <View onTouchStart={handleClickTooltip}>
               <FontAwesomeIcon icon={faInfoCircle} color={'#2D6A4F'} size={20} />
@@ -61,7 +61,7 @@ const Exercise = (props: ExerciseProps) => {
           <View style={{ flexDirection: 'row', paddingBottom: 10, alignItems: 'center' }}>
             <Text style={{ paddingRight: 20, fontSize: 20, fontWeight: '500' }}>{props.time}s</Text>
             <Text>{`Repeat ${
-              intensityToSet[parseInt(props.exercise.intensity) as keyof IntensityToSet]
+              intensityToSet[parseInt(props.exercise?.intensity) as keyof IntensityToSet]
             } times`}</Text>
           </View>
         </View>
@@ -72,7 +72,7 @@ const Exercise = (props: ExerciseProps) => {
         {props.exercise.variations.map((variation, index) => (
           <Text>
             {variation}
-            {index + 1 < props.exercise.variations.length && ', '}
+            {index + 1 < props.exercise?.variations.length && ', '}
           </Text>
         ))}
       </Text>
