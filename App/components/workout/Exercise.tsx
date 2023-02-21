@@ -67,15 +67,17 @@ const Exercise = (props: ExerciseProps) => {
         </View>
       </View>
 
-      <Text style={{ paddingVertical: 10 }}>
-        Variations:{' '}
-        {props.exercise.variations.map((variation, index) => (
-          <Text>
-            {variation}
-            {index + 1 < props.exercise?.variations.length && ', '}
-          </Text>
-        ))}
-      </Text>
+      {/* {props?.exercise?.variations && props.exercise?.variations.length && (
+        <Text style={{ paddingVertical: 10 }}>
+          Variations:{' '}
+          {props.exercise.variations.map((variation, index) => (
+            <Text>
+              {variation}
+              {index + 1 < props.exercise?.variations.length && ', '}
+            </Text>
+          ))}
+        </Text>
+      )} */}
     </View>
   )
 }
