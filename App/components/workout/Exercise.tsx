@@ -1,7 +1,8 @@
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import { BaseButton } from '../base/Button'
 
 interface IntensityToSet {
   [key: number]: number
@@ -33,8 +34,27 @@ const intensityToSet: IntensityToSet = {
 }
 
 const Exercise = (props: ExerciseProps) => {
+  const intervalRef = useRef(null)
+  const [reps, setReps] = useState(0) // use this for timers?
+
+  const numberOfSets = intensityToSet[parseInt(props.exercise?.intensity) as keyof IntensityToSet]
   const handleClickTooltip = () => {
     console.log('show description')
+  }
+
+  const handleCountdown = (time: number) => {
+    intervalRef.current = setInterval(() => {
+      setReps(time - 1)
+    })
+  }
+
+  // useEffect(() => )
+  const handleCompleteSet = (time: string) => {
+    // If reps, open the modal to record weight + number of reps
+    // else if excercise time, change text to icon to show completed
+    console.log('if reps, open modal ')
+    console.log(parseInt(time))
+    handleCountdown(parseInt(time))
   }
 
   return (
@@ -58,26 +78,34 @@ const Exercise = (props: ExerciseProps) => {
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row', paddingBottom: 10, alignItems: 'center' }}>
-            <Text style={{ paddingRight: 20, fontSize: 20, fontWeight: '500' }}>{props.time}s</Text>
-            <Text>{`Repeat ${
-              intensityToSet[parseInt(props.exercise?.intensity) as keyof IntensityToSet]
-            } times`}</Text>
-          </View>
+          {props?.exercise?.variations && props.exercise?.variations.length && (
+            <Text style={{ paddingVertical: 10 }}>
+              Variations:{' '}
+              {props.exercise.variations.map((variation, index) => (
+                <Text>
+                  {variation}
+                  {index + 1 < props.exercise?.variations.length && ', '}
+                </Text>
+              ))}
+            </Text>
+          )}
         </View>
       </View>
 
-      {/* {props?.exercise?.variations && props.exercise?.variations.length && (
-        <Text style={{ paddingVertical: 10 }}>
-          Variations:{' '}
-          {props.exercise.variations.map((variation, index) => (
-            <Text>
-              {variation}
-              {index + 1 < props.exercise?.variations.length && ', '}
-            </Text>
-          ))}
-        </Text>
-      )} */}
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+        {new Array(numberOfSets).fill(0).map(_ => (
+          // show exercise time if it exists, else use reps
+          // send time to start countdown
+          // send reps to trigger modal to record
+          // after both, change to completed icon
+          <BaseButton
+            style={{ backgroundColor: '#B7E4C7', marginRight: 10, marginBottom: 10 }}
+            text={props.time ? `${props.time}s` : '12'}
+            isTransparent={true}
+            onPress={() => handleCompleteSet(props.time)}
+          ></BaseButton>
+        ))}
+      </View>
     </View>
   )
 }

@@ -42,8 +42,7 @@ const DashboardScreen = ({ navigation }) => {
   }
 
   const handleCompleteWorkout = () => {
-    // API call to set workout as completed
-    // Update UI to show workout has been completed
+    console.log('API call to complete workout')
   }
 
   return (
@@ -56,11 +55,7 @@ const DashboardScreen = ({ navigation }) => {
         {typeof workout === 'string' ? (
           <Text>{workout}</Text>
         ) : (
-          <View>
-            <Workout workout={workout[0]}></Workout>
-
-            <BaseButton text="Complete workout" onPress={handleCompleteWorkout}></BaseButton>
-          </View>
+          <Workout workout={workout[0]} onCompleteWorkout={handleCompleteWorkout}></Workout>
         )}
       </View>
     </Container>
