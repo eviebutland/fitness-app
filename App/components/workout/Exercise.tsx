@@ -36,26 +36,31 @@ const intensityToSet: IntensityToSet = {
 
 const Exercise = (props: ExerciseProps) => {
   const intervalRef = useRef(null)
-  const [reps, setReps] = useState(0) // use this for timers?
+  const [completedExercise, setCompletedExercise] = useState({}) // use this for timers?
 
   const numberOfSets = intensityToSet[parseInt(props.exercise?.intensity) as keyof IntensityToSet]
+
   const handleClickTooltip = () => {
     console.log('show description')
   }
 
-  const handleCountdown = (time: number) => {
-    intervalRef.current = setInterval(() => {
-      setReps(time - 1)
-    })
-  }
+  const handleCompleteSet = (reps: number, set: number, index: number) => {
+    // open modal
+    console.log('reps', reps)
+    console.log('set', set)
+    console.log('index', index)
 
-  // useEffect(() => )
-  const handleCompleteSet = (time: string) => {
-    // If reps, open the modal to record weight + number of reps
-    // else if excercise time, change text to icon to show completed
-    console.log('if reps, open modal ')
-    console.log(parseInt(time))
-    handleCountdown(parseInt(time))
+    const completedSet = { [index]: { reps: 20 } }
+
+    // {
+    //   1: { // sets
+    //     1: {reps: 20}, // index
+    //     2: {reps: 20}
+    //   }
+    // }
+    console.log('completed set', completedSet)
+    setCompletedExercise({ [set]: completedSet })
+    // console.log(completedExercise)
   }
 
   return (
@@ -94,13 +99,13 @@ const Exercise = (props: ExerciseProps) => {
       </View>
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-        {new Array(numberOfSets).fill(0).map(_ => (
+        {new Array(numberOfSets).fill(0).map((_, index) => (
           // send reps to trigger modal to record
           <BaseButton
             style={{ backgroundColor: '#B7E4C7', marginRight: 10, marginBottom: 10 }}
             text={`${props.reps}`}
             isTransparent={true}
-            onPress={() => handleCompleteSet(props.time)}
+            onPress={() => handleCompleteSet(props.reps, props.set, index)}
           ></BaseButton>
         ))}
       </View>
