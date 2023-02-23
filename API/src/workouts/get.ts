@@ -7,7 +7,7 @@ import { CourierClient, ICourierClient } from '@trycourier/courier'
 import { Context, ParsedRequest } from 'openapi-backend'
 import { User } from '../lib/types/user'
 
-const workoutJoinQuery = `SELECT w.id,  w.name as workoutName, e.name AS set_1_exercise_name, 
+const workoutJoinQuery = `SELECT w.id, w.warmup as warmup, w.cooldown as cooldown,  w.name as workoutName, e.name AS set_1_exercise_name, 
 e.description AS set_1_description,
 e.recommendedreprange AS set_1_repranage,
 e.intensity AS set_1_intensity,
@@ -110,6 +110,7 @@ const formatWorkoutJoin = (results: QueryResult) => {
       id: row.id,
       workoutName: row.workoutname,
       resttime: row.resttime,
+      warmup: JSON.parse(row.warmup),
       set1: {
         name: row.set_1_exercise_name,
         description: row.set_1_description,
@@ -133,7 +134,8 @@ const formatWorkoutJoin = (results: QueryResult) => {
         intensity: row.set_3_intensity,
         video: row.set_3_video,
         exerciseTime: row.set_3_excercisetime
-      }
+      },
+      cooldown: JSON.parse(row.cooldown)
     }
 
     return result.id !== null ? result : null
