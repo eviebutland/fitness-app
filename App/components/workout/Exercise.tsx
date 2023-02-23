@@ -19,6 +19,7 @@ interface ExerciseProps {
   exercise: Exercise
   time: string
   set: number
+  reps: number
 }
 const intensityToSet: IntensityToSet = {
   1: 5,
@@ -78,7 +79,7 @@ const Exercise = (props: ExerciseProps) => {
             </View>
           </View>
 
-          {props?.exercise?.variations && props.exercise?.variations.length && (
+          {props.exercise?.variations && props.exercise?.variations.length && (
             <Text style={{ paddingVertical: 10 }}>
               Variations:{' '}
               {props.exercise.variations.map((variation, index) => (
@@ -94,13 +95,10 @@ const Exercise = (props: ExerciseProps) => {
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         {new Array(numberOfSets).fill(0).map(_ => (
-          // show exercise time if it exists, else use reps
-          // send time to start countdown
           // send reps to trigger modal to record
-          // after both, change to completed icon
           <BaseButton
             style={{ backgroundColor: '#B7E4C7', marginRight: 10, marginBottom: 10 }}
-            text={props.time ? `${props.time}s` : '12'}
+            text={`${props.reps}`}
             isTransparent={true}
             onPress={() => handleCompleteSet(props.time)}
           ></BaseButton>

@@ -3,39 +3,16 @@ import { View, Text, StyleSheet } from 'react-native'
 import { WorkoutFormatted } from '../../../API/src/lib/types/workouts'
 import Exercise from './Exercise'
 import { BaseButton } from '../base/Button'
-import dayjs from 'dayjs'
+import { useTimer } from '../../lib/useTimer'
+
 interface WorkoutProps {
   workout: WorkoutFormatted
   onCompleteWorkout: Function
 }
 
 const Workout = (props: WorkoutProps) => {
-  const [timeNow, setTimeNow] = useState(new Date())
-  const [startTime, setStartTime] = useState({})
-  const [isTimerActive, setIsTimerActive] = useState(false)
-  const intervalRef = useRef(null)
+  const { handleInterval, handleStartTimer, startTime, handleEndTimer, isTimerActive } = useTimer()
 
-  const handleStartTimer = () => {
-    setTimeNow(new Date())
-    setIsTimerActive(true)
-    setStartTime(dayjs(new Date(0)))
-  }
-
-  // Move this functionality out to tidy up
-  const handleInterval = (isRunning: Boolean) => {
-    if (isRunning && !intervalRef.current) {
-      intervalRef.current = setInterval(() => {
-        const newTime = dayjs(startTime).add(1, 'second')
-
-        const difference = dayjs(newTime).toDate().getTime() - timeNow.getTime()
-        setStartTime(dayjs().millisecond(difference))
-      }, 1000)
-    } else {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-  }
-  // Move this functionality out to tidy up
   useEffect(() => {
     if (isTimerActive) {
       if (Object.values(startTime).length) {
@@ -45,9 +22,8 @@ const Workout = (props: WorkoutProps) => {
   }, [isTimerActive])
 
   const handleEndWorkout = () => {
-    setIsTimerActive(false)
-    handleInterval(false)
-    // call API
+    handleEndTimer()
+
     props.onCompleteWorkout()
   }
   const sets = [
@@ -68,15 +44,16 @@ const Workout = (props: WorkoutProps) => {
         </View>
       )}
 
-      {/* TODO: update these to come from API */}
-      <View style={{ marginVertical: 20 }}>
-        <Text style={{ marginBottom: 10 }}>Warm up</Text>
-        <View style={{ marginLeft: 10 }}>
-          <Text>Incline walk 10 mins</Text>
-          <Text>Hip openers</Text>
-          <Text>Deep sumo squat shifts</Text>
+      {props.workout?.warmup.length && (
+        <View style={{ marginVertical: 20 }}>
+          <Text style={{ marginBottom: 10 }}>Warm up</Text>
+          <View style={{ marginLeft: 10 }}>
+            {props.workout.warmup.map(warmup => (
+              <Text>{warmup}</Text>
+            ))}
+          </View>
         </View>
-      </View>
+      )}
 
       {startTime && isTimerActive && (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -87,20 +64,26 @@ const Workout = (props: WorkoutProps) => {
       <View style={{ marginTop: 20 }}>
         {sets.map(set => (
           <View style={{ marginBottom: 10 }}>
-            <Exercise exercise={set.workout} time={set.workout?.exerciseTime} set={set.set}></Exercise>
+            <Exercise
+              exercise={set.workout}
+              time={set.workout?.exerciseTime}
+              reps={set.workout?.recommededRepRange}
+              set={set.set}
+            ></Exercise>
           </View>
         ))}
       </View>
 
-      {/* TODO: update these to come from API */}
-      <View style={{ marginBottom: 20 }}>
-        <Text style={{ marginBottom: 10 }}>Cool down</Text>
-        <View style={{ marginLeft: 10 }}>
-          <Text>Incline walk 5 mins</Text>
-          <Text>Pigeon static stretch</Text>
-          <Text>Hamstring stretch</Text>
+      {props.workout?.cooldown.length && (
+        <View style={{ marginBottom: 20 }}>
+          <Text style={{ marginBottom: 10 }}>Cool down</Text>
+          <View style={{ marginLeft: 10 }}>
+            {props.workout.cooldown.map(cooldown => (
+              <Text>{cooldown}</Text>
+            ))}
+          </View>
         </View>
-      </View>
+      )}
 
       <BaseButton text="Complete timer" onPress={handleEndWorkout}></BaseButton>
     </View>

@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
   pill: {
     marginHorizontal: 10,
     paddingHorizontal: 10,
-    paddingVertical: 10
+    paddingVertical: 10,
+    alignItems: 'center'
   },
   active: {
     backgroundColor: '#52B788',
