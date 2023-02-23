@@ -15,6 +15,7 @@ e.exercisetime AS set_1_excercisetime,
 e.video AS set_1_video,
 e.variations AS set_1_variations,
 
+
 e2.name AS set_2_exercise_name, e2.description  AS set_2_description, 
 e2.recommendedreprange AS set_2_repranage,
 e2.intensity AS set_2_intensity,
@@ -117,7 +118,8 @@ const formatWorkoutJoin = (results: QueryResult) => {
         variations: JSON.parse(row.set_1_variations),
         intensity: row.set_1_intensity,
         video: row.set_1_video,
-        exerciseTime: row.set_1_excercisetime
+        exerciseTime: row.set_1_excercisetime,
+        recommededRepRange: row.set_1_repranage
       },
       set2: {
         name: row.set_2_exercise_name,
@@ -125,7 +127,8 @@ const formatWorkoutJoin = (results: QueryResult) => {
         variations: JSON.parse(row.set_2_variations),
         intensity: row.set_2_intensity,
         video: row.set_2_video,
-        exerciseTime: row.set_2_excercisetime
+        exerciseTime: row.set_2_excercisetime,
+        recommededRepRange: row.set_1_repranage
       },
       set3: {
         name: row.set_3_exercise_name,
@@ -133,7 +136,8 @@ const formatWorkoutJoin = (results: QueryResult) => {
         variations: JSON.parse(row.set_3_variations),
         intensity: row.set_3_intensity,
         video: row.set_3_video,
-        exerciseTime: row.set_3_excercisetime
+        exerciseTime: row.set_3_excercisetime,
+        recommededRepRange: row.set_1_repranage
       },
       cooldown: JSON.parse(row.cooldown)
     }

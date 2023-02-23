@@ -14,6 +14,7 @@ interface Set {
   intensity: string
   video: string
   exerciseTime: string
+  recommededRepRange: number
 }
 
 export interface WorkoutFormatted {
