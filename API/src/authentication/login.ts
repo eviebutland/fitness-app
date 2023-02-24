@@ -84,12 +84,7 @@ export const login = async (api: Context, request: Request, response: Response):
           Object.entries(result.rows[0]).filter(([key, value]) => {
             // Omit password from being returned to the user
             if (result.rows[0].levelofaccess === 'admin') {
-              return (
-                key !== 'password' &&
-                key !== 'workoutpreference' &&
-                key !== 'premium' &&
-                key !== 'completedworkouts'
-              )
+              return key !== 'password' && key !== 'workoutpreference' && key !== 'premium'
             } else {
               return key !== 'password'
             }
