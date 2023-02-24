@@ -4,10 +4,13 @@ import { WorkoutFormatted } from '../../../API/src/lib/types/workouts'
 import Exercise from './Exercise'
 import { BaseButton } from '../base/Button'
 import { useTimer } from '../../lib/useTimer'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 interface WorkoutProps {
   workout: WorkoutFormatted
   onCompleteWorkout: Function
+  hasCompletedWorkout: Boolean
 }
 
 const Workout = (props: WorkoutProps) => {
@@ -36,6 +39,7 @@ const Workout = (props: WorkoutProps) => {
       <Text style={{ fontSize: 25 }}>
         Workout:
         <Text style={{ fontWeight: '500' }}> {props.workout?.workoutName}</Text>
+        {props.hasCompletedWorkout && <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />}
       </Text>
 
       {!isTimerActive && (
@@ -57,7 +61,9 @@ const Workout = (props: WorkoutProps) => {
 
       {startTime && isTimerActive && (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontSize: 40, fontWeight: '500' }}>{startTime.format('mm:ss')}</Text>
+          <Text onPress={handleEndTimer} style={{ fontSize: 40, fontWeight: '500' }}>
+            {startTime.format('mm:ss')}
+          </Text>
         </View>
       )}
 
@@ -85,7 +91,7 @@ const Workout = (props: WorkoutProps) => {
         </View>
       )}
 
-      <BaseButton text="Complete timer" onPress={handleEndWorkout}></BaseButton>
+      <BaseButton text="Complete workout" onPress={handleEndWorkout}></BaseButton>
     </View>
   )
 }

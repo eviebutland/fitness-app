@@ -1,6 +1,6 @@
 import { faCheckCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { completedSetsGetter, completedSetsState } from '../../state/workouts'

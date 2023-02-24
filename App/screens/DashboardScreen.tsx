@@ -55,7 +55,11 @@ const DashboardScreen = ({ navigation }) => {
         {typeof workout === 'string' ? (
           <Text>{workout}</Text>
         ) : (
-          <Workout workout={workout[0]} onCompleteWorkout={handleCompleteWorkout}></Workout>
+          <Workout
+            workout={workout[0]}
+            onCompleteWorkout={handleCompleteWorkout}
+            hasCompletedWorkout={false}
+          ></Workout>
         )}
       </View>
     </Container>
