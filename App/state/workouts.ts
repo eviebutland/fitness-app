@@ -1,7 +1,5 @@
 import { atom, selector } from 'recoil'
 
-import { WorkoutFormatted } from '../../API/src/lib/types/workouts'
-
 export const todaysWorkoutState = atom({
   key: 'todaysWorkoutState',
   default: []
@@ -10,8 +8,30 @@ export const todaysWorkoutState = atom({
 export const todaysWorkoutGetter = selector({
   key: 'todaysWorkoutGetter',
   get: ({ get }) => {
-    const state = get(todaysWorkoutState)
-    console.log('state', state)
     return get(todaysWorkoutState)
+  }
+})
+
+interface CompletedSets {
+  [key: string]: {
+    [key: number]: {
+      reps: null
+      weight: null
+    }
+  }
+}
+export const completedSetsState = atom({
+  key: 'completedSetsState',
+  default: {
+    set_1: {},
+    set_2: {},
+    set_3: {}
+  }
+})
+
+export const completedSetsGetter = selector({
+  key: 'completedSetsGetter',
+  get: ({ get }) => {
+    return get(completedSetsState)
   }
 })

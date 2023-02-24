@@ -62,8 +62,8 @@ const Workout = (props: WorkoutProps) => {
       )}
 
       <View style={{ marginTop: 20 }}>
-        {sets.map(set => (
-          <View style={{ marginBottom: 10 }}>
+        {sets.map((set, index) => (
+          <View style={{ marginBottom: 10 }} key={index}>
             <Exercise
               exercise={set.workout}
               time={set.workout?.exerciseTime}

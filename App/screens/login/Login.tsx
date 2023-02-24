@@ -19,7 +19,6 @@ const LoginScreen = ({ navigation }) => {
         username: 'somehing@df.eesr',
         password: 'Password!23'
       })
-      console.log(data)
 
       if (data.user) {
         setUser(data.user)
@@ -60,11 +59,11 @@ const LoginScreen = ({ navigation }) => {
         />
 
         <View style={styles.linkContainer}>
-          <Text style={styles.link} onPress={handleNavigate('Register')}>
+          <Text style={styles.link} onPress={() => handleNavigate('Register')}>
             Don't have an account?
           </Text>
 
-          <Text style={styles.link} onPress={handleNavigate('ResetPassword')}>
+          <Text style={styles.link} onPress={() => handleNavigate('ResetPassword')}>
             Reset password
           </Text>
         </View>

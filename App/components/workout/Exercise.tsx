@@ -1,7 +1,9 @@
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { completedSetsGetter, completedSetsState } from '../../state/workouts'
 import { BaseButton } from '../base/Button'
 
 interface IntensityToSet {
@@ -35,8 +37,8 @@ const intensityToSet: IntensityToSet = {
 }
 
 const Exercise = (props: ExerciseProps) => {
-  const intervalRef = useRef(null)
-  const [completedExercise, setCompletedExercise] = useState({}) // use this for timers?
+  const [completedSets, setCompletedSets] = useRecoilState(completedSetsState)
+  const setGetter = useRecoilValue(completedSetsGetter)
 
   const numberOfSets = intensityToSet[parseInt(props.exercise?.intensity) as keyof IntensityToSet]
 
@@ -44,23 +46,13 @@ const Exercise = (props: ExerciseProps) => {
     console.log('show description')
   }
 
-  const handleCompleteSet = (reps: number, set: number, index: number) => {
-    // open modal
-    console.log('reps', reps)
-    console.log('set', set)
-    console.log('index', index)
+  const handleCompleteSet = (reps: number, set: string, index: number) => {
+    const sets = { [index]: { reps, weight: 10 } }
 
-    const completedSet = { [index]: { reps: 20 } }
-
-    // {
-    //   1: { // sets
-    //     1: {reps: 20}, // index
-    //     2: {reps: 20}
-    //   }
-    // }
-    console.log('completed set', completedSet)
-    setCompletedExercise({ [set]: completedSet })
-    // console.log(completedExercise)
+    setCompletedSets({
+      ...completedSets,
+      [set]: { ...completedSets[set], ...sets }
+    })
   }
 
   return (
@@ -84,7 +76,7 @@ const Exercise = (props: ExerciseProps) => {
             </View>
           </View>
 
-          {props.exercise?.variations && props.exercise?.variations.length && (
+          {props.exercise?.variations && props.exercise?.variations.length > 1 && (
             <Text style={{ paddingVertical: 10 }}>
               Variations:{' '}
               {props.exercise.variations.map((variation, index) => (
@@ -99,15 +91,20 @@ const Exercise = (props: ExerciseProps) => {
       </View>
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-        {new Array(numberOfSets).fill(0).map((_, index) => (
-          // send reps to trigger modal to record
-          <BaseButton
-            style={{ backgroundColor: '#B7E4C7', marginRight: 10, marginBottom: 10 }}
-            text={`${props.reps}`}
-            isTransparent={true}
-            onPress={() => handleCompleteSet(props.reps, props.set, index)}
-          ></BaseButton>
-        ))}
+        {new Array(numberOfSets).fill(0).map((_, index) => {
+          return setGetter[`set_${props.set}`]?.[index]?.reps ? (
+            <View style={styles.completed}>
+              <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />
+            </View>
+          ) : (
+            <BaseButton
+              style={styles.repsButton}
+              text={`${props.reps}`}
+              isTransparent={true}
+              onPress={() => handleCompleteSet(props.reps, `set_${props.set}`, index)}
+            ></BaseButton>
+          )
+        })}
       </View>
     </View>
   )
@@ -129,6 +126,23 @@ const styles = StyleSheet.create({
   },
   workoutContainer: {
     flexDirection: 'row'
+  },
+  completed: {
+    backgroundColor: '#B7E4C7',
+    marginRight: 10,
+    marginBottom: 10,
+    borderColor: '#52B788',
+    borderRadius: 5,
+    padding: 10,
+    minWidth: 55,
+    minHeight: 55,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  repsButton: {
+    backgroundColor: '#B7E4C7',
+    marginRight: 10,
+    marginBottom: 10
   }
 })
 export default Exercise
