@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import { activeModalState } from '../../state/modal'
 import { completedSetsGetter, completedSetsState } from '../../state/workouts'
 import RecordModal from './RecordModal'
 
@@ -38,7 +39,8 @@ const intensityToSet: IntensityToSet = {
 
 const Exercise = (props: ExerciseProps) => {
   const [completedSets, setCompletedSets] = useRecoilState(completedSetsState)
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [activeModals, setActiveModals] = useRecoilState(activeModalState)
+
   const setGetter = useRecoilValue(completedSetsGetter)
 
   const numberOfSets = intensityToSet[parseInt(props.exercise?.intensity) as keyof IntensityToSet]
@@ -49,12 +51,20 @@ const Exercise = (props: ExerciseProps) => {
 
   const handleCompleteSet = (reps: number, set: string, index: number) => {
     const sets = { [index]: { reps, weight: 10 } }
-    setIsModalVisible(true)
+
+    handleOpenModal()
 
     setCompletedSets({
       ...completedSets,
       [set]: { ...completedSets[set], ...sets }
     })
+  }
+
+  const handleOpenModal = () => {
+    const newActiveModal = activeModals.slice()
+    newActiveModal.push('record-weight-modal')
+
+    setActiveModals(newActiveModal)
   }
 
   return (
@@ -98,7 +108,7 @@ const Exercise = (props: ExerciseProps) => {
             style={styles.completed}
             onPress={() => {
               setGetter[`set_${props.set}`]?.[index]?.reps
-                ? setIsModalVisible(true)
+                ? handleOpenModal()
                 : handleCompleteSet(props.reps, `set_${props.set}`, index)
             }}
           >
@@ -110,7 +120,7 @@ const Exercise = (props: ExerciseProps) => {
           </Pressable>
         ))}
       </View>
-      <RecordModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible}></RecordModal>
+      <RecordModal />
     </View>
   )
 }

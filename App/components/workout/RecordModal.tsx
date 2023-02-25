@@ -2,45 +2,38 @@ import React, { useEffect, useState } from 'react'
 import { Modal, StyleSheet, View, Pressable, Text } from 'react-native'
 import { BaseButton } from '../base/Button'
 import { Input } from '../base/Input'
-import { useRecoilState } from 'recoil'
-import { activeModalState } from '../../state/modal'
-interface RecordModalProps {
-  isModalVisible: Boolean
-  setIsModalVisible: Function
-}
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { activeModalGetter, activeModalState } from '../../state/modal'
 
-const RecordModal = (props: RecordModalProps) => {
+const RecordModal = () => {
   const [weight, setWeight] = useState(0)
   const [activeModals, setActiveModals] = useRecoilState(activeModalState)
+  const [isVisible, setIsVisible] = useState(false)
+  const currentActiveModals = useRecoilValue(activeModalGetter)
 
   useEffect(() => {
-    const active = activeModals.slice()
-    if (props.isModalVisible) {
-      active.push('record-weight-modal')
-      setActiveModals(active)
+    const active = currentActiveModals.slice()
+    if (active.includes('record-weight-modal')) {
+      setIsVisible(true)
     } else {
-      setActiveModals(active.filter(activeModal => activeModal !== 'record-weight-modal'))
+      setIsVisible(false)
     }
-  }, [props.isModalVisible])
+  }, [isVisible, currentActiveModals])
 
   return (
     <View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={props.isModalVisible}
-        onRequestClose={() => {
-          props.setIsModalVisible(!props.isModalVisible)
-        }}
-      >
+      <Modal animationType="slide" transparent={true} visible={isVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Pressable
-              onPress={() => props.setIsModalVisible(!props.isModalVisible)}
-              style={styles.bar}
-            ></Pressable>
+            <Pressable onPress={() => setIsVisible(!isVisible)} style={styles.bar}></Pressable>
             <Input label="Record weight" inputMode="text" value={weight} onChangeText={setWeight}></Input>
-            <BaseButton text={'Save'} onPress={() => props.setIsModalVisible(!props.isModalVisible)}></BaseButton>
+            <BaseButton
+              text={'Save'}
+              onPress={() => {
+                const active = currentActiveModals.slice()
+                setActiveModals(active.filter(activeModal => activeModal !== 'record-weight-modal'))
+              }}
+            ></BaseButton>
           </View>
         </View>
       </Modal>
