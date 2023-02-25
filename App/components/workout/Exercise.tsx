@@ -1,10 +1,10 @@
 import { faCheckCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { completedSetsGetter, completedSetsState } from '../../state/workouts'
-import { BaseButton } from '../base/Button'
+import RecordModal from './RecordModal'
 
 interface IntensityToSet {
   [key: number]: number
@@ -38,6 +38,7 @@ const intensityToSet: IntensityToSet = {
 
 const Exercise = (props: ExerciseProps) => {
   const [completedSets, setCompletedSets] = useRecoilState(completedSetsState)
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const setGetter = useRecoilValue(completedSetsGetter)
 
   const numberOfSets = intensityToSet[parseInt(props.exercise?.intensity) as keyof IntensityToSet]
@@ -48,6 +49,7 @@ const Exercise = (props: ExerciseProps) => {
 
   const handleCompleteSet = (reps: number, set: string, index: number) => {
     const sets = { [index]: { reps, weight: 10 } }
+    setIsModalVisible(true)
 
     setCompletedSets({
       ...completedSets,
@@ -77,7 +79,7 @@ const Exercise = (props: ExerciseProps) => {
           </View>
 
           {props.exercise?.variations && props.exercise?.variations.length > 1 && (
-            <Text style={{ paddingVertical: 10 }}>
+            <Text>
               Variations:{' '}
               {props.exercise.variations.map((variation, index) => (
                 <Text>
@@ -90,22 +92,25 @@ const Exercise = (props: ExerciseProps) => {
         </View>
       </View>
 
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-        {new Array(numberOfSets).fill(0).map((_, index) => {
-          return setGetter[`set_${props.set}`]?.[index]?.reps ? (
-            <View style={styles.completed}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingTop: 10 }}>
+        {new Array(numberOfSets).fill(0).map((_, index) => (
+          <Pressable
+            style={styles.completed}
+            onPress={() => {
+              setGetter[`set_${props.set}`]?.[index]?.reps
+                ? setIsModalVisible(true)
+                : handleCompleteSet(props.reps, `set_${props.set}`, index)
+            }}
+          >
+            {setGetter[`set_${props.set}`]?.[index]?.reps ? (
               <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />
-            </View>
-          ) : (
-            <BaseButton
-              style={styles.repsButton}
-              text={`${props.reps}`}
-              isTransparent={true}
-              onPress={() => handleCompleteSet(props.reps, `set_${props.set}`, index)}
-            ></BaseButton>
-          )
-        })}
+            ) : (
+              <Text>{props.reps}</Text>
+            )}
+          </Pressable>
+        ))}
       </View>
+      <RecordModal isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible}></RecordModal>
     </View>
   )
 }
@@ -138,11 +143,6 @@ const styles = StyleSheet.create({
     minHeight: 55,
     justifyContent: 'center',
     alignItems: 'center'
-  },
-  repsButton: {
-    backgroundColor: '#B7E4C7',
-    marginRight: 10,
-    marginBottom: 10
   }
 })
 export default Exercise

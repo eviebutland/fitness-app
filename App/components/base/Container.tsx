@@ -1,9 +1,10 @@
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { View, StyleSheet, ScrollView, Text } from 'react-native'
 import React, { ReactElement } from 'react'
 import { ProgressBar } from './ProgressBar'
 
 interface ContainerProps {
   children: ReactElement
+  hasOverlay?: Boolean
   footer?: ReactElement
 }
 
@@ -14,6 +15,7 @@ export const Container = (props: ContainerProps) => {
         <View style={styles.children}>{props.children}</View>
         <View style={styles.footer}>{props.footer}</View>
       </View>
+      <View style={props.hasOverlay ? styles.overlay : { display: 'none' }}></View>
     </ScrollView>
   )
 }
@@ -24,12 +26,16 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     marginBottom: 30
   },
-  container: {
-    // flexWrap: 'wrap'
-    // maxWidth: 340
-  },
   footer: {
     position: 'absolute',
     bottom: 0
+  },
+
+  overlay: {
+    backgroundColor: '#D9D9D9',
+    opacity: 0.5,
+    width: '100%',
+    height: '100%',
+    position: 'absolute'
   }
 })

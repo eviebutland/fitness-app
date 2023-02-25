@@ -9,11 +9,13 @@ import axios from 'axios'
 import { todaysWorkoutGetter, todaysWorkoutState } from '../state/workouts'
 import Workout from '../components/workout/Workout'
 import { Container } from '../components/base/Container'
+import { activeModalGetter } from '../state/modal'
 
 const DashboardScreen = ({ navigation }) => {
-  const user = useRecoilValue(userGetter)
-
   const [todaysWorkout, setTodaysWorkout] = useRecoilState(todaysWorkoutState)
+
+  const user = useRecoilValue(userGetter)
+  const activeModal = useRecoilValue(activeModalGetter)
   const workout = useRecoilValue(todaysWorkoutGetter)
 
   const today = new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
@@ -46,7 +48,7 @@ const DashboardScreen = ({ navigation }) => {
   }
 
   return (
-    <Container>
+    <Container hasOverlay={!!activeModal.length}>
       <View>
         <Title text="Calendar"></Title>
 
