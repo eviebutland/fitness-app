@@ -15,7 +15,7 @@ const EntryScreen = ({ navigation }) => {
     } else {
       navigation.navigate('Login')
     }
-  }, 3000)
+  }, 2000)
   return (
     <Container>
       <View>

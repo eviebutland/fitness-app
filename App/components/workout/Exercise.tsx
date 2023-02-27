@@ -5,6 +5,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { activeModalState } from '../../state/modal'
 import { completedSetsGetter, completedSetsState } from '../../state/workouts'
+import Tooltip from '../base/Tooltip'
 import RecordModal from './RecordModal'
 
 interface IntensityToSet {
@@ -84,7 +85,9 @@ const Exercise = (props: ExerciseProps) => {
             <Text style={{ fontWeight: '500', paddingRight: 10, fontSize: 20 }}>{props.exercise?.name}</Text>
 
             <View onTouchStart={handleClickTooltip}>
-              <FontAwesomeIcon icon={faInfoCircle} color={'#2D6A4F'} size={20} />
+              <Tooltip text="opem">
+                <FontAwesomeIcon icon={faInfoCircle} color={'#2D6A4F'} size={20} />
+              </Tooltip>
             </View>
           </View>
 
