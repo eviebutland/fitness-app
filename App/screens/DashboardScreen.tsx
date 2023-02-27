@@ -1,9 +1,7 @@
-import React, { useEffect, useRef } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React from 'react'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { userGetter } from '../state/user'
-import { Title } from '../components/base/Title'
-import { BaseButton } from '../components/base/Button'
 import { Calendar } from '../components/Calendar'
 import axios from 'axios'
 import { todaysWorkoutGetter, todaysWorkoutState } from '../state/workouts'
@@ -50,18 +48,27 @@ const DashboardScreen = ({ navigation }) => {
   return (
     <Container hasOverlay={!!activeModal.length}>
       <View>
-        <Title text="Calendar"></Title>
-
         <Calendar initialDay={new Date()} handleSelectedDate={fetchTodaysWorkout}></Calendar>
-
-        {typeof workout === 'string' ? (
-          <Text>{workout}</Text>
+        {typeof workout === 'string' && workout === 'REST' ? (
+          <View style={{ justifyContent: 'flex-start', paddingVertical: 30 }}>
+            <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Relax,</Text>
+            <Text style={{ fontSize: 25 }}>You've got a rest day</Text>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Image
+                style={{ width: '90%', justifyContent: 'center' }}
+                source={require('../assets/rest.png')}
+                accessibilityLabel="App icon"
+              />
+            </View>
+          </View>
         ) : (
-          <Workout
-            workout={workout[0]}
-            onCompleteWorkout={handleCompleteWorkout}
-            hasCompletedWorkout={false}
-          ></Workout>
+          workout[0] && (
+            <Workout
+              workout={workout[0]}
+              onCompleteWorkout={handleCompleteWorkout}
+              hasCompletedWorkout={false}
+            ></Workout>
+          )
         )}
       </View>
     </Container>

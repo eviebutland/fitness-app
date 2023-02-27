@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text } from 'react-native'
 import { WorkoutFormatted } from '../../../API/src/lib/types/workouts'
 import Exercise from './Exercise'
 import { BaseButton } from '../base/Button'
@@ -96,22 +96,4 @@ const Workout = (props: WorkoutProps) => {
   )
 }
 
-const styles = StyleSheet.create({
-  video: {
-    width: 130,
-    height: 80,
-    backgroundColor: '#D9D9D9',
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  description: {
-    paddingLeft: 10,
-    width: 230,
-    justifyContent: 'space-between'
-  },
-  workoutContainer: {
-    flexDirection: 'row'
-  }
-})
 export default Workout

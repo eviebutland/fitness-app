@@ -21,6 +21,9 @@ export const Container = (props: ContainerProps) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white'
+  },
   children: {
     paddingHorizontal: 15,
     paddingVertical: 30,

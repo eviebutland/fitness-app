@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import { useRecoilValue } from 'recoil'
 import { BaseButton } from '../components/base/Button'
 import { Container } from '../components/base/Container'
@@ -7,19 +7,25 @@ import { Title } from '../components/base/Title'
 import { userGetter } from '../state/user'
 
 const EntryScreen = ({ navigation }) => {
-  // get logged in users name
   const user = useRecoilValue(userGetter)
-  console.log(user)
+
+  setTimeout(() => {
+    if (user?.name) {
+      navigation.navigate('Dashboard')
+    } else {
+      navigation.navigate('Login')
+    }
+  }, 3000)
   return (
     <Container>
       <View>
         <View style={styles.titleContainer}>
           <Title styles={[{ ...styles.title }]} text={`Hi, ${user.name}`}></Title>
-          <View style={styles.icon}></View>
+          {/* <View style={styles.icon}></View> */}
         </View>
         <Text style={styles.subtitle}>Are you ready for today's workout?</Text>
-        <Image style={styles.image} source={require('../assets/ladyIcon.png')} accessibilityLabel="App icon" />
-        <BaseButton text="Let's go!" onPress={() => navigation.navigate('Dashboard')}></BaseButton>
+        <Image style={styles.image} source={require('../assets/entry.png')} accessibilityLabel="App icon" />
+        <ActivityIndicator />
       </View>
     </Container>
   )
