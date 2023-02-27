@@ -236,7 +236,7 @@ const handleSelectAllExercisesInCategory = async (category: string, response: Re
       const response: WorkoutResults | undefined = { data: formattedResult, total: formattedResult.length }
       return response
     } else {
-      return { data: 'Rest day, take it easy!', total: 0 }
+      return { data: 'REST', total: 0 }
     }
   } catch (error) {
     rollback(client)
