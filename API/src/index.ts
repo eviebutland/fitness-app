@@ -4,7 +4,7 @@ import { login, logout, resetPassword } from './authentication'
 
 import { getUsers, updateUser, deleteUser, getAUser, createUser } from './users/index'
 import {
-  getAllWorkouts,
+  // getAllWorkouts,
   getWorkoutByID,
   getAllExercisesInCatergory,
   getTodaysWorkout,
@@ -12,6 +12,8 @@ import {
   deleteWorkout,
   createWorkout
 } from './workouts'
+
+import { getAllWorkoutPlans } from './workoutPlans/index'
 
 export const handlers: Context = {
   login,
@@ -26,7 +28,7 @@ export const handlers: Context = {
   updateUser,
   deleteUser,
   getAUser,
-  getAllWorkouts,
+  getAllWorkoutPlans,
   getWorkoutByID,
   getTodaysWorkout,
   getAllExercisesInCatergory,

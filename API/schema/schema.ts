@@ -688,7 +688,7 @@ export const document: OpenAPIV3.Document = {
         tags: ['workouts'],
         summary: 'Get all workouts',
         description: 'Get all workouts created',
-        operationId: 'getAllWorkouts',
+        operationId: 'getAllWorkoutPlans',
         security: [
           {
             bearer: []

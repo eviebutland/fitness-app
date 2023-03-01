@@ -2,15 +2,16 @@ import express, { NextFunction, Request, Response, Router } from 'express'
 import { login, logout, resetPassword } from './authentication'
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
 import { getUsers, createUser, updateUser, deleteUser, getAUser } from './users/index'
-import {
-  getAllWorkouts,
-  getWorkoutByID,
-  getAllExercisesInCatergory,
-  updateWorkout,
-  deleteWorkout,
-  createWorkout,
-  getTodaysWorkout
-} from './workouts'
+import { getAllWorkoutPlans } from './workoutPlans'
+// import {
+//   getAllWorkouts,
+//   getWorkoutByID,
+//   getAllExercisesInCatergory,
+//   updateWorkout,
+//   deleteWorkout,
+//   createWorkout,
+//   getTodaysWorkout
+// } from './workouts'
 // import passport from '../oauth2'
 
 export const router: Router = express.Router()
@@ -115,60 +116,69 @@ router.delete(
 )
 
 // Workouts
+// router.get(
+//   '/workouts',
+//   (req: Request, res: Response, next: NextFunction) => {
+//     isAuthorized(req, res, next, 'r:workouts')
+//   },
+//   getAllWorkouts
+// )
+
+// router.get(
+//   '/workouts/:id',
+//   (req: Request, res: Response, next: NextFunction) => {
+//     isAuthorized(req, res, next, 'r:workouts')
+//   },
+//   getWorkoutByID
+// )
+
+// router.get(
+//   '/workouts/day',
+//   (req: Request, res: Response, next: NextFunction) => {
+//     isAuthorized(req, res, next, 'r:workouts')
+//   },
+//   getTodaysWorkout
+// )
+
+// router.get(
+//   '/workouts/catergory/:catergory',
+//   (req: Request, res: Response, next: NextFunction) => {
+//     isAuthorized(req, res, next, 'r:workouts')
+//   },
+//   getAllExercisesInCatergory
+// )
+
+// router.post(
+//   '/workouts',
+//   (req: Request, res: Response, next: NextFunction) => {
+//     isAuthorized(req, res, next, 'w:workouts')
+//   },
+//   createWorkout
+// )
+
+// router.patch(
+//   '/workouts/:id',
+//   (req: Request, res: Response, next: NextFunction) => {
+//     isAuthorized(req, res, next, 'w:workouts')
+//   },
+//   updateWorkout
+// )
+
+// router.delete(
+//   '/workouts/:id',
+//   (req: Request, res: Response, next: NextFunction) => {
+//     isAuthorized(req, res, next, 'a:workouts')
+//   },
+//   deleteWorkout
+// )
+
+// Workouts plans
 router.get(
   '/workouts',
   (req: Request, res: Response, next: NextFunction) => {
     isAuthorized(req, res, next, 'r:workouts')
   },
-  getAllWorkouts
-)
-
-router.get(
-  '/workouts/:id',
-  (req: Request, res: Response, next: NextFunction) => {
-    isAuthorized(req, res, next, 'r:workouts')
-  },
-  getWorkoutByID
-)
-
-router.get(
-  '/workouts/day',
-  (req: Request, res: Response, next: NextFunction) => {
-    isAuthorized(req, res, next, 'r:workouts')
-  },
-  getTodaysWorkout
-)
-
-router.get(
-  '/workouts/catergory/:catergory',
-  (req: Request, res: Response, next: NextFunction) => {
-    isAuthorized(req, res, next, 'r:workouts')
-  },
-  getAllExercisesInCatergory
-)
-
-router.post(
-  '/workouts',
-  (req: Request, res: Response, next: NextFunction) => {
-    isAuthorized(req, res, next, 'w:workouts')
-  },
-  createWorkout
-)
-
-router.patch(
-  '/workouts/:id',
-  (req: Request, res: Response, next: NextFunction) => {
-    isAuthorized(req, res, next, 'w:workouts')
-  },
-  updateWorkout
-)
-
-router.delete(
-  '/workouts/:id',
-  (req: Request, res: Response, next: NextFunction) => {
-    isAuthorized(req, res, next, 'a:workouts')
-  },
-  deleteWorkout
+  getAllWorkoutPlans
 )
 
 // Will need a UI to access these
