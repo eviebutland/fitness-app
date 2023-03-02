@@ -996,7 +996,7 @@ export const document: OpenAPIV3.Document = {
         tags: ['workouts'],
         summary: 'Delete a workout by ID',
         description: 'Delete a workout by ID',
-        operationId: 'deleteWorkout',
+        operationId: 'deleteWorkoutPlan',
         parameters: [
           {
             name: 'id',
@@ -1061,31 +1061,16 @@ export const document: OpenAPIV3.Document = {
         type: 'object',
         required: ['name', 'averageTime', 'scheduledDay', 'intensityRating', 'completedStatus'],
         properties: {
-          name: {
+          title: {
             type: 'string',
             description: 'Name of planned workout',
             minLength: 4,
             example: 'Upper 1 04/11/2022'
           },
-          averageTime: {
-            description: 'Average time to complete in minutes',
-            type: 'number',
-            example: 40
-          },
-          scheduledDay: {
-            description: 'scheduled day of the week based off users preferences',
-            type: 'string',
-            enum: ['mon', 'tues', 'wed', 'thurs', 'fri', 'sat', 'sun']
-          },
-          intensityRating: {
-            description: 'Overall intensity rating based off of the exercises intensity',
-            type: 'number',
-            example: 8.5
-          },
-          completedStatus: {
-            description: 'Has the user completed the workout?',
-            type: 'boolean',
-            example: true
+          workout: {
+            type: 'object',
+            description: 'Workout',
+            example: '{}'
           }
         }
       },

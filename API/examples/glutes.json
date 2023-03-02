@@ -1,32 +1,32 @@
 {
   "warmUp": [
-    { "exercise": "Incline walk", "sets": 1, "exerciseTime": 180, "video": "https://bbc.com" },
-    { "exercise": "Air squats", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Deadbugs", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
+    { "exercise": "High knees", "sets": 1, "exerciseTime": 180, "video": "https://bbc.com" },
+    { "exercise": "Leg swings", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
+    { "exercise": "Reverse lunges", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
     { "exercise": "Short band crab walks", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
   ],
   "superset": [
-    { "exercise": "Barbell sumo deadlift", "sets": 4, "reps": [8, 8, 6, 6], "video": "https://bbc.com" },
-    { "exercise": "Short band crab walks", "sets": 4, "reps": [10, 10, 10, 10], "video": "https://bbc.com" }
+    { "exercise": "Barbell tempo RDL", "sets": 4, "reps": [8, 8, 6, 6], "video": "https://bbc.com" },
+    { "exercise": "Heels elevated glute bridge", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" }
   ],
   "wod": [
+    { "exercise": "Deficit reverse lunges", "sets": 3, "reps": [16, 16, 16], "video": "https://bbc.com" },
+    { "exercise": "DB sumo pulse squat", "sets": 3, "reps": [12, 12, 12], "video": "https://bbc.com" },
     { "exercise": "Single leg hip thrust", "sets": 3, "reps": [16, 16, 16], "video": "https://bbc.com" },
-    { "exercise": "DB sumo squat", "sets": 3, "reps": [12, 12, 12], "video": "https://bbc.com" },
-    { "exercise": "Banded fire hydrants", "sets": 3, "reps": [12, 12, 12], "video": "https://bbc.com" },
-    { "exercise": "Jumping lunges", "sets": 3, "reps": [12, 12, 12], "video": "https://bbc.com" }
+    { "exercise": "Broad jumps", "sets": 3, "reps": [12, 12, 12], "video": "https://bbc.com" }
   ],
   "finisher": [
-    { "exercise": "Banded high glute bridge", "sets": 2, "reps": [20, 20], "video": "https://bbc.com" },
-    { "exercise": "Extended clams", "sets": 2, "reps": [24, 24], "video": "https://bbc.com" }
+    { "exercise": "Cable pull through", "sets": 2, "reps": [15, 15], "video": "https://bbc.com" },
+    { "exercise": "Cable kickbacks", "sets": 2, "reps": [20, 20], "video": "https://bbc.com" }
   ],
   "additionalTopUp": [
-    { "exercise": "Hanging leg raises", "sets": 3, "reps": [8, 8, 8], "video": "https://bbc.com" },
-    { "exercise": "X Jumps", "sets": 3, "reps": [8, 8, 8], "video": "https://bbc.com" },
-    { "exercise": "Alternate v-up", "sets": 3, "reps": [8, 8, 8], "video": "https://bbc.com" }
+    { "exercise": "Shoot throughs", "sets": 3, "reps": [10, 10, 10], "video": "https://bbc.com" },
+    { "exercise": "Reverse lunge knee drive", "sets": 3, "reps": [12, 12, 12], "video": "https://bbc.com" },
+    { "exercise": "Banded high glute bridge", "sets": 3, "reps": [16, 16, 16], "video": "https://bbc.com" }
   ],
   "cooldown": [
     { "exercise": "Pigeon stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Quad stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Downward dog", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
+    { "exercise": "Cobra", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
+    { "exercise": "Hamstring stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
   ]
 }

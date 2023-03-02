@@ -6,13 +6,12 @@ import {
   getAllWorkoutPlans,
   getWorkoutPlanById,
   getTodaysWorkout,
-  getAllExercisesInCatergory
+  getAllExercisesInCatergory,
+  deleteWorkoutPlan
 } from './workoutPlans'
 // import {
 //   updateWorkout,
-//   deleteWorkout,
 //   createWorkout,
-//   getTodaysWorkout
 // } from './workouts'
 // import passport from '../oauth2'
 
@@ -133,14 +132,6 @@ router.delete(
 //   updateWorkout
 // )
 
-// router.delete(
-//   '/workouts/:id',
-//   (req: Request, res: Response, next: NextFunction) => {
-//     isAuthorized(req, res, next, 'a:workouts')
-//   },
-//   deleteWorkout
-// )
-
 // Workouts plans
 router.get(
   '/workouts',
@@ -172,6 +163,14 @@ router.get(
     isAuthorized(req, res, next, 'r:workouts')
   },
   getAllExercisesInCatergory
+)
+
+router.delete(
+  '/workouts/:id',
+  (req: Request, res: Response, next: NextFunction) => {
+    isAuthorized(req, res, next, 'a:workouts')
+  },
+  deleteWorkoutPlan
 )
 
 // Will need a UI to access these
