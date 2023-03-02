@@ -2,11 +2,13 @@ import express, { NextFunction, Request, Response, Router } from 'express'
 import { login, logout, resetPassword } from './authentication'
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
 import { getUsers, createUser, updateUser, deleteUser, getAUser } from './users/index'
-import { getAllWorkoutPlans } from './workoutPlans'
+import {
+  getAllWorkoutPlans,
+  getWorkoutPlanById,
+  getTodaysWorkout,
+  getAllExercisesInCatergory
+} from './workoutPlans'
 // import {
-//   getAllWorkouts,
-//   getWorkoutByID,
-//   getAllExercisesInCatergory,
 //   updateWorkout,
 //   deleteWorkout,
 //   createWorkout,
@@ -115,39 +117,6 @@ router.delete(
   deleteExercise
 )
 
-// Workouts
-// router.get(
-//   '/workouts',
-//   (req: Request, res: Response, next: NextFunction) => {
-//     isAuthorized(req, res, next, 'r:workouts')
-//   },
-//   getAllWorkouts
-// )
-
-// router.get(
-//   '/workouts/:id',
-//   (req: Request, res: Response, next: NextFunction) => {
-//     isAuthorized(req, res, next, 'r:workouts')
-//   },
-//   getWorkoutByID
-// )
-
-// router.get(
-//   '/workouts/day',
-//   (req: Request, res: Response, next: NextFunction) => {
-//     isAuthorized(req, res, next, 'r:workouts')
-//   },
-//   getTodaysWorkout
-// )
-
-// router.get(
-//   '/workouts/catergory/:catergory',
-//   (req: Request, res: Response, next: NextFunction) => {
-//     isAuthorized(req, res, next, 'r:workouts')
-//   },
-//   getAllExercisesInCatergory
-// )
-
 // router.post(
 //   '/workouts',
 //   (req: Request, res: Response, next: NextFunction) => {
@@ -179,6 +148,30 @@ router.get(
     isAuthorized(req, res, next, 'r:workouts')
   },
   getAllWorkoutPlans
+)
+
+router.get(
+  '/workouts/:id',
+  (req: Request, res: Response, next: NextFunction) => {
+    isAuthorized(req, res, next, 'r:workouts')
+  },
+  getWorkoutPlanById
+)
+
+router.get(
+  '/workouts/day',
+  (req: Request, res: Response, next: NextFunction) => {
+    isAuthorized(req, res, next, 'r:workouts')
+  },
+  getTodaysWorkout
+)
+
+router.get(
+  '/workouts/catergory/:catergory',
+  (req: Request, res: Response, next: NextFunction) => {
+    isAuthorized(req, res, next, 'r:workouts')
+  },
+  getAllExercisesInCatergory
 )
 
 // Will need a UI to access these

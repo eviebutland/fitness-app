@@ -1,0 +1,25 @@
+{
+  "warmUp": [
+    { "exercise": "Air squats", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
+    { "exercise": "High knees", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
+    { "exercise": "Hip openers", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
+    { "exercise": "Walkout to press up", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
+  ],
+  "wod": [
+    { "exercise": "Barbell thrursters", "sets": 4, "reps": [8, 8, 8, 8], "video": "https://bbc.com" },
+    { "exercise": "American KB swing", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" },
+    { "exercise": "DB lateral lunge", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" },
+    { "exercise": "Negative push ups", "sets": 4, "reps": [10, 10, 10, 10], "video": "https://bbc.com" }
+  ],
+  "circuit": [
+    { "exercise": "DB walking lunges", "sets": 4, "reps": [16, 16, 16, 16], "video": "https://bbc.com" },
+    { "exercise": "Med ball roll out", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" },
+    { "exercise": "DB bent over row", "sets": 4, "reps": [10, 10, 10, 10], "video": "https://bbc.com" },
+    { "exercise": "DB alternative snatch", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" }
+  ],
+  "cooldown": [
+    { "exercise": "Tricep stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
+    { "exercise": "Cross body shoulder stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
+    { "exercise": "Quad stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
+  ]
+}

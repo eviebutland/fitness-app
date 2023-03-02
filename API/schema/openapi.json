@@ -853,7 +853,7 @@
         "tags": ["workouts"],
         "summary": "Get a workouts",
         "description": "Get a workouts",
-        "operationId": "getWorkoutById",
+        "operationId": "getWorkoutPlanById",
         "parameters": [
           {
             "name": "id",

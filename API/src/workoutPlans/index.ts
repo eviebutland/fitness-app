@@ -1,2 +1,2 @@
-import { getAllWorkoutPlans } from './get'
-export { getAllWorkoutPlans }
+import { getAllWorkoutPlans, getWorkoutPlanById, getTodaysWorkout, getAllExercisesInCatergory } from './get'
+export { getAllWorkoutPlans, getWorkoutPlanById, getTodaysWorkout, getAllExercisesInCatergory }

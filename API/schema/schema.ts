@@ -856,7 +856,7 @@ export const document: OpenAPIV3.Document = {
         tags: ['workouts'],
         summary: 'Get a workouts',
         description: 'Get a workouts',
-        operationId: 'getWorkoutByID',
+        operationId: 'getWorkoutPlanById',
         parameters: [
           {
             name: 'id',
