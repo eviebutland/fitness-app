@@ -730,7 +730,7 @@
         "tags": ["workouts"],
         "summary": "Create a workout",
         "description": "Create a workout based off user's preferences and table of exercises in database",
-        "operationId": "createWorkout",
+        "operationId": "createWorkoutPlan",
         "security": [
           {
             "bearer": []
@@ -1056,18 +1056,13 @@
     "schemas": {
       "PlannedWorkout": {
         "type": "object",
-        "required": ["name", "averageTime", "scheduledDay", "intensityRating", "completedStatus"],
+        "required": ["title"],
         "properties": {
           "title": {
             "type": "string",
             "description": "Name of planned workout",
             "minLength": 4,
-            "example": "Upper 1 04/11/2022"
-          },
-          "workout": {
-            "type": "object",
-            "description": "Workout",
-            "example": "{}"
+            "example": "Upper 1"
           }
         }
       },

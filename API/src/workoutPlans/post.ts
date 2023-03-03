@@ -3,7 +3,7 @@ import { Context } from 'openapi-backend'
 import { client } from '../../server'
 import { rollback } from '../utils/rollback'
 
-export const createWorkout = async (api: Context, request: Request, response: Response): Promise<void> => {
+export const createWorkoutPlan = async (api: Context, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
 
@@ -12,7 +12,6 @@ export const createWorkout = async (api: Context, request: Request, response: Re
 
     const values: string[] = Object.values(api.request.body)
 
-    console.log(values)
     await client.query(query, [...values])
     await client.query('COMMIT TRANSACTION')
 

@@ -733,7 +733,7 @@ export const document: OpenAPIV3.Document = {
         tags: ['workouts'],
         summary: 'Create a workout',
         description: "Create a workout based off user's preferences and table of exercises in database",
-        operationId: 'createWorkout',
+        operationId: 'createWorkoutPlan',
         security: [
           {
             bearer: []
@@ -777,14 +777,7 @@ export const document: OpenAPIV3.Document = {
           content: {
             'application/json': {
               schema: {
-                type: 'string',
-                example: 'Hello world!'
-              }
-            },
-            'application/xml': {
-              schema: {
-                type: 'string',
-                example: 'Hello world!'
+                $ref: '#/components/schemas/PlannedWorkout'
               }
             }
           },
@@ -1059,18 +1052,23 @@ export const document: OpenAPIV3.Document = {
     schemas: {
       PlannedWorkout: {
         type: 'object',
-        required: ['name', 'averageTime', 'scheduledDay', 'intensityRating', 'completedStatus'],
+        required: ['title'],
         properties: {
           title: {
             type: 'string',
             description: 'Name of planned workout',
-            minLength: 4,
-            example: 'Upper 1 04/11/2022'
+            example: 'Upper 1'
           },
           workout: {
             type: 'object',
             description: 'Workout',
-            example: '{}'
+            example: '{}',
+            properties: {
+              warmUp: {
+                type: 'array',
+                example: []
+              }
+            }
           }
         }
       },

@@ -46,6 +46,7 @@ const api = new OpenApiBackend({
 })
 
 async function validationFailHandler(c: Context, req: ParsedRequest, res: Response) {
+  console.log(req.body)
   return res.status(400).json({ status: 400, err: c.validation.errors })
 }
 
