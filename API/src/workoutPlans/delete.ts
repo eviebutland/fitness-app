@@ -15,25 +15,24 @@ export const deleteWorkoutPlan = async (api: Context, request: Request, response
   try {
     await client.query('BEGIN TRANSACTION')
     // Get hold of workout to delete
-    const getWorkoutQuery = `SELECT * FROM workouts
+    const getWorkoutQuery = `SELECT * FROM workoutPlans
     WHERE id = $1`
 
-    const workoutToDelete: QueryResult<WorkoutPlain> = await client.query(getWorkoutQuery, [api.request.params.id])
+    const workoutToDelete = await client.query(getWorkoutQuery, [api.request.params.id])
 
     if (workoutToDelete.rows[0]) {
       // Move to archive collection
-      await archiveDocument(workoutToDelete.rows[0], 'workouts_archive')
+      await archiveDocument(workoutToDelete.rows[0], 'workoutplans_archive')
 
-      const deletedWorkout: QueryResult<WorkoutPlain> | ErrorEvent = await deleteDocument(
-        api.request.params.id as string,
-        'workouts'
-      )
+      const deletedWorkout = await deleteDocument(api.request.params.id as string, 'workoutPlans')
 
       // Delete from main workout table
       response.status(200).json({
         message: `Workout with ID: ${api.request.params.id} has been successfully deleted`,
         result: deletedWorkout
       })
+    } else {
+      response.status(400).json({ message: 'Unable to find workout plan' })
     }
 
     await client.query('COMMIT TRANSACTION')

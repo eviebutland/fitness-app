@@ -12,6 +12,7 @@ export const createWorkout = async (api: Context, request: Request, response: Re
 
     const values: string[] = Object.values(api.request.body)
 
+    console.log(values)
     await client.query(query, [...values])
     await client.query('COMMIT TRANSACTION')
 
