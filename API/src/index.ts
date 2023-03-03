@@ -3,7 +3,6 @@ import { createExcerise, getAllExercises, updateExercise, deleteExercise } from 
 import { login, logout, resetPassword } from './authentication'
 
 import { getUsers, updateUser, deleteUser, getAUser, createUser } from './users/index'
-import { updateWorkout } from './workouts'
 
 import {
   getAllWorkoutPlans,
@@ -11,7 +10,8 @@ import {
   getTodaysWorkout,
   getAllExercisesInCatergory,
   deleteWorkoutPlan,
-  createWorkoutPlan
+  createWorkoutPlan,
+  updateWorkout
 } from './workoutPlans/index'
 
 export const handlers: Context = {

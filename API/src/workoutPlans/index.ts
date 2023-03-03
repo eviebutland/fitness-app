@@ -1,6 +1,7 @@
 import { getAllWorkoutPlans, getWorkoutPlanById, getTodaysWorkout, getAllExercisesInCatergory } from './get'
 import { deleteWorkoutPlan } from './delete'
 import { createWorkoutPlan } from './post'
+import { updateWorkout } from './patch'
 
 export {
   getAllWorkoutPlans,
@@ -8,5 +9,6 @@ export {
   getTodaysWorkout,
   getAllExercisesInCatergory,
   deleteWorkoutPlan,
-  createWorkoutPlan
+  createWorkoutPlan,
+  updateWorkout
 }

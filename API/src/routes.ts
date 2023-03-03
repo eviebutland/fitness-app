@@ -8,11 +8,10 @@ import {
   getTodaysWorkout,
   getAllExercisesInCatergory,
   deleteWorkoutPlan,
-  createWorkoutPlan
+  createWorkoutPlan,
+  updateWorkout
 } from './workoutPlans'
-// import {
-//   updateWorkout,
-// } from './workouts'
+
 // import passport from '../oauth2'
 
 export const router: Router = express.Router()
@@ -116,14 +115,6 @@ router.delete(
   deleteExercise
 )
 
-// router.patch(
-//   '/workouts/:id',
-//   (req: Request, res: Response, next: NextFunction) => {
-//     isAuthorized(req, res, next, 'w:workouts')
-//   },
-//   updateWorkout
-// )
-
 // Workouts plans
 router.get(
   '/workouts',
@@ -173,6 +164,13 @@ router.post(
   createWorkoutPlan
 )
 
+router.patch(
+  '/workouts/:id',
+  (req: Request, res: Response, next: NextFunction) => {
+    isAuthorized(req, res, next, 'w:workouts')
+  },
+  updateWorkout
+)
 // Will need a UI to access these
 // router.get('/login/google', passport.authenticate('google'))
 // router.get(
