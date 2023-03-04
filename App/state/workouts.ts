@@ -12,21 +12,9 @@ export const todaysWorkoutGetter = selector({
   }
 })
 
-interface CompletedSets {
-  [key: string]: {
-    [key: number]: {
-      reps: null
-      weight: null
-    }
-  }
-}
 export const completedSetsState = atom({
   key: 'completedSetsState',
-  default: {
-    set_1: {},
-    set_2: {},
-    set_3: {}
-  }
+  default: {}
 })
 
 export const completedSetsGetter = selector({

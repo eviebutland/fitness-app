@@ -8,9 +8,6 @@ import { completedSetsGetter, completedSetsState } from '../../state/workouts'
 import Tooltip from '../base/Tooltip'
 import RecordModal from './RecordModal'
 
-interface IntensityToSet {
-  [key: number]: number
-}
 interface Exercise {
   name: string
   description: string
@@ -22,20 +19,9 @@ interface Exercise {
 interface ExerciseProps {
   exercise: Exercise
   time: string
-  set: number
+  set: string
   reps: number
-}
-const intensityToSet: IntensityToSet = {
-  1: 5,
-  2: 5,
-  3: 5,
-  4: 4,
-  5: 4,
-  6: 4,
-  7: 3,
-  8: 3,
-  9: 3,
-  10: 2
+  groupIndex: number
 }
 
 const Exercise = (props: ExerciseProps) => {
@@ -44,20 +30,21 @@ const Exercise = (props: ExerciseProps) => {
 
   const setGetter = useRecoilValue(completedSetsGetter)
 
-  const numberOfSets = intensityToSet[parseInt(props.exercise?.intensity) as keyof IntensityToSet]
-
   const handleClickTooltip = () => {
     console.log('show description')
   }
 
-  const handleCompleteSet = (reps: number, set: string, index: number) => {
+  const handleCompleteSet = (reps: number, set: string, index: number, shouldDisplayModal: boolean) => {
     const sets = { [index]: { reps, weight: 10 } }
 
-    handleOpenModal()
+    shouldDisplayModal && handleOpenModal()
 
     setCompletedSets({
       ...completedSets,
-      [set]: { ...completedSets[set], ...sets }
+      [set]: {
+        ...completedSets[set],
+        [props.groupIndex]: { ...completedSets[set][props.groupIndex], ...sets }
+      }
     })
   }
 
@@ -68,61 +55,53 @@ const Exercise = (props: ExerciseProps) => {
     setActiveModals(newActiveModal)
   }
 
+  const handlePressReps = (rep, index) => {
+    const repsInState = setGetter?.[props.set]?.[props.groupIndex]?.[index]?.reps
+
+    if (rep.type === 'weight') {
+      repsInState ? handleOpenModal() : handleCompleteSet(rep, props.set, index, true)
+    } else {
+      handleCompleteSet(rep, props.set, index, false)
+    }
+  }
+
   return (
     <View>
-      <Text style={{ paddingBottom: 10, fontSize: 15, fontWeight: '500' }}>Set {props.set}</Text>
-
       <View style={styles.workoutContainer}>
         <View style={styles.video}>
-          <Text>
-            Video here
-            {props.exercise?.video}
-          </Text>
+          <Text>{props.exercise?.video}</Text>
         </View>
 
         <View style={styles.description}>
           <View style={{ flexDirection: 'row', paddingBottom: 10, alignItems: 'center' }}>
-            <Text style={{ fontWeight: '500', paddingRight: 10, fontSize: 20 }}>{props.exercise?.name}</Text>
+            <Text style={{ fontWeight: '500', paddingRight: 10, fontSize: 20 }}>{props.exercise?.exercise}</Text>
 
             <View onTouchStart={handleClickTooltip}>
-              <Tooltip text="opem">
+              <Tooltip text="open">
                 <FontAwesomeIcon icon={faInfoCircle} color={'#2D6A4F'} size={20} />
               </Tooltip>
             </View>
           </View>
-
-          {props.exercise?.variations && props.exercise?.variations.length > 1 && (
-            <Text>
-              Variations:{' '}
-              {props.exercise.variations.map((variation, index) => (
-                <Text>
-                  {variation}
-                  {index + 1 < props.exercise?.variations.length && ', '}
-                </Text>
-              ))}
-            </Text>
-          )}
         </View>
       </View>
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingTop: 10 }}>
-        {new Array(numberOfSets).fill(0).map((_, index) => (
+        {props.exercise.reps.map((rep, index: number) => (
           <Pressable
             style={styles.completed}
             onPress={() => {
-              setGetter[`set_${props.set}`]?.[index]?.reps
-                ? handleOpenModal()
-                : handleCompleteSet(props.reps, `set_${props.set}`, index)
+              handlePressReps(rep, index)
             }}
           >
-            {setGetter[`set_${props.set}`]?.[index]?.reps ? (
+            {setGetter?.[props.set]?.[props.groupIndex]?.[index]?.reps ? (
               <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />
             ) : (
-              <Text>{props.reps}</Text>
+              <Text>{rep.value}</Text>
             )}
           </Pressable>
         ))}
       </View>
+
       <RecordModal />
     </View>
   )
