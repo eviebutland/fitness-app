@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { Context } from 'openapi-backend'
 import { client } from '../../server'
-// import { formatPatchBody } from '../utils/format-request-body'
+import { formatPatchBody } from '../utils/format-request-body'
 import { rollback } from '../utils/rollback'
 
 export const updateWorkout = async (api: Context, request: Request, response: Response): Promise<void> => {
@@ -18,18 +18,18 @@ export const updateWorkout = async (api: Context, request: Request, response: Re
   const keys: string[] = Object.keys(api.request.body)
   const values: string[] = Object.values(api.request.body)
 
-  console.log(values)
+  const set: string[] = formatPatchBody(keys)
 
-  //   const query = `
-  //     UPDATE exercises
-  //     SET ${set}
-  //     WHERE id = ${api.request.params.id}
-  //     `
+  const query = `
+    UPDATE workoutPlans
+    SET ${set}
+    WHERE id = ${api.request.params.id}
+  `
 
   try {
     await client.query('BEGIN TRANSACTION')
 
-    // await client.query(query, [...values])
+    await client.query(query, [...values])
 
     await client.query('COMMIT TRANSACTION')
     response.status(500).json({ message: `Successfully updated workout with id: ${api.request.params.id}` })

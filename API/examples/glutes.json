@@ -1,32 +1,156 @@
 {
   "warmUp": [
-    { "exercise": "High knees", "sets": 1, "exerciseTime": 180, "video": "https://bbc.com" },
-    { "exercise": "Leg swings", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Reverse lunges", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Short band crab walks", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
+    {
+      "exercise": "High knees",
+      "sets": 1,
+      "reps": [{ "type": "time", "value": 180 }],
+      "video": "https://bbc.com"
+    },
+    { "exercise": "Leg swings", "sets": 1, "reps": [{ "type": "time", "value": 40 }], "video": "https://bbc.com" },
+    {
+      "exercise": "Reverse lunges",
+      "sets": 1,
+      "reps": [{ "type": "time", "value": 40 }],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Short band crab walks",
+      "sets": 1,
+      "reps": [{ "type": "time", "value": 40 }],
+      "video": "https://bbc.com"
+    }
   ],
   "superset": [
-    { "exercise": "Barbell tempo RDL", "sets": 4, "reps": [8, 8, 6, 6], "video": "https://bbc.com" },
-    { "exercise": "Heels elevated glute bridge", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" }
+    {
+      "exercise": "Barbell tempo RDL",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 8 },
+        { "type": "weight", "value": 8 },
+        { "type": "weight", "value": 6 },
+        { "type": "weight", "value": 6 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Heels elevated glute bridge",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "wod": [
-    { "exercise": "Deficit reverse lunges", "sets": 3, "reps": [16, 16, 16], "video": "https://bbc.com" },
-    { "exercise": "DB sumo pulse squat", "sets": 3, "reps": [12, 12, 12], "video": "https://bbc.com" },
-    { "exercise": "Single leg hip thrust", "sets": 3, "reps": [16, 16, 16], "video": "https://bbc.com" },
-    { "exercise": "Broad jumps", "sets": 3, "reps": [12, 12, 12], "video": "https://bbc.com" }
+    {
+      "exercise": "Deficit reverse lunges",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "DB sumo pulse squat",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Single leg hip thrust",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Broad jumps",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "finisher": [
-    { "exercise": "Cable pull through", "sets": 2, "reps": [15, 15], "video": "https://bbc.com" },
-    { "exercise": "Cable kickbacks", "sets": 2, "reps": [20, 20], "video": "https://bbc.com" }
+    {
+      "exercise": "Cable pull through",
+      "sets": 2,
+      "reps": [
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Cable kickbacks",
+      "sets": 2,
+      "reps": [
+        { "type": "weight", "value": 20 },
+        { "type": "weight", "value": 20 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "additionalTopUp": [
-    { "exercise": "Shoot throughs", "sets": 3, "reps": [10, 10, 10], "video": "https://bbc.com" },
-    { "exercise": "Reverse lunge knee drive", "sets": 3, "reps": [12, 12, 12], "video": "https://bbc.com" },
-    { "exercise": "Banded high glute bridge", "sets": 3, "reps": [16, 16, 16], "video": "https://bbc.com" }
+    {
+      "exercise": "Shoot throughs",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Reverse lunge knee drive",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Banded high glute bridge",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "cooldown": [
-    { "exercise": "Pigeon stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Cobra", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Hamstring stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
+    {
+      "exercise": "Pigeon stretch",
+      "sets": 1,
+      "reps": [{ "type": "time", "value": 40 }],
+      "video": "https://bbc.com"
+    },
+    { "exercise": "Cobra", "sets": 1, "reps": [{ "type": "time", "value": 40 }], "video": "https://bbc.com" },
+    {
+      "exercise": "Hamstring stretch",
+      "sets": 1,
+      "reps": [{ "type": "time", "value": 40 }],
+      "video": "https://bbc.com"
+    }
   ]
 }

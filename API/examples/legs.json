@@ -6,22 +6,115 @@
     { "exercise": "Short band crab walks", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
   ],
   "superset": [
-    { "exercise": "Leg press wide", "sets": 4, "reps": [8, 8, 8, 8], "video": "https://bbc.com" },
-    { "exercise": "Leg press narrow", "sets": 4, "reps": [10, 10, 10, 10], "video": "https://bbc.com" }
+    {
+      "exercise": "Leg press wide",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 8 },
+        { "type": "weight", "value": 8 },
+        { "type": "weight", "value": 8 },
+        { "type": "weight", "value": 8 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Leg press narrow",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "wod": [
-    { "exercise": "Sand bag clean", "sets": 4, "reps": [10, 10, 10, 10], "video": "https://bbc.com" },
-    { "exercise": "Sand bag over shoulder", "sets": 4, "reps": [10, 10, 10, 10], "video": "https://bbc.com" },
-    { "exercise": "DB front racked squats", "sets": 4, "reps": [15, 15, 15, 15], "video": "https://bbc.com" }
+    {
+      "exercise": "Sand bag clean",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Sand bag over shoulder",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 },
+        { "type": "weight", "value": 10 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "DB front racked squats",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "finisher": [
-    { "exercise": "Heels elevated goblet squat", "sets": 2, "reps": [15, 15], "video": "https://bbc.com" },
-    { "exercise": "Bodyweight heels elevated squat", "sets": 2, "reps": [15, 15], "video": "https://bbc.com" }
+    {
+      "exercise": "Heels elevated goblet squat",
+      "sets": 2,
+      "reps": [
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Bodyweight heels elevated squat",
+      "sets": 2,
+      "reps": [
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "additionalTopUp": [
-    { "exercise": "Short band glute bridge", "sets": 3, "reps": [15, 15, 15], "video": "https://bbc.com" },
-    { "exercise": "Single leg glute bridge", "sets": 3, "reps": [16, 16, 16], "video": "https://bbc.com" },
-    { "exercise": "Extended clams", "sets": 3, "reps": [16, 16, 16], "video": "https://bbc.com" }
+    {
+      "exercise": "Short band glute bridge",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Single leg glute bridge",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Extended clams",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 },
+        { "type": "weight", "value": 16 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "cooldown": [
     { "exercise": "Pigeon stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },

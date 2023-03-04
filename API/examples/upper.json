@@ -1,32 +1,187 @@
 {
   "warmUp": [
-    { "exercise": "Broomstick strech", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Walkouts", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Cat/Cow", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Deadbugs", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
+    {
+      "exercise": "Broomstick strech",
+      "sets": 1,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Walkouts",
+      "sets": 1,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Cat/Cow",
+      "sets": 1,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Deadbugs",
+      "sets": 1,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "set": [
-    { "exercise": "Barbell bench press", "sets": 3, "reps": [8, 8, 6, 6], "video": "https://bbc.com" },
-    { "exercise": "Cable facepull", "sets": 3, "reps": [15, 15, 15], "video": "https://bbc.com" }
+    {
+      "exercise": "Barbell bench press",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 8 },
+        { "type": "weight", "value": 8 },
+        { "type": "weight", "value": 6 },
+        { "type": "weight", "value": 6 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Cable facepull",
+      "sets": 3,
+      "reps": [
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "wod": [
-    { "exercise": "DB Alternate snatch", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" },
-    { "exercise": "Bear crawl", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" },
-    { "exercise": "Slams", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" },
-    { "exercise": "Med ball roll out", "sets": 4, "reps": [12, 12, 12, 12], "video": "https://bbc.com" }
+    {
+      "exercise": "DB Alternate snatch",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Bear crawl",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Slams",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Med ball roll out",
+      "sets": 4,
+      "reps": [
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 },
+        { "type": "weight", "value": 12 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "finisher": [
-    { "exercise": "Plate front raise", "sets": 2, "reps": [15, 15], "video": "https://bbc.com" },
-    { "exercise": "Plate bicep curls", "sets": 2, "reps": [15, 15], "video": "https://bbc.com" }
+    {
+      "exercise": "Plate front raise",
+      "sets": 2,
+      "reps": [
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Plate bicep curls",
+      "sets": 2,
+      "reps": [
+        { "type": "weight", "value": 15 },
+        { "type": "weight", "value": 15 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "additionalTopUp": [
-    { "exercise": "Incline pushups", "sets": 2, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Commandoes", "sets": 3, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Plank hold", "sets": 3, "exerciseTime": 40, "video": "https://bbc.com" }
+    {
+      "exercise": "Incline pushups",
+      "sets": 2,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Commandoes",
+      "sets": 3,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Plank hold",
+      "sets": 3,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    }
   ],
   "cooldown": [
-    { "exercise": "Tricep stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Childs pose", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" },
-    { "exercise": "Cross body shoulder stretch", "sets": 1, "exerciseTime": 40, "video": "https://bbc.com" }
+    {
+      "exercise": "Tricep stretch",
+      "sets": 1,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Childs pose",
+      "sets": 1,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    },
+    {
+      "exercise": "Cross body shoulder stretch",
+      "sets": 1,
+      "reps": [
+        { "type": "time", "value": 40 },
+        { "type": "time", "value": 40 }
+      ],
+      "video": "https://bbc.com"
+    }
   ]
 }
