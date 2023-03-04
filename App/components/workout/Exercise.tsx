@@ -8,19 +8,21 @@ import { completedSetsGetter, completedSetsState } from '../../state/workouts'
 import Tooltip from '../base/Tooltip'
 import RecordModal from './RecordModal'
 
+interface Rep {
+  type: 'weight' | 'time'
+  value: number
+}
+
 interface Exercise {
-  name: string
-  description: string
-  intensity: string
+  exercise: string
+  sets: string
   video: string
-  variations: string[]
+  reps: Rep[]
 }
 
 interface ExerciseProps {
   exercise: Exercise
-  time: string
   set: string
-  reps: number
   groupIndex: number
 }
 
@@ -28,6 +30,7 @@ const Exercise = (props: ExerciseProps) => {
   const [completedSets, setCompletedSets] = useRecoilState(completedSetsState)
   const [activeModals, setActiveModals] = useRecoilState(activeModalState)
 
+  console.log(props.exercise.reps)
   const setGetter = useRecoilValue(completedSetsGetter)
 
   const handleClickTooltip = () => {
@@ -43,7 +46,7 @@ const Exercise = (props: ExerciseProps) => {
       ...completedSets,
       [set]: {
         ...completedSets[set],
-        [props.groupIndex]: { ...completedSets[set][props.groupIndex], ...sets }
+        [props.groupIndex]: { ...completedSets[set]?.[props.groupIndex], ...sets }
       }
     })
   }

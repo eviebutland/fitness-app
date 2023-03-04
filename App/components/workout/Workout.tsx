@@ -14,6 +14,10 @@ interface WorkoutProps {
 }
 
 const orderedWorkout = {
+  warmUp: {
+    label: 'Warm up',
+    value: null
+  },
   superset: {
     label: 'Superset',
     value: null
@@ -28,6 +32,10 @@ const orderedWorkout = {
   },
   finisher: {
     label: 'Finisher',
+    value: null
+  },
+  cooldown: {
+    label: 'Cool down',
     value: null
   }
 }
@@ -48,11 +56,7 @@ const Workout = (props: WorkoutProps) => {
     props.onCompleteWorkout()
   }
 
-  const formattedWorkouts = Object.entries(props.workout.workout).filter(
-    ([key, value]) => key !== 'warmUp' && key !== 'cooldown'
-  )
-
-  formattedWorkouts.forEach(([key, value]) => {
+  Object.entries(props.workout.workout).forEach(([key, value]) => {
     orderedWorkout[key] = { ...orderedWorkout[key], value }
   })
 
@@ -69,27 +73,6 @@ const Workout = (props: WorkoutProps) => {
           <BaseButton text="Start workout" onPress={handleStartTimer}></BaseButton>
         </View>
       )}
-
-      {props.workout?.workout.warmUp.length && (
-        <View style={{ marginVertical: 20 }}>
-          <Text style={{ marginBottom: 10 }}>Warm up</Text>
-          <View style={{ marginLeft: 10 }}>
-            {props.workout.workout.warmUp.map(warmup => (
-              <View>
-                <View>
-                  <Text>{warmup.video} </Text>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                  {/* <Text style={{ marginRight: 10 }}>{warmup.exercise}</Text>
-
-                  <Text>{warmup.exerciseTime}s</Text> */}
-                </View>
-              </View>
-            ))}
-          </View>
-        </View>
-      )}
-
       {startTime && isTimerActive && (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Text onPress={handleEndTimer} style={{ fontSize: 40, fontWeight: '500' }}>
@@ -98,7 +81,7 @@ const Workout = (props: WorkoutProps) => {
         </View>
       )}
 
-      <View>
+      <View style={{ marginTop: 20 }}>
         {Object.entries(orderedWorkout).map(([key, workout]) => (
           <View>
             <Text style={{ fontWeight: 'bold' }}>{workout.label}</Text>
@@ -113,33 +96,6 @@ const Workout = (props: WorkoutProps) => {
           </View>
         ))}
       </View>
-      {/* <View style={{ marginTop: 20 }}>
-        {sets.map((set, index) => (
-          <View style={{ marginBottom: 10 }} key={index}>
-            <Exercise
-              exercise={set.workout}
-              time={set.workout?.exerciseTime}
-              reps={set.workout?.recommededRepRange}
-              set={set.set}
-            ></Exercise>
-          </View>
-        ))}
-      </View> */}
-
-      {props.workout.workout.cooldown.length && (
-        <View style={{ marginBottom: 20 }}>
-          <Text style={{ marginBottom: 10 }}>Cool down</Text>
-          <View style={{ marginLeft: 10 }}>
-            {props.workout.workout.cooldown.map(cooldown => (
-              <View>
-                <Text>{cooldown.video}</Text>
-                {/* <Text>{cooldown.exercise}</Text>
-                <Text>{cooldown.exerciseTime}s</Text> */}
-              </View>
-            ))}
-          </View>
-        </View>
-      )}
 
       <BaseButton text="Complete workout" onPress={handleEndWorkout}></BaseButton>
     </View>
