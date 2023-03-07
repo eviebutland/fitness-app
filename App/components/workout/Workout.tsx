@@ -6,14 +6,22 @@ import { BaseButton } from '../base/Button'
 import { useTimer } from '../../lib/useTimer'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-
+import { ExerciseJSONB } from '../../../API/src/lib/types/workouts'
 interface WorkoutProps {
   workout: WorkoutFormatted
   onCompleteWorkout: Function
-  hasCompletedWorkout: Boolean
+  isWorkoutCompleted: Boolean
+  onWorkoutStart: Function
 }
 
-const orderedWorkout = {
+interface OrderedWorkout {
+  [key: string]: {
+    label: string
+    value: null | ExerciseJSONB
+  }
+}
+
+const orderedWorkout: OrderedWorkout = {
   warmUp: {
     label: 'Warm up',
     value: null
@@ -51,9 +59,13 @@ const Workout = (props: WorkoutProps) => {
   }, [isTimerActive])
 
   const handleEndWorkout = () => {
-    handleEndTimer()
-
     props.onCompleteWorkout()
+    handleEndTimer()
+  }
+
+  const handleStartWorkout = () => {
+    props.onWorkoutStart()
+    handleStartTimer()
   }
 
   Object.entries(props.workout.workout).forEach(([key, value]) => {
@@ -65,17 +77,17 @@ const Workout = (props: WorkoutProps) => {
       <Text style={{ fontSize: 25 }}>
         Workout:
         <Text style={{ fontWeight: '500' }}> {props.workout?.title}</Text>
-        {props.hasCompletedWorkout && <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />}
+        {props.isWorkoutCompleted && <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />}
       </Text>
 
       {!isTimerActive && (
         <View style={{ marginTop: 20 }}>
-          <BaseButton text="Start workout" onPress={handleStartTimer}></BaseButton>
+          <BaseButton text="Start workout" onPress={handleStartWorkout}></BaseButton>
         </View>
       )}
       {startTime && isTimerActive && (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Text onPress={handleEndTimer} style={{ fontSize: 40, fontWeight: '500' }}>
+          <Text onPress={handleEndWorkout} style={{ fontSize: 40, fontWeight: '500' }}>
             {startTime.format('mm:ss')}
           </Text>
         </View>

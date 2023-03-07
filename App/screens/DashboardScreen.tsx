@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { userGetter } from '../state/user'
@@ -11,6 +11,7 @@ import { activeModalGetter } from '../state/modal'
 
 const DashboardScreen = ({ navigation }) => {
   const [todaysWorkout, setTodaysWorkout] = useRecoilState(todaysWorkoutState)
+  const [isWorkoutInProgress, setIsWorkoutInProgress] = useState(false)
 
   const user = useRecoilValue(userGetter)
   const activeModal = useRecoilValue(activeModalGetter)
@@ -18,7 +19,6 @@ const DashboardScreen = ({ navigation }) => {
 
   const today = new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
   const fetchTodaysWorkout = async (day: string) => {
-    // API call to get todays workout
     let queryString = day
     if (day === 'today') {
       queryString = today
@@ -34,6 +34,7 @@ const DashboardScreen = ({ navigation }) => {
       setTodaysWorkout(data.workout.data)
     } catch (error) {
       console.log(error)
+      navigation.navigate('Login')
     }
   }
 
@@ -41,14 +42,21 @@ const DashboardScreen = ({ navigation }) => {
     fetchTodaysWorkout('today')
   }
 
+  const handleWorkoutStarted = () => {
+    setIsWorkoutInProgress(true)
+  }
   const handleCompleteWorkout = () => {
-    console.log('API call to complete workout')
+    setIsWorkoutInProgress(false)
   }
 
   return (
     <Container hasOverlay={!!activeModal.length}>
       <View>
-        <Calendar initialDay={new Date()} handleSelectedDate={fetchTodaysWorkout}></Calendar>
+        <Calendar
+          initialDay={new Date()}
+          handleSelectedDate={fetchTodaysWorkout}
+          isDisabled={isWorkoutInProgress}
+        ></Calendar>
         {typeof workout === 'string' && workout === 'REST' ? (
           <View style={{ justifyContent: 'flex-start', paddingVertical: 30 }}>
             <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Relax,</Text>
@@ -66,7 +74,8 @@ const DashboardScreen = ({ navigation }) => {
             <Workout
               workout={workout[0]}
               onCompleteWorkout={handleCompleteWorkout}
-              hasCompletedWorkout={false}
+              isWorkoutCompleted={false}
+              onWorkoutStart={handleWorkoutStarted}
             ></Workout>
           )
         )}

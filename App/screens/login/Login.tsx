@@ -12,8 +12,6 @@ const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useRecoilState(userState)
 
   const handleLogin = async () => {
-    console.log(username, password)
-
     try {
       const { data } = await axios.post('http://localhost:3030/login', {
         username: 'somehing@df.eesr',

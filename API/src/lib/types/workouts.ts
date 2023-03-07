@@ -17,13 +17,29 @@ interface Set {
   recommededRepRange: number
 }
 
+interface Reps {
+  type: 'weight' | 'time'
+  value: number
+}
+export interface ExerciseJSONB {
+  exercise: string
+  sets: number
+  reps: Array<Reps>
+  video: string
+}
+
+interface WorkoutJSONB {
+  warmUp: Array<ExerciseJSONB>
+  wod?: Array<ExerciseJSONB>
+  set: Array<ExerciseJSONB>
+  superset?: Array<ExerciseJSONB>
+  finisher?: Array<ExerciseJSONB>
+  additionalTopUp?: Array<ExerciseJSONB>
+  cooldown: Array<ExerciseJSONB>
+}
+
 export interface WorkoutFormatted {
   id?: number
-  workoutName: string
-  resttime: string
-  warmup: string[]
-  cooldown: string[]
-  set1: Set
-  set2: Set
-  set3: Set
+  title: string
+  workout: WorkoutJSONB
 }

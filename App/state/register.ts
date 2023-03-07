@@ -24,7 +24,6 @@ export const newUserGetter = selector({
   key: 'newUserGetter',
   get: ({ get }) => {
     const state = get(newUserState)
-    console.log('state', state)
     return get(newUserState)
   }
 })

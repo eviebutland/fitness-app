@@ -9,7 +9,7 @@ import { document } from './schema/schema'
 import type { Request as OpenAPIRequest } from 'openapi-backend'
 import session from 'express-session'
 import passport from './oauth2'
-
+import { login } from './src/authentication/index'
 dotenv.config()
 
 export const app: Express = express()
@@ -46,12 +46,11 @@ const api = new OpenApiBackend({
 })
 
 async function validationFailHandler(c: Context, req: ParsedRequest, res: Response) {
-  console.log(req.body)
   return res.status(400).json({ status: 400, err: c.validation.errors })
 }
 
-// TODO use this instead of homemade authorization
-// function unauthorizedHandler(c, req, res) {
+// // TODO use this instead of homemade authorization
+// function unauthorizedHandler(c: Context, req: ParsedRequest, res: Response) {
 //   return res.status(401).json({ status: 401, err: 'Please authenticate first' })
 // }
 

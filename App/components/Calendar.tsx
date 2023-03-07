@@ -5,9 +5,8 @@ import dayjs from 'dayjs'
 interface CalendarProps {
   initialDay: Date
   handleSelectedDate: Function
+  isDisabled: Boolean
 }
-
-const today = dayjs().day()
 
 export const Calendar = (props: CalendarProps) => {
   const [activeDay, setActiveDay] = useState(
@@ -32,8 +31,12 @@ export const Calendar = (props: CalendarProps) => {
     <View style={styles.container}>
       {[0, 1, 2, 3, 4].map(index => (
         <View
-          style={[activeDay === composeDays(index).long.toLowerCase() && styles.active, styles.pill]}
-          onTouchStart={() => handleChangeDate(composeDays(index).long.toLowerCase())}
+          style={[
+            activeDay === composeDays(index).long.toLowerCase() && props.isDisabled ? styles.disabled : null,
+            activeDay === composeDays(index).long.toLowerCase() && !props.isDisabled ? styles.active : null,
+            styles.pill
+          ]}
+          onTouchStart={() => !props.isDisabled && handleChangeDate(composeDays(index).long.toLowerCase())}
         >
           <Text style={styles.date}>{composeDays(index).date}</Text>
           <Text>{composeDays(index).short}</Text>
@@ -45,7 +48,8 @@ export const Calendar = (props: CalendarProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
   },
   date: {
     fontSize: 25,
@@ -58,10 +62,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    borderRadius: 20
   },
   active: {
-    backgroundColor: '#52B788',
-    borderRadius: 20
+    backgroundColor: '#52B788'
+  },
+  disabled: {
+    backgroundColor: '#D9D9D9'
   }
 })

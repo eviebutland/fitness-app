@@ -4,12 +4,13 @@ import { rollback } from '../utils/rollback'
 import { Request, Response } from 'express'
 import { QueryResult } from 'pg'
 import { User } from '../lib/types/user'
+import { WorkoutFormatted } from '../lib/types/workouts'
 
 export const getAllWorkoutPlans = async (api: Context, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
     const query = 'SELECT * FROM workoutPlans'
-    const results = await client.query(query)
+    const results: QueryResult<WorkoutFormatted> = await client.query(query)
 
     await client.query('COMMIT TRANSACTION')
     response.status(200).json({ data: results.rows })
@@ -50,7 +51,7 @@ const handleSelectAllExercisesInCategory = async (category: string, response: Re
       SELECT * FROM workoutPlans
       WHERE title = '${category}'`
   try {
-    const results = await client.query(query)
+    const results: QueryResult<WorkoutFormatted> = await client.query(query)
 
     if (results.rows.length) {
       const formattedResult = results.rows.filter(value => value !== null)

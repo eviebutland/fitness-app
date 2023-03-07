@@ -1,9 +1,9 @@
 import { faCheckCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { activeModalState } from '../../state/modal'
+import { activeModalGetter, activeModalState } from '../../state/modal'
 import { completedSetsGetter, completedSetsState } from '../../state/workouts'
 import Tooltip from '../base/Tooltip'
 import RecordModal from './RecordModal'
@@ -15,7 +15,7 @@ interface Rep {
 
 interface Exercise {
   exercise: string
-  sets: string
+  sets: number
   video: string
   reps: Rep[]
 }
@@ -29,12 +29,21 @@ interface ExerciseProps {
 const Exercise = (props: ExerciseProps) => {
   const [completedSets, setCompletedSets] = useRecoilState(completedSetsState)
   const [activeModals, setActiveModals] = useRecoilState(activeModalState)
-
-  console.log(props.exercise.reps)
+  const currentActiveModals = useRecoilValue(activeModalGetter)
   const setGetter = useRecoilValue(completedSetsGetter)
 
-  const handleClickTooltip = () => {
-    console.log('show description')
+  const handleToggleTooltip = () => {
+    const exerciseDescriptionModal = 'exercise-description-modal'
+
+    if (currentActiveModals.includes(exerciseDescriptionModal)) {
+      const active = currentActiveModals.slice()
+      setActiveModals(active.filter(activeModal => activeModal !== exerciseDescriptionModal))
+    } else {
+      const newActiveModal = activeModals.slice()
+      newActiveModal.push(exerciseDescriptionModal)
+
+      setActiveModals(newActiveModal)
+    }
   }
 
   const handleCompleteSet = (reps: number, set: string, index: number, shouldDisplayModal: boolean) => {
@@ -79,8 +88,8 @@ const Exercise = (props: ExerciseProps) => {
           <View style={{ flexDirection: 'row', paddingBottom: 10, alignItems: 'center' }}>
             <Text style={{ fontWeight: '500', paddingRight: 10, fontSize: 20 }}>{props.exercise?.exercise}</Text>
 
-            <View onTouchStart={handleClickTooltip}>
-              <Tooltip text="open">
+            <View onTouchStart={handleToggleTooltip}>
+              <Tooltip text="this is a description of the workout" modal="exercise-description-modal">
                 <FontAwesomeIcon icon={faInfoCircle} color={'#2D6A4F'} size={20} />
               </Tooltip>
             </View>
@@ -89,23 +98,28 @@ const Exercise = (props: ExerciseProps) => {
       </View>
 
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingTop: 10 }}>
-        {props.exercise.reps.map((rep, index: number) => (
-          <Pressable
-            style={styles.completed}
-            onPress={() => {
-              handlePressReps(rep, index)
-            }}
-          >
-            {setGetter?.[props.set]?.[props.groupIndex]?.[index]?.reps ? (
-              <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />
-            ) : (
-              <Text>{rep.value}</Text>
-            )}
-          </Pressable>
-        ))}
+        {props.exercise?.reps &&
+          props.exercise.reps.map((rep, index: number) => (
+            <Pressable
+              style={styles.completed}
+              onPress={() => {
+                handlePressReps(rep, index)
+              }}
+            >
+              {setGetter?.[props.set]?.[props.groupIndex]?.[index]?.reps ? (
+                <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />
+              ) : (
+                <Text>
+                  {rep.value}
+                  {rep.type === 'time' && 's'}
+                </Text>
+              )}
+            </Pressable>
+          ))}
       </View>
 
       <RecordModal />
+      {/* <ExerciseDescriptionModal /> */}
     </View>
   )
 }
