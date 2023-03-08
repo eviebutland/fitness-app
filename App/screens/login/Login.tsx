@@ -7,18 +7,36 @@ import { Input } from '../../components/base/Input'
 import { Container } from '../../components/base/Container'
 import axios from 'axios'
 import ErrorSummary from '../../components/base/ErrorSummary'
+import { useForm, Controller } from 'react-hook-form'
 
 interface AxiosError {
   name: string
   message: string
 }
 
+type FormData = {
+  username: string
+  password: string
+}
+
 const LoginScreen = ({ navigation }) => {
-  const [{ username, password }, setLoginDetails] = useState({ username: '', password: '' })
   const [user, setUser] = useRecoilState(userState)
   const [error, setError] = useState<unknown | AxiosError>(null)
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
+    defaultValues: {
+      username: '',
+      password: ''
+    }
+  })
 
-  const handleLogin = async () => {
+  const handleLogin = async (formData: FormData) => {
+    console.log('username', formData.username)
+    console.log('password', formData.password)
+
     try {
       const { data } = await axios.post('http://localhost:3030/login', {
         username: 'somehing@df.eesr',
@@ -30,6 +48,7 @@ const LoginScreen = ({ navigation }) => {
         navigation.navigate('Entry')
       }
     } catch (error) {
+      console.log(error)
       setError(error)
     }
   }
@@ -38,7 +57,7 @@ const LoginScreen = ({ navigation }) => {
     if (error) {
       setError(null)
     }
-  }, [username, password])
+  }, [control._formValues.username, control._formValues.password])
 
   const handleNavigate = (screen: string) => {
     navigation.navigate(screen)
@@ -54,19 +73,35 @@ const LoginScreen = ({ navigation }) => {
           />
         </View>
 
-        <Input
-          onChangeText={e => setLoginDetails({ username: e, password })}
-          label="Username or Email"
-          value={username}
-          inputMode="text"
+        <Controller
+          control={control}
+          rules={{
+            required: true
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              label="Username or Email"
+              value={value}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              inputMode="text"
+            />
+          )}
+          name="username"
         />
+        {errors.username && <Text style={{ color: 'red', marginBottom: 10 }}>Username is required</Text>}
 
-        <Input
-          onChangeText={e => setLoginDetails({ password: e, username })}
-          label="Password"
-          value={password}
-          inputMode="text"
+        <Controller
+          control={control}
+          rules={{
+            required: true
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input label="Password" value={value} onBlur={onBlur} onChangeText={onChange} inputMode="text" />
+          )}
+          name="password"
         />
+        {errors.password && <Text style={{ color: 'red', marginBottom: 10 }}>Password is required</Text>}
 
         <View style={styles.linkContainer}>
           <Text style={styles.link} onPress={() => handleNavigate('Register')}>
@@ -78,7 +113,7 @@ const LoginScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        <BaseButton text="Let's go!" onPress={handleLogin}></BaseButton>
+        <BaseButton text="Let's go!" onPress={handleSubmit(handleLogin)}></BaseButton>
 
         {!!error && <ErrorSummary error={error}></ErrorSummary>}
       </View>

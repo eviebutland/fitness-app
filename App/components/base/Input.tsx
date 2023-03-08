@@ -4,17 +4,24 @@ import { SetterOrUpdater } from 'recoil'
 
 interface TextInputProps {
   onChangeText: SetterOrUpdater<any>
+  onBlur: SetterOrUpdater<any>
   label: string
   value: string | number | undefined | null
   inputMode: InputModeOptions
 }
 
-export const Input = ({ onChangeText, value, label, inputMode }: TextInputProps) => {
+export const Input = ({ onChangeText, value, label, inputMode, onBlur }: TextInputProps) => {
   console.log(value)
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
-      <TextInput style={styles.input} onChangeText={onChangeText} value={value} inputMode={inputMode}></TextInput>
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeText}
+        value={value}
+        inputMode={inputMode}
+        onBlur={onBlur}
+      ></TextInput>
     </View>
   )
 }
