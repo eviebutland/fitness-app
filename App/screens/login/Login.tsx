@@ -113,7 +113,11 @@ const LoginScreen = ({ navigation }) => {
           </Text>
         </View>
 
-        <BaseButton text="Let's go!" onPress={handleSubmit(handleLogin)}></BaseButton>
+        <BaseButton
+          isDisabled={!!Object.values(errors).length}
+          text="Let's go!"
+          onPress={handleSubmit(handleLogin)}
+        ></BaseButton>
 
         {!!error && <ErrorSummary error={error}></ErrorSummary>}
       </View>
