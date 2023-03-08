@@ -143,3 +143,7 @@ const count = useRecoilValue(charCountState)
 ```
 
 </details>
+
+## Form validation
+
+For form validation, I decided to go with [React hook form](https://react-hook-form.com/).
