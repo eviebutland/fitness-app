@@ -23,7 +23,7 @@ const Tooltip = (props: TooltipProps) => {
   }, [isVisible, currentActiveModals])
 
   return (
-    <View>
+    <View style={{ position: 'relative' }}>
       <Pressable style={{ position: 'relative' }}>
         <Modal animationType="fade" transparent={true} visible={isVisible}>
           <View style={styles.centeredView}>
@@ -41,27 +41,23 @@ const Tooltip = (props: TooltipProps) => {
 
 const styles = StyleSheet.create({
   centeredView: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    position: 'absolute',
-
-    marginTop: 22
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   modalView: {
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: 10,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
+
     shadowOffset: {
       width: 0,
       height: 2
     },
     shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
+    shadowRadius: 3
   }
 })
 

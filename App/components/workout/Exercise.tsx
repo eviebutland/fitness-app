@@ -105,6 +105,7 @@ const Exercise = (props: ExerciseProps) => {
               onPress={() => {
                 handlePressReps(rep, index)
               }}
+              key={index}
             >
               {setGetter?.[props.set]?.[props.groupIndex]?.[index]?.reps ? (
                 <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />

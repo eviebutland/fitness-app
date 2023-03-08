@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { useRecoilState } from 'recoil'
 import { BaseButton } from '../../components/base/Button'
@@ -6,10 +6,17 @@ import { userState } from '../../state/user'
 import { Input } from '../../components/base/Input'
 import { Container } from '../../components/base/Container'
 import axios from 'axios'
+import ErrorSummary from '../../components/base/ErrorSummary'
+
+interface AxiosError {
+  name: string
+  message: string
+}
 
 const LoginScreen = ({ navigation }) => {
   const [{ username, password }, setLoginDetails] = useState({ username: '', password: '' })
   const [user, setUser] = useRecoilState(userState)
+  const [error, setError] = useState<unknown | AxiosError>(null)
 
   const handleLogin = async () => {
     try {
@@ -23,10 +30,15 @@ const LoginScreen = ({ navigation }) => {
         navigation.navigate('Entry')
       }
     } catch (error) {
-      console.log(error)
-      // set an error message on screen
+      setError(error)
     }
   }
+
+  useEffect(() => {
+    if (error) {
+      setError(null)
+    }
+  }, [username, password])
 
   const handleNavigate = (screen: string) => {
     navigation.navigate(screen)
@@ -67,6 +79,8 @@ const LoginScreen = ({ navigation }) => {
         </View>
 
         <BaseButton text="Let's go!" onPress={handleLogin}></BaseButton>
+
+        {!!error && <ErrorSummary error={error}></ErrorSummary>}
       </View>
     </Container>
   )
