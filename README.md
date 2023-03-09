@@ -147,3 +147,7 @@ const count = useRecoilValue(charCountState)
 ## Form validation
 
 For form validation, I decided to go with [React hook form](https://react-hook-form.com/).
+
+## Future features
+
+I currently have a hard coded step count within the app, however, i would like to be able to pull in health data already recorded within Apple.[ Health data integration](https://github.com/agencyenterprise/react-native-health)
