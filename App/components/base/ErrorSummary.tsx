@@ -4,21 +4,25 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 interface AxiosError {
-  name: string
-  message: string
+  name: string | null
+  message: string | null
 }
 
 interface ErrorProps {
-  error: AxiosError
+  error: AxiosError | null
 }
 
 const ErrorSummary = (props: ErrorProps) => {
   return (
-    <View style={styles.container}>
-      <FontAwesomeIcon icon={faInfoCircle} style={{ color: '#F06057', marginRight: 10 }}></FontAwesomeIcon>
-      <Text>
-        {props.error.name}: {props.error.message}
-      </Text>
+    <View>
+      {props.error?.name !== null && (
+        <View style={styles.container}>
+          <FontAwesomeIcon icon={faInfoCircle} style={{ color: '#F06057', marginRight: 10 }}></FontAwesomeIcon>
+          <Text>
+            {props.error?.name}: {props.error?.message}
+          </Text>
+        </View>
+      )}
     </View>
   )
 }

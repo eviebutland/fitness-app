@@ -7,6 +7,12 @@ import { newUserGetter } from '../../state/register'
 import { Title } from '../../components/base/Title'
 import { Input } from '../../components/base/Input'
 import { BaseButton } from '../../components/base/Button'
+import { useForm, Controller } from 'react-hook-form'
+
+interface FormData {
+  activationCode: string | null
+  password: string | null
+}
 
 const ConfirmationScreen = ({ navigation }) => {
   const newUser = useRecoilValue(newUserGetter)
@@ -15,11 +21,25 @@ const ConfirmationScreen = ({ navigation }) => {
     password: null
   })
 
-  const handleCompleteRegistration = () => {
-    // 1. API call here to check activation code
-    // 2. Update user with password
-    // 3. Automatically log user in here
-    // 4. Once logged in -> redirect
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
+    defaultValues: {
+      activationCode: null,
+      password: null
+    }
+  })
+
+  const handleCompleteRegistration = (data: FormData) => {
+    handleSubmit(() => {
+      console.log(data)
+      // 1. API call here to check activation code
+      // 2. Update user with password
+      // 3. Automatically log user in here
+      // 4. Once logged in -> redirect
+    })
     navigation.navigate('Entry')
   }
   return (
@@ -38,21 +58,47 @@ const ConfirmationScreen = ({ navigation }) => {
           {`Thank you for registering, we have sent an activation code to your email address: ${newUser.email}`}
         </Text>
 
-        <Input
-          onChangeText={e => setActive({ activationCode: e, password })}
-          label="Activation code"
-          value={activationCode}
-          inputMode="text"
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            min: 12
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              label="Activation code"
+              value={value}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              inputMode="text"
+            />
+          )}
+          name="activationCode"
         />
+        {errors.activationCode && (
+          <Text style={{ color: 'red', marginBottom: 10 }}>Activation code is required</Text>
+        )}
 
-        <Input
-          onChangeText={e => setActive({ password: e, activationCode })}
-          label="Create password"
-          value={password}
-          inputMode="text"
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            min: 12
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              value={value}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              label="Create password"
+              inputMode="text"
+            />
+          )}
+          name="password"
         />
+        {errors.password && <Text style={{ color: 'red', marginBottom: 10 }}>Password is required</Text>}
 
-        <BaseButton text="Continue" onPress={handleCompleteRegistration} />
+        <BaseButton text="Continue" onPress={() => handleCompleteRegistration()} />
       </View>
     </Container>
   )

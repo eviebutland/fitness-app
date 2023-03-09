@@ -1,12 +1,10 @@
 import React from 'react'
 import { View, Image, StyleSheet, Text } from 'react-native'
-import { useRecoilState } from 'recoil'
 import { BaseButton } from '../../components/base/Button'
 import { Container } from '../../components/base/Container'
 import { Input } from '../../components/base/Input'
 import { ProgressBar } from '../../components/base/ProgressBar'
 import { Title } from '../../components/base/Title'
-import { newUserState } from '../../state/register'
 import { useForm, Controller } from 'react-hook-form'
 
 interface FormData {
@@ -15,7 +13,6 @@ interface FormData {
   email: string
 }
 const RegisterScreen = ({ navigation }) => {
-  const [{ name, email, age }, setRegisterDetails] = useRecoilState(newUserState)
   const {
     control,
     handleSubmit,
@@ -28,7 +25,7 @@ const RegisterScreen = ({ navigation }) => {
     }
   })
 
-  const handleContinue = data => {
+  const handleContinue = (data: FormData) => {
     handleSubmit(() => console.log(data))
     if (!Object.values(errors).length) {
       navigation.navigate('Pricing')
@@ -38,7 +35,11 @@ const RegisterScreen = ({ navigation }) => {
     <Container footer={<ProgressBar percentage={50} />}>
       <View>
         <View style={styles.imageContainer}>
-          <Image source={require('../../assets/ladyIcon.png')} accessibilityLabel="App icon" />
+          <Image
+            source={require('../../assets/ladyIcon.png')}
+            style={styles.image}
+            accessibilityLabel="App icon"
+          />
         </View>
 
         <Title text={'Create an account'}></Title>
@@ -92,6 +93,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     padding: 20
+  },
+  image: {
+    height: 195,
+    resizeMode: 'contain',
+    alignSelf: 'center'
   }
 })
 

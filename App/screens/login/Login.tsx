@@ -5,13 +5,13 @@ import { BaseButton } from '../../components/base/Button'
 import { userState } from '../../state/user'
 import { Input } from '../../components/base/Input'
 import { Container } from '../../components/base/Container'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import ErrorSummary from '../../components/base/ErrorSummary'
 import { useForm, Controller } from 'react-hook-form'
 
 interface AxiosError {
-  name: string
-  message: string
+  name: string | null
+  message: string | null
 }
 
 type FormData = {
@@ -21,7 +21,7 @@ type FormData = {
 
 const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useRecoilState(userState)
-  const [error, setError] = useState<unknown | AxiosError>(null)
+  const [error, setError] = useState<AxiosError>({ name: null, message: null })
   const {
     control,
     handleSubmit,
@@ -34,9 +34,6 @@ const LoginScreen = ({ navigation }) => {
   })
 
   const handleLogin = async (formData: FormData) => {
-    console.log('username', formData.username)
-    console.log('password', formData.password)
-
     try {
       const { data } = await axios.post('http://localhost:3030/login', {
         username: 'somehing@df.eesr',
@@ -48,14 +45,16 @@ const LoginScreen = ({ navigation }) => {
         navigation.navigate('Entry')
       }
     } catch (error) {
-      console.log(error)
-      setError(error)
+      setError({ name: 'Something went wrong', message: error?.response?.data?.message })
     }
   }
 
   useEffect(() => {
-    if (error) {
-      setError(null)
+    if (error.name) {
+      setError({
+        name: null,
+        message: null
+      })
     }
   }, [control._formValues.username, control._formValues.password])
 

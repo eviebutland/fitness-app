@@ -21,7 +21,6 @@ const EntryScreen = ({ navigation }) => {
       <View>
         <View style={styles.titleContainer}>
           <Title styles={[{ ...styles.title }]} text={`Hi, ${user.name}`}></Title>
-          {/* <View style={styles.icon}></View> */}
         </View>
         <Text style={styles.subtitle}>Are you ready for today's workout?</Text>
         <Image style={styles.image} source={require('../assets/entry.png')} accessibilityLabel="App icon" />
