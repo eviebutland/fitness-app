@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import { useRecoilValue } from 'recoil'
-import { BaseButton } from '../components/base/Button'
 import { Container } from '../components/base/Container'
 import { Title } from '../components/base/Title'
+import { capitaliseFirstLetter } from '../lib/utility/string'
 import { userGetter } from '../state/user'
 
 const EntryScreen = ({ navigation }) => {
@@ -20,7 +20,10 @@ const EntryScreen = ({ navigation }) => {
     <Container>
       <View>
         <View style={styles.titleContainer}>
-          <Title styles={[{ ...styles.title }]} text={`Hi, ${user.name}`}></Title>
+          <Title
+            styles={[{ ...styles.title }]}
+            text={user.name ? `Hi, ${capitaliseFirstLetter(user.name)}` : ''}
+          ></Title>
         </View>
         <Text style={styles.subtitle}>Are you ready for today's workout?</Text>
         <Image style={styles.image} source={require('../assets/entry.png')} accessibilityLabel="App icon" />

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { View, Text } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, Text, ScrollView } from 'react-native'
 import { WorkoutFormatted } from '../../../API/src/lib/types/workouts'
 import Exercise from './Exercise'
 import { BaseButton } from '../base/Button'
@@ -59,8 +59,8 @@ const Workout = (props: WorkoutProps) => {
   }, [isTimerActive])
 
   const handleEndWorkout = () => {
-    props.onCompleteWorkout()
     handleEndTimer()
+    props.onCompleteWorkout()
   }
 
   const handleStartWorkout = () => {
@@ -99,7 +99,7 @@ const Workout = (props: WorkoutProps) => {
             <Text style={{ fontWeight: 'bold' }}>{workout.label}</Text>
             <View style={{ marginVertical: 20 }}>
               {workout.value &&
-                workout.value.map((set, index) => (
+                workout.value.map((set, index: number) => (
                   <View style={{ marginBottom: 10 }}>
                     <Exercise exercise={set} groupIndex={index} set={key}></Exercise>
                   </View>

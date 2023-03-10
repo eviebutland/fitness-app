@@ -20,7 +20,7 @@ const Overview = (props: OverviewProps) => {
   const completedWorkouts = ['Full body cardio & core', 'Lower']
   return (
     <View>
-      <Title text={`Good morning, ${user.name}`}></Title>
+      <Title text={`Good morning, ${capitaliseFirstLetter(user.name ?? '')}`}></Title>
       <View>
         <View>
           {typeof workout === 'string' ? (

@@ -9,11 +9,14 @@ import { Container } from '../components/base/Container'
 import { activeModalGetter } from '../state/modal'
 import WorkoutDisplay from '../components/dashboard/WorkoutDisplay'
 import Overview from '../components/dashboard/Overview'
+import CompletedWorkout from '../components/dashboard/CompletedWorkout'
+
+type Status = 'inactive' | 'active' | 'completed'
 
 const DashboardScreen = ({ navigation }) => {
   const [todaysWorkout, setTodaysWorkout] = useRecoilState(todaysWorkoutState)
   const [isWorkoutInProgress, setIsWorkoutInProgress] = useState(false)
-  const [shouldDisplayWorkout, setShouldDisplayWorkout] = useState(false)
+  const [status, setStatus] = useState<Status>('inactive')
 
   const user = useRecoilValue(userGetter)
   const activeModal = useRecoilValue(activeModalGetter)
@@ -34,7 +37,7 @@ const DashboardScreen = ({ navigation }) => {
         }
       })
 
-      setShouldDisplayWorkout(false)
+      setStatus('inactive')
       setTodaysWorkout(data.workout.data)
     } catch (error) {
       console.log(error)
@@ -47,7 +50,7 @@ const DashboardScreen = ({ navigation }) => {
   }
   const handleDisplayWorkout = () => {
     console.log('dsplay tje wprkout')
-    setShouldDisplayWorkout(true)
+    setStatus('active')
   }
 
   const handleWorkoutStarted = () => {
@@ -55,6 +58,7 @@ const DashboardScreen = ({ navigation }) => {
   }
   const handleCompleteWorkout = () => {
     setIsWorkoutInProgress(false)
+    setStatus('completed')
   }
 
   return (
@@ -65,16 +69,18 @@ const DashboardScreen = ({ navigation }) => {
           handleSelectedDate={fetchTodaysWorkout}
           isDisabled={isWorkoutInProgress}
         ></Calendar>
-        {!shouldDisplayWorkout && workout.length > 0 && (
+        {status === 'inactive' && workout.length > 0 && (
           <Overview handleDisplayWorkout={handleDisplayWorkout}></Overview>
         )}
 
-        {shouldDisplayWorkout && (
+        {status === 'active' && (
           <WorkoutDisplay
-            handleCompleteWorkout={() => handleCompleteWorkout}
-            handleWorkoutStarted={() => handleWorkoutStarted}
+            handleCompleteWorkout={handleCompleteWorkout}
+            handleWorkoutStarted={handleWorkoutStarted}
           ></WorkoutDisplay>
         )}
+
+        {status === 'completed' && <CompletedWorkout></CompletedWorkout>}
       </View>
     </Container>
   )
