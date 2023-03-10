@@ -5,13 +5,15 @@ import { userGetter } from '../state/user'
 import { Calendar } from '../components/Calendar'
 import axios from 'axios'
 import { todaysWorkoutGetter, todaysWorkoutState } from '../state/workouts'
-import Workout from '../components/workout/Workout'
 import { Container } from '../components/base/Container'
 import { activeModalGetter } from '../state/modal'
+import WorkoutDisplay from '../components/dashboard/WorkoutDisplay'
+import Overview from '../components/dashboard/Overview'
 
 const DashboardScreen = ({ navigation }) => {
   const [todaysWorkout, setTodaysWorkout] = useRecoilState(todaysWorkoutState)
   const [isWorkoutInProgress, setIsWorkoutInProgress] = useState(false)
+  const [shouldDisplayWorkout, setShouldDisplayWorkout] = useState(false)
 
   const user = useRecoilValue(userGetter)
   const activeModal = useRecoilValue(activeModalGetter)
@@ -20,6 +22,7 @@ const DashboardScreen = ({ navigation }) => {
   const today = new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
   const fetchTodaysWorkout = async (day: string) => {
     let queryString = day
+
     if (day === 'today') {
       queryString = today
     }
@@ -31,6 +34,7 @@ const DashboardScreen = ({ navigation }) => {
         }
       })
 
+      setShouldDisplayWorkout(false)
       setTodaysWorkout(data.workout.data)
     } catch (error) {
       console.log(error)
@@ -40,6 +44,10 @@ const DashboardScreen = ({ navigation }) => {
 
   if (!workout.length) {
     fetchTodaysWorkout('today')
+  }
+  const handleDisplayWorkout = () => {
+    console.log('dsplay tje wprkout')
+    setShouldDisplayWorkout(true)
   }
 
   const handleWorkoutStarted = () => {
@@ -57,27 +65,15 @@ const DashboardScreen = ({ navigation }) => {
           handleSelectedDate={fetchTodaysWorkout}
           isDisabled={isWorkoutInProgress}
         ></Calendar>
-        {typeof workout === 'string' && workout === 'REST' ? (
-          <View style={{ justifyContent: 'flex-start', paddingVertical: 30 }}>
-            <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Relax,</Text>
-            <Text style={{ fontSize: 25 }}>You've got a rest day</Text>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <Image
-                style={{ width: '90%', justifyContent: 'center' }}
-                source={require('../assets/rest.png')}
-                accessibilityLabel="App icon"
-              />
-            </View>
-          </View>
-        ) : (
-          workout[0] && (
-            <Workout
-              workout={workout[0]}
-              onCompleteWorkout={handleCompleteWorkout}
-              isWorkoutCompleted={false}
-              onWorkoutStart={handleWorkoutStarted}
-            ></Workout>
-          )
+        {!shouldDisplayWorkout && workout.length > 0 && (
+          <Overview handleDisplayWorkout={handleDisplayWorkout}></Overview>
+        )}
+
+        {shouldDisplayWorkout && (
+          <WorkoutDisplay
+            handleCompleteWorkout={() => handleCompleteWorkout}
+            handleWorkoutStarted={() => handleWorkoutStarted}
+          ></WorkoutDisplay>
         )}
       </View>
     </Container>

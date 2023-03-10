@@ -19,7 +19,7 @@ const ErrorSummary = (props: ErrorProps) => {
         <View style={styles.container}>
           <FontAwesomeIcon icon={faInfoCircle} style={{ color: '#F06057', marginRight: 10 }}></FontAwesomeIcon>
           <Text>
-            {props.error?.name}: {props.error?.message}
+            {props.error?.name} {props.error?.message && <Text>: {props.error?.message}</Text>}
           </Text>
         </View>
       )}

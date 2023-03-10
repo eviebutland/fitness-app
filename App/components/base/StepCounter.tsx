@@ -1,8 +1,8 @@
 import { View } from 'react-native'
 import React from 'react'
 
-const CompletedWorkout = () => {
+const StepCounter = () => {
   return <View></View>
 }
 
-export default CompletedWorkout
+export default StepCounter
