@@ -25,7 +25,7 @@ const PasswordResetScreen = ({ navigation }) => {
 
   const handleSendResetPassword = () => {
     console.log('send reset password link')
-    // 1. send email via oauth2 to reset password
+    // 1. send email via courier to reset password
     // 2. this will redirect them back to app,
     // 3. display the password input field
     // 4. log the user in automatically/ or redirect

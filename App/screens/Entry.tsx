@@ -1,11 +1,12 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { Container } from '../components/base/Container'
 import { Title } from '../components/base/Title'
 import { getData } from '../lib/async-storage/get-data'
 import { userState } from '../state/user'
 import axios from 'axios'
+// import { removeData } from '../lib/async-storage/remove-data'
 
 const EntryScreen = ({ navigation }) => {
   const [user, setUser] = useRecoilState(userState)
@@ -35,6 +36,10 @@ const EntryScreen = ({ navigation }) => {
   if (!user.email) {
     getStoredUser()
   }
+  // else {
+  // console.log('removing data')
+  // removeData('userToken')
+  // }
 
   return (
     <Container>
