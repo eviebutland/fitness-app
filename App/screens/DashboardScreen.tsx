@@ -49,7 +49,6 @@ const DashboardScreen = ({ navigation }) => {
     fetchTodaysWorkout('today')
   }
   const handleDisplayWorkout = () => {
-    console.log('dsplay tje wprkout')
     setStatus('active')
   }
 

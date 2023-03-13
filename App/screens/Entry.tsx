@@ -1,29 +1,46 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { Container } from '../components/base/Container'
 import { Title } from '../components/base/Title'
-import { capitaliseFirstLetter } from '../lib/utility/string'
-import { userGetter } from '../state/user'
+import { getData } from '../lib/async-storage/get-data'
+import { userState } from '../state/user'
+import axios from 'axios'
 
 const EntryScreen = ({ navigation }) => {
-  const user = useRecoilValue(userGetter)
+  const [user, setUser] = useRecoilState(userState)
 
-  setTimeout(() => {
-    if (user?.name) {
-      navigation.navigate('Dashboard')
+  const getStoredUser = async () => {
+    const storedUser = await getData('userToken')
+
+    if (storedUser?.email && storedUser?.password) {
+      try {
+        const { data } = await axios.post('http://localhost:3030/login', {
+          username: storedUser?.email,
+          password: storedUser?.password
+        })
+
+        if (data.user) {
+          setUser(data.user)
+          navigation.navigate('Dashboard')
+        }
+      } catch (error) {
+        console.log(error)
+      }
     } else {
       navigation.navigate('Login')
     }
-  }, 2000)
+  }
+
+  if (!user.email) {
+    getStoredUser()
+  }
+
   return (
     <Container>
       <View>
         <View style={styles.titleContainer}>
-          <Title
-            styles={[{ ...styles.title }]}
-            text={user.name ? `Hi, ${capitaliseFirstLetter(user.name)}` : ''}
-          ></Title>
+          <Title styles={[{ ...styles.title }]} text={'Fitness app'}></Title>
         </View>
         <Text style={styles.subtitle}>Are you ready for today's workout?</Text>
         <Image style={styles.image} source={require('../assets/entry.png')} accessibilityLabel="App icon" />

@@ -5,9 +5,11 @@ import { BaseButton } from '../../components/base/Button'
 import { userState } from '../../state/user'
 import { Input } from '../../components/base/Input'
 import { Container } from '../../components/base/Container'
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import ErrorSummary from '../../components/base/ErrorSummary'
 import { useForm, Controller } from 'react-hook-form'
+import jwt from 'expo-jwt'
+import { storeData } from '../../lib/async-storage/store-data'
 
 interface AxiosError {
   name: string | null
@@ -41,8 +43,13 @@ const LoginScreen = ({ navigation }) => {
       })
 
       if (data.user) {
+        const userToken = jwt.decode(data.user.token, 'secret')
+        const jsonUserToken = JSON.stringify(userToken)
+
+        storeData('userToken', jsonUserToken)
         setUser(data.user)
-        navigation.navigate('Entry')
+
+        navigation.navigate('Dashboard')
       }
     } catch (error) {
       setError({ name: 'Something went wrong', message: error?.response?.data?.message })

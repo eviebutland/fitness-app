@@ -18,7 +18,7 @@ export default function App() {
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <Navigator initialRouteName="Login">
+        <Navigator initialRouteName="Entry">
           <Group>
             <Screen name="Login" component={LoginScreen}></Screen>
             <Screen
@@ -65,9 +65,8 @@ export default function App() {
             <Screen name="Confirmation" component={ConfirmationScreen}></Screen>
           </Group>
 
-          {/* check login status in here? */}
           <Group screenOptions={{ headerLeft: () => {} }}>
-            <Screen name="Entry" component={EntryScreen} options={{ title: '', headerTitle: '' }}></Screen>
+            <Screen name="Entry" component={EntryScreen}></Screen>
             <Screen name="Dashboard" component={DashboardScreen}></Screen>
           </Group>
         </Navigator>
