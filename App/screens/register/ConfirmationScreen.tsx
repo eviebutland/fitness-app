@@ -16,10 +16,10 @@ interface FormData {
 
 const ConfirmationScreen = ({ navigation }) => {
   const newUser = useRecoilValue(newUserGetter)
-  const [{ activationCode, password }, setActive] = useState({
-    activationCode: null,
-    password: null
-  })
+  // const [{ activationCode, password }, setActive] = useState({
+  //   activationCode: null,
+  //   password: null
+  // })
 
   const {
     control,
@@ -98,7 +98,7 @@ const ConfirmationScreen = ({ navigation }) => {
         />
         {errors.password && <Text style={{ color: 'red', marginBottom: 10 }}>Password is required</Text>}
 
-        <BaseButton text="Continue" onPress={() => handleCompleteRegistration()} />
+        <BaseButton text="Continue" onPress={handleCompleteRegistration} />
       </View>
     </Container>
   )

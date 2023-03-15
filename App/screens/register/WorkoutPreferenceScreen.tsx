@@ -9,12 +9,16 @@ import { Title } from '../../components/base/Title'
 import { newUserState } from '../../state/register'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { capitaliseFirstLetter } from '../../lib/utility/string'
+import axios, { AxiosError } from 'axios'
+import ErrorSummary from '../../components/base/ErrorSummary'
 
 type Day = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 type Workout = 'LOWER' | 'FULL BODY' | 'UPPER' | 'GLUTES' | 'REST'
 
 const WorkoutPreferenceScreen = ({ navigation }) => {
   const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
+  const [error, setError] = useState<AxiosError>({ name: null, message: null })
 
   const days: Day[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
   // TODO These should come from an API call
@@ -35,21 +39,36 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
     setUserPreference({ ...userPreference, [day]: workout })
   }
 
-  const handleTriggerActivationEmail = async () => {
-    // TODO API call here to fire email off
-    console.log('send email for activation code')
-    await setTimeout(() => 3000)
+  const handleCreateUser = async () => {
+    try {
+      console.log('register details', registerDetails)
+      // show loading screen whilst api is calling?
+      const { data } = await axios.post('http://localhost:3030/user', {
+        ...registerDetails,
+        age: parseInt(registerDetails.age),
+        levelOfAccess: 'subscriber',
+        permissions: 'rw:user',
+        status: 'inactive',
+        completedWorkouts: [],
+        password: 'Inact1v3!',
+        workoutPreference: userPreference
+      })
+
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+      setError({ name: 'Something went wrong', message: error?.response?.data?.message })
+
+      // show error on screen
+    }
+
     // add activation code to state
   }
   const handleSubmit = async () => {
-    setRegisterDetails({ ...registerDetails, workoutpreference: userPreference })
+    // setRegisterDetails({ ...registerDetails, workoutpreference: userPreference })
 
-    try {
-      await handleTriggerActivationEmail()
-      navigation.navigate('Confirmation')
-    } catch (error) {
-      console.log('error sending activation code')
-    }
+    await handleCreateUser()
+    // navigation.navigate('Confirmation')
   }
 
   return (
@@ -68,14 +87,14 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
         <View style={styles.workouts}>
           {days.map((day: Day, index: number) => (
             <View key={index}>
-              <Text style={styles.day}>{day}</Text>
+              <Text style={styles.day}>{capitaliseFirstLetter(day)}</Text>
               <View style={styles.workoutContainer}>
                 {availableWorkouts.map((workout: Workout, index: number) => (
                   <Pressable key={index} style={styles.workout} onPress={() => handleOnPressWorkout(day, workout)}>
                     {userPreference[day] === workout ? (
                       <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />
                     ) : (
-                      <Text>{workout.toLowerCase()}</Text>
+                      <Text>{capitaliseFirstLetter(workout.toLowerCase())}</Text>
                     )}
                   </Pressable>
                 ))}
@@ -83,6 +102,9 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
             </View>
           ))}
         </View>
+
+        {!!error && <ErrorSummary error={error}></ErrorSummary>}
+
         <BaseButton text="Save" onPress={handleSubmit} />
       </View>
     </Container>

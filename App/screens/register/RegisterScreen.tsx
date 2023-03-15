@@ -6,6 +6,8 @@ import { Input } from '../../components/base/Input'
 import { ProgressBar } from '../../components/base/ProgressBar'
 import { Title } from '../../components/base/Title'
 import { useForm, Controller } from 'react-hook-form'
+import { useRecoilState } from 'recoil'
+import { newUserState } from '../../state/register'
 
 interface FormData {
   name: string
@@ -13,6 +15,8 @@ interface FormData {
   email: string
 }
 const RegisterScreen = ({ navigation }) => {
+  const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
+
   const {
     control,
     handleSubmit,
@@ -25,8 +29,9 @@ const RegisterScreen = ({ navigation }) => {
     }
   })
 
-  const handleContinue = (data: FormData) => {
-    handleSubmit(() => console.log(data))
+  const handleContinue = () => {
+    setRegisterDetails({ ...registerDetails, ...control._formValues })
+
     if (!Object.values(errors).length) {
       navigation.navigate('Pricing')
     }

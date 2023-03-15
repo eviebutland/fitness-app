@@ -15,7 +15,6 @@ interface PricingMatrix {
 const PricingScreen = ({ navigation }) => {
   const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
 
-  // const newUser = useRecoilValue(newUserGetter)
   const pricingMatrix: PricingMatrix = {
     monthly: {
       price: 9.99
