@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response, Router } from 'express'
 import { login, logout, resetPassword } from './authentication'
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
-import { getUsers, createUser, updateUser, deleteUser, getAUser } from './users/index'
+import { getUsers, createUser, updateUser, deleteUser, getAUser, createActivationCode } from './users/index'
 import {
   getAllWorkoutPlans,
   getWorkoutPlanById,
@@ -50,12 +50,13 @@ router.get(
   getUsers
 )
 
-router.post(
-  '/users',
-  (req: Request, res: Response, next: NextFunction) => {
-    isAuthorized(req, res, next, 'w:user')
-  },
-  createUser
+router.post('/users', createUser)
+router.patch(
+  '/users/activation',
+  // (req: Request, res: Response, next: NextFunction) => {
+  //   isAuthorized(req, res, next, 'w:user')
+  // },
+  createActivationCode
 )
 
 router.patch(

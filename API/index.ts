@@ -30,7 +30,12 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use((request: Request, response: Response, next: NextFunction) => {
-  request.url.includes('login') || request.url.includes('logout')
+  const createUserPath = request.method === 'POST' && request.url.includes('user')
+  const activationPath = request.method === 'PATCH' && request.url.includes('activation')
+  const loginPath = request.url.includes('login')
+  const logoutPath = request.url.includes('logout')
+
+  loginPath || logoutPath || createUserPath || activationPath
     ? next()
     : passport.authenticate('bearer', { session: false })(request, response, next)
 })

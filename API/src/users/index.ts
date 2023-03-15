@@ -1,6 +1,6 @@
 import { getUsers, getAUser } from './get'
 import { createUser } from './post'
-import { updateUser } from './patch'
+import { updateUser, createActivationCode } from './patch'
 import { deleteUser } from './delete'
 
-export { getUsers, createUser, updateUser, deleteUser, getAUser }
+export { getUsers, createUser, updateUser, deleteUser, getAUser, createActivationCode }

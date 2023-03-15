@@ -217,11 +217,6 @@
         "summary": "Create a new user",
         "description": "Create a new user",
         "operationId": "createAUser",
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -259,6 +254,46 @@
           },
           "description": "requestBody description",
           "required": true
+        }
+      }
+    },
+    "/users/activation": {
+      "patch": {
+        "tags": ["user"],
+        "summary": "Create and send activation code",
+        "description": "Create and send activation code",
+        "operationId": "createActivationCode",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Expires-After": {
+                "$ref": "#/components/headers/ExpiresAfter"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Activation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1063,6 +1098,15 @@
             "description": "Name of planned workout",
             "minLength": 4,
             "example": "Upper 1"
+          }
+        }
+      },
+      "Activation": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Successfully sent activation code to email"
           }
         }
       },

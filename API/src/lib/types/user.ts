@@ -31,3 +31,16 @@ export interface User {
   workoutpreference: string | WorkoutPreference
   status: Status
 }
+
+export interface UserRequestBody {
+  name: string
+  age: number | null
+  email: string
+  password: string | undefined
+  levelOfAccess: LevelOfAccess
+  premium: Premium
+  completedWorkouts: string | number[]
+  permissions: string
+  workoutPreference: string | WorkoutPreference
+  status: Status
+}

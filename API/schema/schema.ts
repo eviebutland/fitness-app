@@ -265,6 +265,46 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
+    '/users/activation': {
+      patch: {
+        tags: ['user'],
+        summary: 'Create and send activation code',
+        description: 'Create and send activation code',
+        operationId: 'createActivationCode',
+        security: [
+          {
+            bearer: []
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'OK',
+            headers: {
+              'X-Expires-After': {
+                $ref: '#/components/headers/ExpiresAfter'
+              }
+            },
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Activation'
+                }
+              }
+            }
+          },
+          '400': {
+            description: 'BAD_REQUEST',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/BadRequest'
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     '/users/{id}': {
       get: {
         tags: ['user'],
@@ -1205,6 +1245,15 @@ export const document: OpenAPIV3.Document = {
               saturday: 'CARDIO',
               sunday: 'REST'
             }
+          }
+        }
+      },
+      Activation: {
+        type: 'object',
+        properties: {
+          message: {
+            type: 'string',
+            example: 'Successfully sent activation code to email'
           }
         }
       },

@@ -1,6 +1,4 @@
 import bcrypt from 'bcrypt'
-import { Response } from 'express'
-import { Client } from 'pg'
 
 export async function saltAndHash(password: string) {
   try {
@@ -15,7 +13,7 @@ export async function saltAndHash(password: string) {
 }
 
 export const passwordValidation = (password: string) => {
-  const passwordRegex = /([A-Z]+)([a-z]{3,})([!@£$%^&*()_+]+)([0-9])+/
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{1,}$/
 
   if (!passwordRegex.test(password)) {
     return {
