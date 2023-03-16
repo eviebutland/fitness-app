@@ -31,7 +31,7 @@ app.use(passport.session())
 
 app.use((request: Request, response: Response, next: NextFunction) => {
   const createUserPath = request.method === 'POST' && request.url.includes('user')
-  const activationPath = request.method === 'PATCH' && request.url.includes('activation')
+  const activationPath = request.method === 'PATCH' && request.url.includes('users')
   const loginPath = request.url.includes('login')
   const logoutPath = request.url.includes('logout')
 

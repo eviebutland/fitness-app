@@ -15,18 +15,20 @@ export const updateUser = async (api: Context, request: Request, response: Respo
   }
 
   let data = api.request.body
-  const columns: string[] = Object.keys(data)
+  let columns: string[] = Object.keys(data)
 
   if (columns.includes('password')) {
     passwordValidation(api.request.body.password)
 
     // Reset status if password is updated
     data = { ...api.request.body, password: await saltAndHash(api.request.body.password), status: 'active' }
+    columns = Object.keys(data)
   }
 
   const values: string[] = Object.values(data)
 
   const set = formatPatchBody(columns)
+
   const query = `
     UPDATE users
     SET ${set}
@@ -52,23 +54,41 @@ export const createActivationCode = async (api: Context, request: Request, respo
     return
   }
 
-  //  TODO generate random activation code
+  const activationCode = Math.floor(Math.random() * 100000)
+  console.log('RANDOM ACTIVATION CODE', activationCode)
+
+  // Get the user first
+  const query = `SELECT * FROM users
+    WHERE email = $1`
+
   try {
-    const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
+    await client.query('BEGIN TRANSACTION')
+    const user: QueryResult<User> = await client.query(query, [request.body.email])
 
-    await courier.send({
-      message: {
-        to: {
-          email: request.body.email
-        },
-        template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
-        data: {
-          activationCode: 3234
+    await client.query('COMMIT TRANSACTION')
+
+    // Check the user exists before triggering email
+    if (user.rows.length && user.rows[0]?.id) {
+      const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
+
+      await courier.send({
+        message: {
+          to: {
+            email: request.body.email
+          },
+          template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
+          data: {
+            activationCode
+          }
         }
-      }
-    })
+      })
 
-    response.status(201).json({ message: 'Successfully sent activation code' })
+      response
+        .status(201)
+        .json({ message: 'Successfully sent activation code', token: activationCode, id: user.rows[0].id })
+    } else {
+      response.status(400).json({ message: `Unable to find user with email ${request.body.email}` })
+    }
   } catch (error) {
     console.log(error)
     response.status(500).json({ message: 'Something went wrong', error })

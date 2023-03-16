@@ -5,8 +5,17 @@ import { client } from '../../server'
 import { User, UserRequestBody } from '../lib/types/user'
 import { rollback } from '../utils/rollback'
 import { passwordValidation, saltAndHash } from '../utils/security'
+import jwt from 'jsonwebtoken'
 
 export const createUser = async (api: Context, request: Request, response: Response): Promise<void> => {
+  const activationToken = jwt.sign(
+    {
+      email: request.body.email,
+      password: request.body.password
+    },
+    'secret'
+  )
+
   const formatRequest = {
     name: request.body.name,
     age: request.body.age,
@@ -17,9 +26,10 @@ export const createUser = async (api: Context, request: Request, response: Respo
     completedWorkouts: JSON.stringify(request.body.completedWorkouts),
     permissions: request.body.permissions,
     workoutPreference: JSON.stringify(api.request.body.workoutPreference),
-    token: '',
+    token: activationToken ?? '',
     status: request.body.status
   }
+
   const insertQuery = `
   INSERT INTO users (name, age, email, password, levelOfAccess, premium, completedWorkouts, permissions, workoutPreference, token, status)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
@@ -45,8 +55,10 @@ export const createUser = async (api: Context, request: Request, response: Respo
         return
       }
 
+      console.log('activation tokne', activationToken)
+
       const res: QueryResult<User> = await client.query(insertQuery, [...Object.values(model)])
-      response.json({ message: 'Successfully inserted new user' })
+      response.json({ message: 'Successfully inserted new user', token: activationToken })
     } else {
       response.json({ message: 'This user already exists, please try with different details' })
     }

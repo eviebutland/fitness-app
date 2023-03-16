@@ -6,7 +6,7 @@ import { Title } from '../components/base/Title'
 import { getData } from '../lib/async-storage/get-data'
 import { userState } from '../state/user'
 import axios from 'axios'
-// import { removeData } from '../lib/async-storage/remove-data'
+import { removeData } from '../lib/async-storage/remove-data'
 
 const EntryScreen = ({ navigation }) => {
   const [user, setUser] = useRecoilState(userState)
@@ -26,7 +26,9 @@ const EntryScreen = ({ navigation }) => {
           navigation.navigate('Dashboard')
         }
       } catch (error) {
+        removeData('userToken')
         console.log(error)
+        navigation.navigate('Login')
       }
     } else {
       navigation.navigate('Login')
@@ -36,10 +38,6 @@ const EntryScreen = ({ navigation }) => {
   if (!user.email) {
     getStoredUser()
   }
-  // else {
-  // console.log('removing data')
-  // removeData('userToken')
-  // }
 
   return (
     <Container>

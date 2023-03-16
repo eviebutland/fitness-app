@@ -10,11 +10,7 @@ import ErrorSummary from '../../components/base/ErrorSummary'
 import { useForm, Controller } from 'react-hook-form'
 import jwt from 'expo-jwt'
 import { storeData } from '../../lib/async-storage/store-data'
-
-interface AxiosError {
-  name: string | null
-  message: string | null
-}
+import { useError } from '../../lib/useError'
 
 type FormData = {
   username: string
@@ -23,7 +19,8 @@ type FormData = {
 
 const LoginScreen = ({ navigation }) => {
   const [user, setUser] = useRecoilState(userState)
-  const [error, setError] = useState<AxiosError>({ name: null, message: null })
+  const { clearError, setError, error } = useError()
+
   const {
     control,
     handleSubmit,
@@ -58,10 +55,7 @@ const LoginScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (error.name) {
-      setError({
-        name: null,
-        message: null
-      })
+      clearError()
     }
   }, [control._formValues.username, control._formValues.password])
 

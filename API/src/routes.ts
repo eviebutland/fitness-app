@@ -61,9 +61,9 @@ router.patch(
 
 router.patch(
   '/users/:id',
-  (req: Request, res: Response, next: NextFunction) => {
-    isAuthorized(req, res, next, 'w:user')
-  },
+  // (req: Request, res: Response, next: NextFunction) => {
+  //   isAuthorized(req, res, next, 'w:user')
+  // },
   updateUser
 )
 

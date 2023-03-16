@@ -12,14 +12,15 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { capitaliseFirstLetter } from '../../lib/utility/string'
 import axios, { AxiosError } from 'axios'
 import ErrorSummary from '../../components/base/ErrorSummary'
-
+import { useError } from '../../lib/useError'
+import jwt from 'expo-jwt'
+import { storeData } from '../../lib/async-storage/store-data'
 type Day = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 type Workout = 'LOWER' | 'FULL BODY' | 'UPPER' | 'GLUTES' | 'REST'
 
 const WorkoutPreferenceScreen = ({ navigation }) => {
   const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
-  const [error, setError] = useState<AxiosError>({ name: null, message: null })
-
+  const { clearError, setError, error } = useError()
   const days: Day[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
   // TODO These should come from an API call
   const availableWorkouts: Workout[] = ['LOWER', 'FULL BODY', 'UPPER', 'GLUTES', 'REST']
@@ -39,11 +40,14 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
     setUserPreference({ ...userPreference, [day]: workout })
   }
 
-  const handleCreateUser = async () => {
+  const handleSubmit = async () => {
+    if (error.name) {
+      clearError()
+    }
+
     try {
-      console.log('register details', registerDetails)
       // show loading screen whilst api is calling?
-      const { data } = await axios.post('http://localhost:3030/user', {
+      const { data } = await axios.post('http://localhost:3030/users', {
         ...registerDetails,
         age: parseInt(registerDetails.age),
         levelOfAccess: 'subscriber',
@@ -54,21 +58,16 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
         workoutPreference: userPreference
       })
 
-      console.log(data)
+      console.log(data.token)
+      const userToken = jwt.decode(data.token, 'secret')
+      const jsonUserToken = JSON.stringify(userToken)
+      storeData('userToken', jsonUserToken)
+
+      navigation.navigate('Confirmation')
     } catch (error) {
       console.log(error)
       setError({ name: 'Something went wrong', message: error?.response?.data?.message })
-
-      // show error on screen
     }
-
-    // add activation code to state
-  }
-  const handleSubmit = async () => {
-    // setRegisterDetails({ ...registerDetails, workoutpreference: userPreference })
-
-    await handleCreateUser()
-    // navigation.navigate('Confirmation')
   }
 
   return (

@@ -457,7 +457,7 @@ export const document: OpenAPIV3.Document = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserPatch'
               }
             }
           },
@@ -1174,6 +1174,67 @@ export const document: OpenAPIV3.Document = {
             },
             example: ['Bent over row', 'Lat fly'],
             uniqueItems: true
+          }
+        }
+      },
+      UserPatch: {
+        type: 'object',
+        title: 'user',
+        required: [],
+        properties: {
+          name: {
+            description: 'The name of the user',
+            type: 'string',
+            example: 'Evie'
+          },
+          age: {
+            description: "User's age",
+            type: 'number',
+            example: 23
+          },
+          email: {
+            description: "User's email",
+            type: 'string'
+          },
+          password: {
+            description: "User's encrypted password",
+            type: 'string'
+          },
+          levelOfAccess: {
+            description: "User's access type",
+            type: 'string',
+            example: 'subscriber'
+          },
+          premium: {
+            description: 'Premium band user is on',
+            type: 'string',
+            example: 'Free, Gold'
+          },
+          completedWorkouts: {
+            description: 'The exercises completed by the user',
+            type: 'array',
+            items: {
+              type: 'string'
+            },
+            example: ['Upper 1 02/11/2022', 'Lower 1 03/11/2022']
+          },
+          permissions: {
+            description: "User's permissions",
+            type: 'string',
+            example: 'rw:USERS'
+          },
+          workoutPreference: {
+            description: 'The exercises completed by the user',
+            type: 'object',
+            example: {
+              monday: 'LOWER',
+              tuesday: 'CARDIO',
+              wednesday: 'UPPER',
+              thursday: 'GLUTES',
+              friday: 'REST',
+              saturday: 'CARDIO',
+              sunday: 'REST'
+            }
           }
         }
       },

@@ -30,7 +30,12 @@ const RegisterScreen = ({ navigation }) => {
   })
 
   const handleContinue = () => {
-    setRegisterDetails({ ...registerDetails, ...control._formValues })
+    const userDetails = {
+      ...control._formValues,
+      email: control._formValues.email.toLowerCase()
+    }
+
+    setRegisterDetails({ ...registerDetails, ...userDetails })
 
     if (!Object.values(errors).length) {
       navigation.navigate('Pricing')

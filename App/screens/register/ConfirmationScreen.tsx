@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { View, Text, StyleSheet, Image, Button, Pressable } from 'react-native'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
@@ -8,6 +8,8 @@ import { Title } from '../../components/base/Title'
 import { Input } from '../../components/base/Input'
 import { BaseButton } from '../../components/base/Button'
 import { useForm, Controller } from 'react-hook-form'
+import axios from 'axios'
+import { useError } from '../../lib/useError'
 
 interface FormData {
   activationCode: string | null
@@ -16,10 +18,29 @@ interface FormData {
 
 const ConfirmationScreen = ({ navigation }) => {
   const newUser = useRecoilValue(newUserGetter)
-  // const [{ activationCode, password }, setActive] = useState({
-  //   activationCode: null,
-  //   password: null
-  // })
+  const activationCode = useRef(null)
+  const userId = useRef(null)
+  const hasTriggeredActivationEmail = useRef(false)
+
+  const { clearError, setError, error } = useError()
+
+  console.log(newUser)
+
+  const triggerActivationEmail = async () => {
+    hasTriggeredActivationEmail.current = true
+
+    console.log('falling into trigger')
+    // try {
+    //   const { data } = await axios.patch('http://localhost:3030/users/activation', { email: newUser.email })
+    //   console.log(data.token)
+    //   activationCode.current = data.token
+    //   userId.current = data.id
+
+    //   clearError()
+    // } catch (error) {
+    //   setError({ name: 'Something went wrong', message: error?.response?.data?.message })
+    // }
+  }
 
   const {
     control,
@@ -32,15 +53,32 @@ const ConfirmationScreen = ({ navigation }) => {
     }
   })
 
-  const handleCompleteRegistration = (data: FormData) => {
-    handleSubmit(() => {
-      console.log(data)
-      // 1. API call here to check activation code
-      // 2. Update user with password
-      // 3. Automatically log user in here
-      // 4. Once logged in -> redirect
-    })
-    navigation.navigate('Entry')
+  if (!hasTriggeredActivationEmail) {
+    triggerActivationEmail()
+  }
+
+  const handleCompleteRegistration = async () => {
+    // check this against input field
+
+    if (activationCode.current === parseInt(control._formValues.activationCode)) {
+      console.log('calling patch now')
+      try {
+        // call endpoint to update password and set user to active
+        const { data } = await axios.patch(`http://localhost:3030/users/${userId.current}`, {
+          password: control._formValues.password
+        })
+
+        console.log(data)
+        clearError()
+        navigation.navigate('Entry')
+      } catch (error) {
+        setError({ name: 'Something went wrong', message: error?.response?.data?.message })
+      }
+    } else {
+      setError({ name: 'Something went wrong', message: 'Your activation code does not match' })
+    }
+
+    // navigation.navigate('Entry')
   }
   return (
     <Container footer={<ProgressBar percentage={100} />}>
@@ -70,7 +108,7 @@ const ConfirmationScreen = ({ navigation }) => {
               value={value}
               onBlur={onBlur}
               onChangeText={onChange}
-              inputMode="text"
+              inputMode="numeric"
             />
           )}
           name="activationCode"
