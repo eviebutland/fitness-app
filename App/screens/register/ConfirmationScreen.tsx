@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { View, Text, StyleSheet, Image, Button, Pressable } from 'react-native'
+import React, { useRef, useEffect } from 'react'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
 import { useRecoilValue } from 'recoil'
@@ -24,22 +24,18 @@ const ConfirmationScreen = ({ navigation }) => {
 
   const { clearError, setError, error } = useError()
 
-  console.log(newUser)
-
   const triggerActivationEmail = async () => {
-    hasTriggeredActivationEmail.current = true
+    try {
+      const { data } = await axios.patch('http://localhost:3030/users/activation', { email: newUser.email })
+      activationCode.current = data.token
+      userId.current = data.id
 
-    console.log('falling into trigger')
-    // try {
-    //   const { data } = await axios.patch('http://localhost:3030/users/activation', { email: newUser.email })
-    //   console.log(data.token)
-    //   activationCode.current = data.token
-    //   userId.current = data.id
-
-    //   clearError()
-    // } catch (error) {
-    //   setError({ name: 'Something went wrong', message: error?.response?.data?.message })
-    // }
+      clearError()
+    } catch (error) {
+      setError({ name: 'Something went wrong', message: error?.response?.data?.message })
+    } finally {
+      hasTriggeredActivationEmail.current = true
+    }
   }
 
   const {
@@ -53,32 +49,30 @@ const ConfirmationScreen = ({ navigation }) => {
     }
   })
 
-  if (!hasTriggeredActivationEmail) {
-    triggerActivationEmail()
-  }
+  useEffect(() => {
+    if (!hasTriggeredActivationEmail.current) {
+      triggerActivationEmail()
+    }
+  }, [hasTriggeredActivationEmail.current])
 
   const handleCompleteRegistration = async () => {
     // check this against input field
 
     if (activationCode.current === parseInt(control._formValues.activationCode)) {
-      console.log('calling patch now')
       try {
-        // call endpoint to update password and set user to active
-        const { data } = await axios.patch(`http://localhost:3030/users/${userId.current}`, {
+        await axios.patch(`http://localhost:3030/users/${userId.current}`, {
           password: control._formValues.password
         })
 
-        console.log(data)
         clearError()
-        navigation.navigate('Entry')
+
+        navigation.navigate('Login')
       } catch (error) {
         setError({ name: 'Something went wrong', message: error?.response?.data?.message })
       }
     } else {
       setError({ name: 'Something went wrong', message: 'Your activation code does not match' })
     }
-
-    // navigation.navigate('Entry')
   }
   return (
     <Container footer={<ProgressBar percentage={100} />}>

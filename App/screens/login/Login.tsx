@@ -35,11 +35,11 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async (formData: FormData) => {
     try {
       const { data } = await axios.post('http://localhost:3030/login', {
-        username: 'somehing@df.eesr',
-        password: 'Password!23'
+        username: formData.username.toLowerCase(),
+        password: formData.password
       })
 
-      if (data.user) {
+      if (data.user && data.user.status === 'active') {
         const userToken = jwt.decode(data.user.token, 'secret')
         const jsonUserToken = JSON.stringify(userToken)
 
@@ -47,6 +47,8 @@ const LoginScreen = ({ navigation }) => {
         setUser(data.user)
 
         navigation.navigate('Dashboard')
+      } else if (data.user.status === 'inactive') {
+        setError({ name: 'Something went wrong', message: 'Please confirm account with activation email' })
       }
     } catch (error) {
       setError({ name: 'Something went wrong', message: error?.response?.data?.message })

@@ -55,12 +55,10 @@ export const createUser = async (api: Context, request: Request, response: Respo
         return
       }
 
-      console.log('activation tokne', activationToken)
-
       const res: QueryResult<User> = await client.query(insertQuery, [...Object.values(model)])
       response.json({ message: 'Successfully inserted new user', token: activationToken })
     } else {
-      response.json({ message: 'This user already exists, please try with different details' })
+      response.status(400).json({ message: 'This user already exists, please try with different details' })
     }
 
     await client.query('COMMIT TRANSACTION')

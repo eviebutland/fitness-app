@@ -97,6 +97,8 @@ export const login = async (api: Context, request: Request, response: Response):
   } catch (error) {
     rollback(client)
     console.log(error)
-    response.status(500).send({ message: 'Something went wrong', error })
+    response
+      .status(500)
+      .send({ message: 'Something went wrong, please check your email address and password', error })
   }
 }
