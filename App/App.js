@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { NavigationContainer, useRoute, getFocusedRouteNameFromRoute } from '@react-navigation/native'
+import { NavigationContainer, useRoute } from '@react-navigation/native'
 import RegisterScreen from './screens/register/RegisterScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import PricingScreen from './screens/register/PricingScreen'
@@ -19,8 +19,8 @@ export default function App() {
     <RecoilRoot>
       <NavigationContainer>
         <Navigator initialRouteName="Entry">
+          <Screen name="Login" component={LoginScreen}></Screen>
           <Group>
-            <Screen name="Login" component={LoginScreen}></Screen>
             <Screen
               name="ResetPassword"
               component={PasswordResetScreen}
@@ -56,6 +56,17 @@ export default function App() {
                     isTransparent
                   />
                 )
+              },
+              headerRight: () => {
+                return (
+                  <BaseButton
+                    text="Cancel"
+                    onPress={() => {
+                      navigation.navigate('Login')
+                    }}
+                    isTransparent
+                  />
+                )
               }
             })}
           >
@@ -67,7 +78,19 @@ export default function App() {
 
           <Group screenOptions={{ headerLeft: () => {} }}>
             <Screen name="Entry" component={EntryScreen}></Screen>
-            <Screen name="Dashboard" component={DashboardScreen}></Screen>
+            <Screen
+              name="Dashboard"
+              component={DashboardScreen}
+              options={({ navigation }) => ({
+                headerLeft: () => (
+                  <BaseButton
+                    text="Logout"
+                    isTransparent
+                    onPress={() => navigation.navigate('Login', { isLogout: true })}
+                  />
+                )
+              })}
+            ></Screen>
           </Group>
         </Navigator>
       </NavigationContainer>

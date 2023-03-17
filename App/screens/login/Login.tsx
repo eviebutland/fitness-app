@@ -11,16 +11,18 @@ import { useForm, Controller } from 'react-hook-form'
 import jwt from 'expo-jwt'
 import { storeData } from '../../lib/async-storage/store-data'
 import { useError } from '../../lib/useError'
+import { removeData } from '../../lib/async-storage/remove-data'
 
 type FormData = {
   username: string
   password: string
 }
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, route }) => {
   const [user, setUser] = useRecoilState(userState)
   const { clearError, setError, error } = useError()
 
+  console.log(route.params['isLogout'] === true)
   const {
     control,
     handleSubmit,
@@ -54,6 +56,12 @@ const LoginScreen = ({ navigation }) => {
       setError({ name: 'Something went wrong', message: error?.response?.data?.message })
     }
   }
+
+  useEffect(() => {
+    if (route.params['isLogout'] === true) {
+      removeData('userToken')
+    }
+  }, [route.params['isLogout']])
 
   useEffect(() => {
     if (error.name) {
