@@ -69,23 +69,46 @@ export const createActivationCode = async (api: Context, request: Request, respo
 
     // Check the user exists before triggering email
     if (user.rows.length && user.rows[0]?.id) {
-      const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
+      if (request.body.method === 'create') {
+        const courier: ICourierClient = CourierClient({
+          authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW'
+        })
 
-      await courier.send({
-        message: {
-          to: {
-            email: request.body.email
-          },
-          template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
-          data: {
-            activationCode
+        await courier.send({
+          message: {
+            to: {
+              email: request.body.email
+            },
+            template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
+            data: {
+              activationCode
+            }
           }
-        }
-      })
+        })
 
+        response
+          .status(201)
+          .json({ message: 'Successfully sent activation code', token: activationCode, id: user.rows[0].id })
+      } else if (request.body.method === 'reset') {
+        const courier: ICourierClient = CourierClient({
+          authorizationToken: 'dk_prod_0P9D229GA54Q0QPB3CKVS2NMW5R7'
+        })
+
+        const email = await courier.send({
+          message: {
+            to: {
+              name: user.rows[0].name
+            },
+            template: 'R0CWN6FRATMBM0GRW3PC7TB5ACEZ',
+            data: {
+              activationCode
+            }
+          }
+        })
+      }
       response
         .status(201)
-        .json({ message: 'Successfully sent activation code', token: activationCode, id: user.rows[0].id })
+        .json({ message: 'Successfully sent reset code', token: activationCode, id: user.rows[0].id })
     } else {
       response.status(400).json({ message: `Unable to find user with email ${request.body.email}` })
     }

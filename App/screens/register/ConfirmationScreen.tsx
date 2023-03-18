@@ -26,7 +26,10 @@ const ConfirmationScreen = ({ navigation }) => {
 
   const triggerActivationEmail = async () => {
     try {
-      const { data } = await axios.patch('http://localhost:3030/users/activation', { email: newUser.email })
+      const { data } = await axios.patch('http://localhost:3030/users/activation', {
+        email: newUser.email,
+        method: 'create'
+      })
       activationCode.current = data.token
       userId.current = data.id
 

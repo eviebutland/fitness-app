@@ -22,7 +22,6 @@ const LoginScreen = ({ navigation, route }) => {
   const [user, setUser] = useRecoilState(userState)
   const { clearError, setError, error } = useError()
 
-  console.log(route.params['isLogout'] === true)
   const {
     control,
     handleSubmit,
@@ -58,10 +57,10 @@ const LoginScreen = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    if (route.params['isLogout'] === true) {
+    if (route.params?.['isLogout'] === true) {
       removeData('userToken')
     }
-  }, [route.params['isLogout']])
+  }, [route.params?.['isLogout']])
 
   useEffect(() => {
     if (error.name) {
