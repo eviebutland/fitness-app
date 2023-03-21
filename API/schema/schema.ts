@@ -169,7 +169,7 @@ export const document: OpenAPIV3.Document = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/ResetPassword'
               }
             }
           },
@@ -1174,6 +1174,21 @@ export const document: OpenAPIV3.Document = {
             },
             example: ['Bent over row', 'Lat fly'],
             uniqueItems: true
+          }
+        }
+      },
+      ResetPassword: {
+        type: 'object',
+        title: 'user',
+        required: [],
+        properties: {
+          email: {
+            description: 'The email of the user',
+            type: 'string'
+          },
+          newPassword: {
+            description: "User's encrypted password",
+            type: 'string'
           }
         }
       },

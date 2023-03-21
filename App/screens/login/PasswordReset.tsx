@@ -1,13 +1,14 @@
-import React, { useRef } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import { useRecoilValue } from 'recoil'
 import { BaseButton } from '../../components/base/Button'
 import { Title } from '../../components/base/Title'
-import { userGetter, userState } from '../../state/user'
 import { useForm, Controller } from 'react-hook-form'
 import { Input } from '../../components/base/Input'
 import { Container } from '../../components/base/Container'
 import axios from 'axios'
+import ErrorSummary from '../../components/base/ErrorSummary'
+import { useError } from '../../lib/useError'
 
 interface FormData {
   username: string
@@ -16,8 +17,11 @@ interface FormData {
 }
 
 const PasswordResetScreen = ({ navigation }) => {
+  const { clearError, setError, error } = useError()
   const resetToken = useRef(null)
   const hasTriggeredToken = useRef(false)
+  const [displayTokenField, setDisplayTokenField] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     control,
@@ -31,7 +35,14 @@ const PasswordResetScreen = ({ navigation }) => {
     }
   })
 
+  useEffect(() => {
+    if (hasTriggeredToken.current) {
+      setDisplayTokenField(true)
+    }
+  }, [hasTriggeredToken.current])
+
   const fetchActivationCode = async () => {
+    setIsLoading(true)
     try {
       const { data } = await axios.patch('http://localhost:3030/users/activation', {
         email: control._formValues.username.toLowerCase(),
@@ -42,20 +53,33 @@ const PasswordResetScreen = ({ navigation }) => {
       console.log(data.token)
       hasTriggeredToken.current = true
     } catch (error) {
+      setError({ name: 'Something went wrong', message: error?.response?.data?.message })
       console.log(error)
+    } finally {
+      setIsLoading(false)
     }
   }
-  const handleSendResetPassword = () => {
-    // 1. send email via courier to reset password
-    fetchActivationCode()
 
-    if (resetToken.current === control._formValues.token) {
-      console.log('send patch to user')
+  const handleSendResetPassword = async () => {
+    setIsLoading(true)
+    clearError()
+
+    if (resetToken.current === parseInt(control._formValues.token)) {
+      try {
+        await axios.post('http://localhost:3030/reset-password', {
+          email: control._formValues.username.toLowerCase(),
+          newPassword: control._formValues.password
+        })
+
+        handleNavigate()
+      } catch (error) {
+        setError({ name: 'Something went wrong', message: error?.response?.data?.message })
+      } finally {
+        setIsLoading(false)
+      }
+    } else {
+      setError({ name: 'Something went wrong', message: 'Activation code does not match' })
     }
-    console.log('send reset password link')
-    // 2. this will redirect them back to app,
-    // 3. display the password input field
-    // 4. log the user in automatically/ or redirect
   }
   const handleNavigate = () => {
     navigation.navigate('Login')
@@ -94,21 +118,49 @@ const PasswordResetScreen = ({ navigation }) => {
         <Text style={styles.link} onPress={handleNavigate}>
           or login
         </Text>
+        {!displayTokenField && <BaseButton text="Get activation code" onPress={fetchActivationCode}></BaseButton>}
 
-        {/* {!!hasTriggeredToken.current && ( */}
-        <Controller
-          control={control}
-          rules={{
-            required: true
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input label="Token" value={value} onBlur={onBlur} onChangeText={onChange} inputMode="text" />
-          )}
-          name="token"
-        />
-        {/* )} */}
+        {displayTokenField && (
+          <View>
+            <Controller
+              control={control}
+              rules={{
+                required: true
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input label="Token" value={value} onBlur={onBlur} onChangeText={onChange} inputMode="text" />
+              )}
+              name="token"
+            />
 
-        <BaseButton text="Send reset password link" onPress={handleSendResetPassword}></BaseButton>
+            <Controller
+              control={control}
+              rules={{
+                required: true
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  label="New Password"
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  inputMode="text"
+                />
+              )}
+              name="password"
+            />
+
+            <BaseButton text="Send reset password link" onPress={handleSendResetPassword}></BaseButton>
+          </View>
+        )}
+
+        {isLoading && (
+          <View style={{ paddingTop: 20 }}>
+            <ActivityIndicator />
+          </View>
+        )}
+
+        {!!error && <ErrorSummary error={error}></ErrorSummary>}
       </View>
     </Container>
   )

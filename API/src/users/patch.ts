@@ -90,11 +90,12 @@ export const createActivationCode = async (api: Context, request: Request, respo
           .status(201)
           .json({ message: 'Successfully sent activation code', token: activationCode, id: user.rows[0].id })
       } else if (request.body.method === 'reset') {
+        console.log('reset here')
         const courier: ICourierClient = CourierClient({
           authorizationToken: 'dk_prod_0P9D229GA54Q0QPB3CKVS2NMW5R7'
         })
 
-        const email = await courier.send({
+        await courier.send({
           message: {
             to: {
               name: user.rows[0].name
@@ -106,6 +107,7 @@ export const createActivationCode = async (api: Context, request: Request, respo
           }
         })
       }
+
       response
         .status(201)
         .json({ message: 'Successfully sent reset code', token: activationCode, id: user.rows[0].id })

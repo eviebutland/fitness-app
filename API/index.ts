@@ -34,8 +34,9 @@ app.use((request: Request, response: Response, next: NextFunction) => {
   const activationPath = request.method === 'PATCH' && request.url.includes('users')
   const loginPath = request.url.includes('login')
   const logoutPath = request.url.includes('logout')
+  const resetPasswordPath = request.url.includes('reset-password')
 
-  loginPath || logoutPath || createUserPath || activationPath
+  loginPath || logoutPath || createUserPath || activationPath || resetPasswordPath
     ? next()
     : passport.authenticate('bearer', { session: false })(request, response, next)
 })
