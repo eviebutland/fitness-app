@@ -112,19 +112,19 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
     //   }
     // })
 
-    if (selectedWorkout?.id) {
-      const updatedCompletedWorkouts = [...userCompletedWorkouts, Number(selectedWorkout?.id)]
+    // if (selectedWorkout?.id) {
+    //   const updatedCompletedWorkouts = [...userCompletedWorkouts, Number(selectedWorkout?.id)]
 
-      await client.query(
-        `UPDATE users
-        SET completedworkouts = $1
-        WHERE id = ${api.request.user.id}
-        `,
-        [JSON.stringify(updatedCompletedWorkouts)]
-      )
-      await client.query('COMMIT TRANSACTION')
-      // Update user to have completed the workout
-    }
+    //   await client.query(
+    //     `UPDATE users
+    //     SET completedworkouts = $1
+    //     WHERE id = ${api.request.user.id}
+    //     `,
+    //     [JSON.stringify(updatedCompletedWorkouts)]
+    //   )
+    //   await client.query('COMMIT TRANSACTION')
+    //   // Update user to have completed the workout
+    // }
     response.status(200).json({ message: 'Succesfully sent', workout })
   } catch (error) {
     console.log(error)
