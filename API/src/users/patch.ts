@@ -40,7 +40,7 @@ export const updateUser = async (api: Context, request: Request, response: Respo
     const res: QueryResult<User> = await client.query(query, [...values])
 
     await client.query('COMMIT TRANSACTION')
-    response.status(201).send({ message: 'Successfully Updated user' })
+    response.status(204).send({ message: 'Successfully Updated user' })
   } catch (error) {
     rollback(client)
     console.log(error)
@@ -114,6 +114,39 @@ export const createActivationCode = async (api: Context, request: Request, respo
     } else {
       response.status(400).json({ message: `Unable to find user with email ${request.body.email}` })
     }
+  } catch (error) {
+    console.log(error)
+    response.status(500).json({ message: 'Something went wrong', error })
+  }
+}
+
+export const markWorkoutAsComplete = async (api: Context, request: Request, response: Response) => {
+  if (api.request.params.id === ':id') {
+    response.status(404).json({ message: 'Please provide an id' })
+    return
+  }
+
+  try {
+    await client.query('BEGIN TRANSACTION')
+    const user = await client.query(
+      `SELECT completedworkouts FROM users
+    WHERE id = $1
+    `,
+      [api.request.params.id]
+    )
+
+    const updatedCompletedWorkouts = [...user.rows[0].completedworkouts, api.request.body]
+
+    await client.query(
+      `UPDATE users
+        SET completedworkouts = $1
+        WHERE id = ${api.request.params.id}
+        `,
+      [JSON.stringify(updatedCompletedWorkouts)]
+    )
+
+    await client.query('COMMIT TRANSACTION')
+    response.status(204).json({ message: 'Successfully completed workout' })
   } catch (error) {
     console.log(error)
     response.status(500).json({ message: 'Something went wrong', error })

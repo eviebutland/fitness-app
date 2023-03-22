@@ -1,7 +1,15 @@
 import express, { NextFunction, Request, Response, Router } from 'express'
 import { login, logout, resetPassword } from './authentication'
 import { createExcerise, getAllExercises, updateExercise, deleteExercise } from './exercises'
-import { getUsers, createUser, updateUser, deleteUser, getAUser, createActivationCode } from './users/index'
+import {
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+  getAUser,
+  createActivationCode,
+  markWorkoutAsComplete
+} from './users/index'
 import {
   getAllWorkoutPlans,
   getWorkoutPlanById,
@@ -51,20 +59,15 @@ router.get(
 )
 
 router.post('/users', createUser)
-router.patch(
-  '/users/activation',
-  // (req: Request, res: Response, next: NextFunction) => {
-  //   isAuthorized(req, res, next, 'w:user')
-  // },
-  createActivationCode
-)
+router.patch('/users/activation', createActivationCode)
 
+router.patch('/users/:id', updateUser)
 router.patch(
-  '/users/:id',
-  // (req: Request, res: Response, next: NextFunction) => {
-  //   isAuthorized(req, res, next, 'w:user')
-  // },
-  updateUser
+  '/users/:id/completed-workout',
+  (req: Request, res: Response, next: NextFunction) => {
+    isAuthorized(req, res, next, 'w:user')
+  },
+  markWorkoutAsComplete
 )
 
 router.delete(
@@ -172,6 +175,7 @@ router.patch(
   },
   updateWorkout
 )
+
 // Will need a UI to access these
 // router.get('/login/google', passport.authenticate('google'))
 // router.get(

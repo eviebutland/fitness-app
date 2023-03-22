@@ -217,6 +217,11 @@
         "summary": "Create a new user",
         "description": "Create a new user",
         "operationId": "createAUser",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -395,13 +400,80 @@
       "patch": {
         "tags": ["user"],
         "summary": "Updates the user",
-        "description": "User's can update their own profile, as well as adding to completed exercises",
+        "description": "User's can update their own profile",
         "operationId": "updateUser",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "description": "The name that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPatch"
+              }
+            }
+          },
+          "description": "Updated user object",
+          "required": true
+        }
+      }
+    },
+    "/users/{id}/completed-workout": {
+      "patch": {
+        "tags": ["user"],
+        "summary": "Updates the user",
+        "description": "User's updating with completed workouts",
+        "operationId": "markWorkoutAsComplete.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user that needs to be updated",
             "required": true,
             "schema": {
               "type": "string"
@@ -1185,7 +1257,6 @@
       "UserPatch": {
         "type": "object",
         "title": "user",
-        "required": [],
         "properties": {
           "name": {
             "description": "The name of the user",

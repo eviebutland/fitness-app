@@ -100,7 +100,7 @@ const Workout = (props: WorkoutProps) => {
             <View style={{ marginVertical: 20 }}>
               {workout.value &&
                 workout.value.map((set, index: number) => (
-                  <View style={{ marginBottom: 10 }}>
+                  <View key={index} style={{ marginBottom: 10 }}>
                     <Exercise exercise={set} groupIndex={index} set={key}></Exercise>
                   </View>
                 ))}

@@ -466,6 +466,73 @@ export const document: OpenAPIV3.Document = {
         }
       }
     },
+    '/users/{id}/completed-workout': {
+      patch: {
+        tags: ['user'],
+        summary: 'Updates the user',
+        description: "User's updating with completed workouts",
+        operationId: 'markWorkoutAsComplete',
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            description: 'The id of the user that needs to be updated',
+            required: true,
+            schema: {
+              type: 'string'
+            }
+          }
+        ],
+        security: [
+          {
+            bearer: []
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'OK',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/User'
+                }
+              }
+            }
+          },
+          '400': {
+            description: 'BAD_REQUEST',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/BadRequest'
+                }
+              }
+            }
+          },
+          '404': {
+            description: 'NOT_FOUND',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/NotFound'
+                }
+              }
+            }
+          }
+        },
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/UserPatch'
+              }
+            }
+          },
+          description: 'Updated user object',
+          required: true
+        }
+      }
+    },
     '/exercises': {
       get: {
         tags: ['exercises'],

@@ -79,8 +79,6 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
 
   const workout = await handleSelectAllExercisesInCategory(todaysWorkoutCatergory.toLowerCase(), response)
 
-  // // const courier: ICourierClient = CourierClient({ authorizationToken: 'pk_prod_MJAHFWSKV24TJXQJAV7KHKC975SW' })
-
   let selectedWorkout: Record<string, string> = {}
 
   const userCompletedWorkouts =
@@ -90,47 +88,15 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
     // check if any of the workouts have been completed yet
     userCompletedWorkouts.forEach((completedWorkout: number) => {
       if (workout.data.length && typeof workout.data !== 'string') {
-        selectedWorkout = workout.data.find(workout => completedWorkout !== Number(workout.id)) ?? {}
+        console.log(workout.data)
+        selectedWorkout = workout.data.find(workout => completedWorkout.workoutId !== Number(workout.id)) ?? {}
       } else {
         selectedWorkout = {}
       }
     })
   }
-  try {
-    const emailData = workout?.data[0]
-
-    // await courier.send({
-    //   message: {
-    //     to: {
-    //       email: 'evie.butland@gmail.com'
-    //     },
-    //     template: 'HBDVP38QPSMS4YG676E20DGYP7X6',
-    //     data: {
-    //       recipientName: 'Evie',
-    //       workoutName: emailData.name,
-    //     }
-    //   }
-    // })
-
-    // if (selectedWorkout?.id) {
-    //   const updatedCompletedWorkouts = [...userCompletedWorkouts, Number(selectedWorkout?.id)]
-
-    //   await client.query(
-    //     `UPDATE users
-    //     SET completedworkouts = $1
-    //     WHERE id = ${api.request.user.id}
-    //     `,
-    //     [JSON.stringify(updatedCompletedWorkouts)]
-    //   )
-    //   await client.query('COMMIT TRANSACTION')
-    //   // Update user to have completed the workout
-    // }
-    response.status(200).json({ message: 'Succesfully sent', workout })
-  } catch (error) {
-    console.log(error)
-    rollback(client)
-    response.status(500).json({ message: 'Something went wrong', error })
-  }
+  console.log(userCompletedWorkouts)
+  response.status(200).json({ message: 'Succesfully sent', workout })
 }
 
 export const getAllExercisesInCatergory = async (

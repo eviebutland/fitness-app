@@ -55,9 +55,18 @@ const DashboardScreen = ({ navigation }) => {
   const handleWorkoutStarted = () => {
     setIsWorkoutInProgress(true)
   }
-  const handleCompleteWorkout = () => {
-    setIsWorkoutInProgress(false)
-    setStatus('completed')
+  const handleCompleteWorkout = async () => {
+    try {
+      await axios.patch(`http://localhost:3030/users/${user.id}/completed-workout`, {
+        workoutId: todaysWorkout[0].id,
+        name: todaysWorkout[0].title
+      })
+
+      setIsWorkoutInProgress(false)
+      setStatus('completed')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

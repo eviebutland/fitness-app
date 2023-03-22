@@ -9,6 +9,8 @@ import { BaseButton } from '../base/Button'
 import { todaysWorkoutGetter } from '../../state/workouts'
 import StepCounter from '../base/StepCounter'
 import { capitaliseFirstLetter } from '../../lib/utility/string'
+import dayjs from 'dayjs'
+
 interface OverviewProps {
   handleDisplayWorkout: () => void
 }
@@ -17,10 +19,14 @@ const Overview = (props: OverviewProps) => {
   const user = useRecoilValue(userGetter)
   const workout = useRecoilValue(todaysWorkoutGetter)
 
+  const timeNow = dayjs(new Date()).hour()
+
+  const welcomeString = timeNow > 12 ? 'Good afternoon' : 'Good morning'
+
   const completedWorkouts = ['Full body cardio & core', 'Lower']
   return (
     <View>
-      <Title text={`Good morning, ${capitaliseFirstLetter(user.name ?? '')}`}></Title>
+      <Title text={`${welcomeString}, ${capitaliseFirstLetter(user.name ?? '')}`}></Title>
       <View>
         <View>
           {typeof workout === 'string' ? (
