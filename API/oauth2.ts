@@ -20,7 +20,7 @@ import jwt from 'jsonwebtoken'
 // )
 
 // passport.use(google)
-type Callback = (error: any, user?: any, options?: string | IVerifyOptions | undefined) => void
+// type Callback = (error: any, user?: any, options?: string | IVerifyOptions | undefined) => void
 
 passport.use(
   new LocalStrategy(async function verify(username, password, done) {

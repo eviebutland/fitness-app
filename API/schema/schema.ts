@@ -1165,7 +1165,7 @@ export const document: OpenAPIV3.Document = {
             example: '{}',
             properties: {
               warmUp: {
-                type: 'array',
+                type: 'object',
                 example: []
               }
             }

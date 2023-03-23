@@ -1,11 +1,14 @@
-import { Context } from 'openapi-backend'
+import { Context, ParsedRequest } from 'openapi-backend'
 import { client } from '../../server'
 import { rollback } from '../utils/rollback'
 import { Request, Response } from 'express'
 import { QueryResult } from 'pg'
 import { User } from '../lib/types/user'
 import { WorkoutFormatted } from '../lib/types/workouts'
-
+interface CompletedWorkouts {
+  name: string
+  workoutId: string
+}
 export const getAllWorkoutPlans = async (api: Context, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')
@@ -68,7 +71,14 @@ const handleSelectAllExercisesInCategory = async (category: string, response: Re
   }
 }
 
-export const getTodaysWorkout = async (api: Context, request: Request, response: Response) => {
+interface UserParsedRequest extends ParsedRequest {
+  user: User
+}
+interface UserContext extends Context {
+  request: UserParsedRequest
+}
+
+export const getTodaysWorkout = async (api: UserContext, request: Request, response: Response) => {
   // Based off the user's logged in workout preference find a workout that matches
   const user: User = api.request?.user
   const query = api.request.query.day as string
@@ -79,24 +89,22 @@ export const getTodaysWorkout = async (api: Context, request: Request, response:
 
   const workout = await handleSelectAllExercisesInCategory(todaysWorkoutCatergory.toLowerCase(), response)
 
-  let selectedWorkout: Record<string, string> = {}
+  let selectedWorkout: WorkoutFormatted | null = { title: null, workout: null }
 
   const userCompletedWorkouts =
     typeof user.completedworkouts === 'string' ? JSON.parse(user.completedworkouts) : user.completedworkouts
 
-  if (workout?.data.length && typeof workout?.data !== 'string') {
+  if (workout?.data.length && typeof workout.data !== 'string') {
     // check if any of the workouts have been completed yet
-    userCompletedWorkouts.forEach((completedWorkout: number) => {
-      if (workout.data.length && typeof workout.data !== 'string') {
-        console.log(workout.data)
-        selectedWorkout = workout.data.find(workout => completedWorkout.workoutId !== Number(workout.id)) ?? {}
-      } else {
-        selectedWorkout = {}
-      }
+    userCompletedWorkouts.forEach((completedWorkout: CompletedWorkouts) => {
+      selectedWorkout =
+        (workout.data as WorkoutFormatted[]).find(workout => {
+          return completedWorkout.workoutId !== workout.id
+        }) ?? null
     })
   }
-  console.log(userCompletedWorkouts)
-  response.status(200).json({ message: 'Succesfully sent', workout })
+
+  response.status(200).json({ message: 'Succesfully sent', workout: selectedWorkout })
 }
 
 export const getAllExercisesInCatergory = async (

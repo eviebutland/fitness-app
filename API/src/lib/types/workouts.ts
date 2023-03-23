@@ -28,7 +28,7 @@ export interface ExerciseJSONB {
   video: string
 }
 
-interface WorkoutJSONB {
+export interface WorkoutJSONB {
   warmUp: Array<ExerciseJSONB>
   wod?: Array<ExerciseJSONB>
   set: Array<ExerciseJSONB>
@@ -39,7 +39,7 @@ interface WorkoutJSONB {
 }
 
 export interface WorkoutFormatted {
-  id?: number
-  title: string
-  workout: WorkoutJSONB
+  id?: string
+  title: string | null
+  workout: WorkoutJSONB | null
 }

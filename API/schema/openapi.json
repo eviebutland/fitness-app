@@ -1245,7 +1245,7 @@
           },
           "variations": {
             "description": "List of different types of variation for the exercise",
-            "type": "array",
+            "type": "object",
             "items": {
               "type": "string"
             },
@@ -1288,7 +1288,7 @@
           },
           "completedWorkouts": {
             "description": "The exercises completed by the user",
-            "type": "array",
+            "type": "object",
             "items": {
               "type": "string"
             },
@@ -1374,7 +1374,7 @@
           },
           "completedWorkouts": {
             "description": "The exercises completed by the user",
-            "type": "array",
+            "type": "object",
             "items": {
               "type": "string"
             },

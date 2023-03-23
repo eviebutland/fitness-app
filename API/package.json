@@ -6,8 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "build": "npx tsc",
-    "start": "node dist/index.js",
-    "dev": "npm run kill && concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "start": "",
+    "dev": "npm run kill && ts-node-dev index.ts",
     "kill": "npx kill-port 3030",
     "start:DB": "brew services start postgresql",
     "stop:DB": "brew services stop postgresql"
@@ -46,6 +46,7 @@
     "@types/passport-local": "^1.0.34",
     "concurrently": "^7.5.0",
     "nodemon": "^2.0.21",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.8.4"
   }
 }

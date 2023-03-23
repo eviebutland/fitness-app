@@ -70,6 +70,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use((req, res) => api.handleRequest(req as OpenAPIRequest, req, res))
 
 app.use(router)
+
 app
   .listen(3030, () => {
     console.log(`App running on port 3030.`)
@@ -79,10 +80,5 @@ app
 
     process.exit()
   })
-// process.on('EADDRINUSE', () => console.log('Got SIGINT.  Press Control-D to exit.'))
 
 connectDb()
-process.once('EADDRINUSE', function () {
-  console.log(process.pid)
-  process.kill(process.pid, 'EADDRINUSE')
-})
