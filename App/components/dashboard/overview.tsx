@@ -62,9 +62,7 @@ const Overview = (props: OverviewProps) => {
                     paddingBottom: 20
                   }}
                 >
-                  <Text style={{ fontSize: 17, fontWeight: '500' }}>
-                    {capitaliseFirstLetter(workout[0].title)}
-                  </Text>
+                  <Text style={{ fontSize: 17, fontWeight: '500' }}>{capitaliseFirstLetter(workout?.title)}</Text>
                   {/* if completed then tick this */}
                   <FontAwesomeIcon size={25} icon={faCheckCircle} color={'#52B788'}></FontAwesomeIcon>
                 </View>

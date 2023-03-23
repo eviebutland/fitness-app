@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { View, Text, ScrollView } from 'react-native'
-import { WorkoutFormatted } from '../../../API/src/lib/types/workouts'
+import { WorkoutFormatted, WorkoutJSONB } from '../../../API/src/lib/types/workouts'
 import Exercise from './Exercise'
 import { BaseButton } from '../base/Button'
 import { useTimer } from '../../lib/useTimer'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { ExerciseJSONB } from '../../../API/src/lib/types/workouts'
+
 interface WorkoutProps {
   workout: WorkoutFormatted
   onCompleteWorkout: Function
@@ -68,7 +69,8 @@ const Workout = (props: WorkoutProps) => {
     handleStartTimer()
   }
 
-  Object.entries(props.workout.workout).forEach(([key, value]) => {
+  console.log('props workout', props.workout)
+  Object.entries(props.workout?.workout as WorkoutJSONB).forEach(([key, value]) => {
     orderedWorkout[key] = { ...orderedWorkout[key], value }
   })
 

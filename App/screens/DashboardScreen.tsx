@@ -38,14 +38,15 @@ const DashboardScreen = ({ navigation }) => {
       })
 
       setStatus('inactive')
-      setTodaysWorkout(data.workout.data)
+      console.log('data', data.workout)
+      setTodaysWorkout(data.workout)
     } catch (error) {
       console.log(error)
       navigation.navigate('Login')
     }
   }
 
-  if (!workout.length) {
+  if (!workout) {
     fetchTodaysWorkout('today')
   }
   const handleDisplayWorkout = () => {
@@ -58,8 +59,8 @@ const DashboardScreen = ({ navigation }) => {
   const handleCompleteWorkout = async () => {
     try {
       await axios.patch(`http://localhost:3030/users/${user.id}/completed-workout`, {
-        workoutId: todaysWorkout[0].id,
-        name: todaysWorkout[0].title
+        workoutId: todaysWorkout?.id,
+        name: todaysWorkout?.title
       })
 
       setIsWorkoutInProgress(false)
@@ -77,7 +78,7 @@ const DashboardScreen = ({ navigation }) => {
           handleSelectedDate={fetchTodaysWorkout}
           isDisabled={isWorkoutInProgress}
         ></Calendar>
-        {status === 'inactive' && workout.length > 0 && (
+        {status === 'inactive' && !!workout?.id && (
           <Overview handleDisplayWorkout={handleDisplayWorkout}></Overview>
         )}
 

@@ -26,9 +26,9 @@ const WorkoutDisplay = (props: WorkoutDisplayProps) => {
           </View>
         </View>
       ) : (
-        workout[0] && (
+        workout && (
           <Workout
-            workout={workout[0]}
+            workout={workout}
             onCompleteWorkout={props.handleCompleteWorkout}
             isWorkoutCompleted={false}
             onWorkoutStart={props.handleWorkoutStarted}

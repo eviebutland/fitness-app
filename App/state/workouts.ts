@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil'
 
 export const todaysWorkoutState = atom({
   key: 'todaysWorkoutState',
-  default: []
+  default: {}
 })
 
 export const todaysWorkoutGetter = selector({
