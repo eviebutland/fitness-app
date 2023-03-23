@@ -69,7 +69,6 @@ const Workout = (props: WorkoutProps) => {
     handleStartTimer()
   }
 
-  console.log('props workout', props.workout)
   Object.entries(props.workout?.workout as WorkoutJSONB).forEach(([key, value]) => {
     orderedWorkout[key] = { ...orderedWorkout[key], value }
   })

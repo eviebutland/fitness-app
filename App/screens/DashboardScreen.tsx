@@ -38,7 +38,6 @@ const DashboardScreen = ({ navigation }) => {
       })
 
       setStatus('inactive')
-      console.log('data', data.workout)
       setTodaysWorkout(data.workout)
     } catch (error) {
       console.log(error)
@@ -89,7 +88,9 @@ const DashboardScreen = ({ navigation }) => {
           ></WorkoutDisplay>
         )}
 
-        {status === 'completed' && <CompletedWorkout></CompletedWorkout>}
+        {status === 'completed' && (
+          <CompletedWorkout handleNavigateToDashboard={() => setStatus('inactive')}></CompletedWorkout>
+        )}
       </View>
     </Container>
   )
