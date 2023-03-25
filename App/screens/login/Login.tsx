@@ -19,7 +19,7 @@ type FormData = {
 }
 
 const LoginScreen = ({ navigation, route }) => {
-  const [user, setUser] = useRecoilState(userState)
+  const [_, setUser] = useRecoilState(userState)
   const { clearError, setError, error } = useError()
 
   const {

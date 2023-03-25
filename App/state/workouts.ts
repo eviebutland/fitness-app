@@ -23,3 +23,19 @@ export const completedSetsGetter = selector({
     return get(completedSetsState)
   }
 })
+
+export const completedWorkoutState = atom({
+  key: 'completedWorkoutState',
+  default: {
+    name: '',
+    time: '',
+    reps: 0
+  }
+})
+
+export const completedWorkoutGetter = selector({
+  key: 'completedWorkoutGetter',
+  get: ({ get }) => {
+    return get(completedWorkoutState)
+  }
+})

@@ -10,7 +10,7 @@ import { newUserState } from '../../state/register'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { capitaliseFirstLetter } from '../../lib/utility/string'
-import axios from 'axios'
+
 import ErrorSummary from '../../components/base/ErrorSummary'
 import { useError } from '../../lib/useError'
 import jwt from 'expo-jwt'
@@ -21,7 +21,7 @@ type Day = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturda
 type Workout = 'LOWER' | 'FULL BODY' | 'UPPER' | 'GLUTES' | 'REST'
 
 const WorkoutPreferenceScreen = ({ navigation }) => {
-  const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
+  const [registerDetails, _] = useRecoilState(newUserState)
   const { clearError, setError, error } = useError()
   const isLoading = useRef(false)
   const days: Day[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
@@ -61,8 +61,6 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
         password: 'Inact1v3!',
         workoutPreference: userPreference
       } as UserRequestBody)
-
-      axios.post('http://localhost:3030/users')
 
       const userToken = jwt.decode(data.token, 'secret')
       const jsonUserToken = JSON.stringify(userToken)

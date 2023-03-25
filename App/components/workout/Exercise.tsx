@@ -51,6 +51,7 @@ const Exercise = (props: ExerciseProps) => {
 
     shouldDisplayModal && handleOpenModal()
 
+    // console.log(completedSets)
     setCompletedSets({
       ...completedSets,
       [set]: {

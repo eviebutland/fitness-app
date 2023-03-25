@@ -97,8 +97,8 @@ const Overview = (props: OverviewProps) => {
 
         <View>
           <Text style={{ fontWeight: '700', fontSize: 20, marginBottom: 10 }}>Completed in past 2 days</Text>
-          {completedWorkouts.map(completedWorkout => (
-            <View style={styles.completedWorkout}>
+          {completedWorkouts.map((completedWorkout, index) => (
+            <View style={styles.completedWorkout} key={index}>
               <Text style={{ fontSize: 16 }}>{capitaliseFirstLetter(completedWorkout.name)}</Text>
               <FontAwesomeIcon size={25} icon={faCheckCircle} color="#8DBDA7"></FontAwesomeIcon>
             </View>

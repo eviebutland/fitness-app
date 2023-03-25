@@ -3,13 +3,18 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheckCircle, faClock, faDumbbell } from '@fortawesome/free-solid-svg-icons'
 import { BaseButton } from '../base/Button'
+import { useRecoilValue } from 'recoil'
+import { completedWorkoutGetter } from '../../state/workouts'
+import { capitaliseFirstLetter } from '../../lib/utility/string'
 
 interface CompletedWorkoutProps {
   handleNavigateToDashboard: Function
 }
 
 const CompletedWorkout = (props: CompletedWorkoutProps) => {
-  const completedWorkoutStats = [] // get these from state?
+  const completedWorkout = useRecoilValue(completedWorkoutGetter)
+  console.log(completedWorkout)
+
   return (
     <View style={{ marginTop: 40 }}>
       <Text style={{ fontSize: 25, fontWeight: '600', textAlign: 'center' }}>Workout completed!</Text>
@@ -22,7 +27,7 @@ const CompletedWorkout = (props: CompletedWorkoutProps) => {
             style={{ marginBottom: 10 }}
             size={35}
           ></FontAwesomeIcon>
-          <Text style={{ fontSize: 20, fontWeight: '600' }}>33:00</Text>
+          <Text style={{ fontSize: 20, fontWeight: '600' }}>{completedWorkout.time / 60}</Text>
         </View>
         <View style={styles.box}>
           <FontAwesomeIcon
@@ -31,7 +36,7 @@ const CompletedWorkout = (props: CompletedWorkoutProps) => {
             style={{ marginBottom: 10 }}
             size={35}
           ></FontAwesomeIcon>
-          <Text style={{ fontSize: 20, fontWeight: '600' }}>Full body</Text>
+          <Text style={{ fontSize: 20, fontWeight: '600' }}>{capitaliseFirstLetter(completedWorkout.name)}</Text>
         </View>
         <View style={styles.box}>
           <FontAwesomeIcon
@@ -40,7 +45,7 @@ const CompletedWorkout = (props: CompletedWorkoutProps) => {
             style={{ marginBottom: 10 }}
             size={35}
           ></FontAwesomeIcon>
-          <Text style={{ fontSize: 20, fontWeight: '600' }}>120 reps</Text>
+          <Text style={{ fontSize: 20, fontWeight: '600' }}>{completedWorkout.reps} reps</Text>
         </View>
       </View>
 

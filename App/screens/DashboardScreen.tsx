@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { userGetter, userState } from '../state/user'
+import { userState } from '../state/user'
 import { Calendar } from '../components/Calendar'
 
-import { todaysWorkoutGetter, todaysWorkoutState } from '../state/workouts'
+import { completedWorkoutState, todaysWorkoutGetter, todaysWorkoutState } from '../state/workouts'
 import { Container } from '../components/base/Container'
 import { activeModalGetter } from '../state/modal'
 import WorkoutDisplay from '../components/dashboard/WorkoutDisplay'
@@ -17,14 +17,16 @@ type Status = 'inactive' | 'active' | 'completed'
 
 const DashboardScreen = ({ navigation }) => {
   const [todaysWorkout, setTodaysWorkout] = useRecoilState(todaysWorkoutState)
+  const [user, setUser] = useRecoilState(userState)
+  const [_, setCompletedWorkout] = useRecoilState(completedWorkoutState)
+
+  const activeModal = useRecoilValue(activeModalGetter)
+  const workout = useRecoilValue(todaysWorkoutGetter)
+
   const [isWorkoutInProgress, setIsWorkoutInProgress] = useState(false)
   const [status, setStatus] = useState<Status>('inactive')
   const [isLoading, setIsLoading] = useState(false)
   const [selectedDay, setSelectedDay] = useState('today')
-  const [user, setUser] = useRecoilState(userState)
-
-  const activeModal = useRecoilValue(activeModalGetter)
-  const workout = useRecoilValue(todaysWorkoutGetter)
 
   const today = new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
 
@@ -92,7 +94,10 @@ const DashboardScreen = ({ navigation }) => {
             {status === 'active' && (
               <WorkoutDisplay
                 handleCompleteWorkout={handleCompleteWorkout}
-                handleWorkoutStarted={() => setIsWorkoutInProgress(true)}
+                handleWorkoutStarted={() => {
+                  setIsWorkoutInProgress(true)
+                  setCompletedWorkout({ time: '', reps: 0, name: '' })
+                }}
               ></WorkoutDisplay>
             )}
 

@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 export function useTimer() {
   const [timeNow, setTimeNow] = useState(new Date())
-  const [startTime, setStartTime] = useState({})
+  const [startTime, setStartTime] = useState<Dayjs>({})
   const intervalRef = useRef(null)
   const [isTimerActive, setIsTimerActive] = useState(false)
 

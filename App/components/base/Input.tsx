@@ -4,7 +4,7 @@ import { SetterOrUpdater } from 'recoil'
 
 interface TextInputProps {
   onChangeText: SetterOrUpdater<any>
-  onBlur: SetterOrUpdater<any>
+  onBlur?: SetterOrUpdater<any>
   label: string
   value: string | number | undefined | null
   inputMode: InputModeOptions

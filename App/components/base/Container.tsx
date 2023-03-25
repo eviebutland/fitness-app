@@ -11,7 +11,7 @@ interface ContainerProps {
 }
 
 export const Container = (props: ContainerProps) => {
-  const [activeModals, setActiveModals] = useRecoilState(activeModalState)
+  const [_, setActiveModals] = useRecoilState(activeModalState)
 
   const handleCloseAllModals = () => {
     setActiveModals([])

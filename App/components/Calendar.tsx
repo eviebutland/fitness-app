@@ -31,6 +31,7 @@ export const Calendar = (props: CalendarProps) => {
     <View style={styles.container}>
       {[0, 1, 2, 3, 4].map(index => (
         <View
+          key={index}
           style={[
             activeDay === composeDays(index).long.toLowerCase() && props.isDisabled ? styles.disabled : null,
             activeDay === composeDays(index).long.toLowerCase() && !props.isDisabled ? styles.active : null,

@@ -8,6 +8,9 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { ExerciseJSONB } from '../../../API/src/lib/types/workouts'
 import { capitaliseFirstLetter } from '../../lib/utility/string'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { completedSetsGetter, completedWorkoutState } from '../../state/workouts'
+import { Dayjs } from 'dayjs'
 
 interface WorkoutProps {
   workout: WorkoutFormatted
@@ -19,7 +22,7 @@ interface WorkoutProps {
 interface OrderedWorkout {
   [key: string]: {
     label: string
-    value: null | ExerciseJSONB
+    value: null | Array<ExerciseJSONB>
   }
 }
 
@@ -51,6 +54,8 @@ const orderedWorkout: OrderedWorkout = {
 }
 const Workout = (props: WorkoutProps) => {
   const { handleInterval, handleStartTimer, startTime, handleEndTimer, isTimerActive } = useTimer()
+  const [_, setCompletedWorkout] = useRecoilState(completedWorkoutState)
+  const completedSets = useRecoilValue(completedSetsGetter)
 
   useEffect(() => {
     if (isTimerActive) {
@@ -61,9 +66,27 @@ const Workout = (props: WorkoutProps) => {
   }, [isTimerActive])
 
   const handleEndWorkout = () => {
+    setCompletedWorkout({
+      reps: 10,
+      time: startTime.format('mm:ss'),
+      name: props.workout?.title as string
+    })
+
     handleEndTimer()
     props.onCompleteWorkout()
   }
+
+  // const completedSetsValues = Object.values(completedSets)
+
+  // console.log(Object.values(test))
+  // const format = completedSetsValues.flatMap(value => {
+  //   console.log('value', value)
+  //   return Object.values(value).flatMap(te =>
+  //     Object.values(te).reduce((accumulator, currentValue) => accumulator + currentValue.reps.value, 0)
+  //   )
+  // })
+
+  // console.log(format)
 
   const handleStartWorkout = () => {
     props.onWorkoutStart()

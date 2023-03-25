@@ -7,7 +7,7 @@ import { activeModalGetter, activeModalState } from '../../state/modal'
 
 const RecordModal = () => {
   const [weight, setWeight] = useState(0)
-  const [activeModals, setActiveModals] = useRecoilState(activeModalState)
+  const [_, setActiveModals] = useRecoilState(activeModalState)
   const [isVisible, setIsVisible] = useState(false)
   const currentActiveModals = useRecoilValue(activeModalGetter)
 
