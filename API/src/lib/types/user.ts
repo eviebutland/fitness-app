@@ -44,3 +44,16 @@ export interface UserRequestBody {
   workoutPreference: string | WorkoutPreference
   status: Status
 }
+
+export interface UserResponseBody {
+  name: string
+  age: number | null
+  email: string
+  password: string | undefined
+  levelOfAccess: LevelOfAccess
+  premium: Premium
+  completedWorkouts: string | number[]
+  permissions: string
+  workoutPreference: string | WorkoutPreference
+  status: Status
+}

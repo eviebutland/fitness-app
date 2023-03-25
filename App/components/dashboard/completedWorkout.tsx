@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCheck, faCheckCircle, faClock, faDumbbell } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faClock, faDumbbell } from '@fortawesome/free-solid-svg-icons'
 import { BaseButton } from '../base/Button'
 
 interface CompletedWorkoutProps {

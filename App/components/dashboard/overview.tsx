@@ -10,9 +10,11 @@ import { todaysWorkoutGetter } from '../../state/workouts'
 import StepCounter from '../base/StepCounter'
 import { capitaliseFirstLetter } from '../../lib/utility/string'
 import dayjs from 'dayjs'
+import { CompletedWorkouts } from '../../../API/src/lib/types/workouts'
 
 interface OverviewProps {
   handleDisplayWorkout: () => void
+  selectedDay: string
 }
 
 const Overview = (props: OverviewProps) => {
@@ -23,7 +25,18 @@ const Overview = (props: OverviewProps) => {
 
   const welcomeString = timeNow > 12 ? 'Good afternoon' : 'Good morning'
 
-  const completedWorkouts = ['Full body cardio & core', 'Lower']
+  const hasCompletedWorkout = !!user.completedworkouts?.find(
+    (completedWorkout: CompletedWorkouts) => completedWorkout.workoutId === workout.id
+  )
+  let completedWorkouts: Array<CompletedWorkouts> = []
+  if (user.completedworkouts && user.completedworkouts?.length > 0) {
+    completedWorkouts.push(user.completedworkouts[user.completedworkouts?.length - 1])
+  }
+
+  if (user.completedworkouts && user.completedworkouts?.length > 1) {
+    completedWorkouts.push(user.completedworkouts[user.completedworkouts?.length - 2])
+  }
+
   return (
     <View>
       <Title text={`${welcomeString}, ${capitaliseFirstLetter(user.name ?? '')}`}></Title>
@@ -63,8 +76,10 @@ const Overview = (props: OverviewProps) => {
                   }}
                 >
                   <Text style={{ fontSize: 17, fontWeight: '500' }}>{capitaliseFirstLetter(workout?.title)}</Text>
-                  {/* if completed then tick this */}
-                  <FontAwesomeIcon size={25} icon={faCheckCircle} color={'#52B788'}></FontAwesomeIcon>
+
+                  {hasCompletedWorkout && (
+                    <FontAwesomeIcon size={25} icon={faCheckCircle} color={'#52B788'}></FontAwesomeIcon>
+                  )}
                 </View>
                 <BaseButton text={'Start workout'} onPress={props.handleDisplayWorkout}></BaseButton>
               </View>
@@ -84,7 +99,7 @@ const Overview = (props: OverviewProps) => {
           <Text style={{ fontWeight: '700', fontSize: 20, marginBottom: 10 }}>Completed in past 2 days</Text>
           {completedWorkouts.map(completedWorkout => (
             <View style={styles.completedWorkout}>
-              <Text style={{ fontSize: 16 }}>{completedWorkout}</Text>
+              <Text style={{ fontSize: 16 }}>{capitaliseFirstLetter(completedWorkout.name)}</Text>
               <FontAwesomeIcon size={25} icon={faCheckCircle} color="#8DBDA7"></FontAwesomeIcon>
             </View>
           ))}

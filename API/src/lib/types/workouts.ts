@@ -43,3 +43,8 @@ export interface WorkoutFormatted {
   title: string | null
   workout: WorkoutJSONB | null
 }
+
+export interface CompletedWorkouts {
+  name: string
+  workoutId: string
+}

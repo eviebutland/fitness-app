@@ -7,6 +7,7 @@ import { useTimer } from '../../lib/useTimer'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { ExerciseJSONB } from '../../../API/src/lib/types/workouts'
+import { capitaliseFirstLetter } from '../../lib/utility/string'
 
 interface WorkoutProps {
   workout: WorkoutFormatted
@@ -77,7 +78,7 @@ const Workout = (props: WorkoutProps) => {
     <View style={{ marginVertical: 20 }}>
       <Text style={{ fontSize: 25 }}>
         Workout:
-        <Text style={{ fontWeight: '500' }}> {props.workout?.title}</Text>
+        <Text style={{ fontWeight: '500' }}> {capitaliseFirstLetter(props.workout?.title as string)}</Text>
         {props.isWorkoutCompleted && <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />}
       </Text>
 

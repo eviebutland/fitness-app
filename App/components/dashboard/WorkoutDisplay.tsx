@@ -26,7 +26,7 @@ const WorkoutDisplay = (props: WorkoutDisplayProps) => {
           </View>
         </View>
       ) : (
-        workout && (
+        Object.values(workout).length && (
           <Workout
             workout={workout}
             onCompleteWorkout={props.handleCompleteWorkout}

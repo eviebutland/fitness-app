@@ -1,69 +1,74 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { userGetter } from '../state/user'
+import { userGetter, userState } from '../state/user'
 import { Calendar } from '../components/Calendar'
-import axios from 'axios'
+
 import { todaysWorkoutGetter, todaysWorkoutState } from '../state/workouts'
 import { Container } from '../components/base/Container'
 import { activeModalGetter } from '../state/modal'
 import WorkoutDisplay from '../components/dashboard/WorkoutDisplay'
 import Overview from '../components/dashboard/Overview'
 import CompletedWorkout from '../components/dashboard/CompletedWorkout'
+import { fetchUser, updatedCompletedWorkouts } from '../services/user'
 
+import { createAxiosInstance } from '../services/axios'
+import { fetchWorkoutOfTheDay } from '../services/workout'
 type Status = 'inactive' | 'active' | 'completed'
 
 const DashboardScreen = ({ navigation }) => {
   const [todaysWorkout, setTodaysWorkout] = useRecoilState(todaysWorkoutState)
   const [isWorkoutInProgress, setIsWorkoutInProgress] = useState(false)
   const [status, setStatus] = useState<Status>('inactive')
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedDay, setSelectedDay] = useState('today')
+  const [user, setUser] = useRecoilState(userState)
 
-  const user = useRecoilValue(userGetter)
   const activeModal = useRecoilValue(activeModalGetter)
   const workout = useRecoilValue(todaysWorkoutGetter)
 
   const today = new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
+  const axiosInstance = createAxiosInstance(user.token as string)
+
   const fetchTodaysWorkout = async (day: string) => {
     let queryString = day
 
+    setIsLoading(true)
     if (day === 'today') {
       queryString = today
     }
+    setSelectedDay(queryString)
 
     try {
-      const { data } = await axios.get(`http://localhost:3030/workouts/day?day=${queryString}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      })
+      const { data } = await fetchWorkoutOfTheDay(user.token as string, queryString)
 
       setStatus('inactive')
       setTodaysWorkout(data.workout)
     } catch (error) {
       console.log(error)
       navigation.navigate('Login')
+    } finally {
+      setIsLoading(false)
     }
   }
 
   if (!workout) {
     fetchTodaysWorkout('today')
   }
-  const handleDisplayWorkout = () => {
-    setStatus('active')
-  }
 
-  const handleWorkoutStarted = () => {
-    setIsWorkoutInProgress(true)
-  }
   const handleCompleteWorkout = async () => {
     try {
-      await axios.patch(`http://localhost:3030/users/${user.id}/completed-workout`, {
+      await updatedCompletedWorkouts(user, {
         workoutId: todaysWorkout?.id,
         name: todaysWorkout?.title
       })
 
       setIsWorkoutInProgress(false)
       setStatus('completed')
+
+      fetchUser(user, data => {
+        setUser(data.data)
+      })
     } catch (error) {
       console.log(error)
     }
@@ -77,19 +82,30 @@ const DashboardScreen = ({ navigation }) => {
           handleSelectedDate={fetchTodaysWorkout}
           isDisabled={isWorkoutInProgress}
         ></Calendar>
-        {status === 'inactive' && !!workout?.id && (
-          <Overview handleDisplayWorkout={handleDisplayWorkout}></Overview>
-        )}
 
-        {status === 'active' && (
-          <WorkoutDisplay
-            handleCompleteWorkout={handleCompleteWorkout}
-            handleWorkoutStarted={handleWorkoutStarted}
-          ></WorkoutDisplay>
-        )}
+        {isLoading ? (
+          <ActivityIndicator></ActivityIndicator>
+        ) : (
+          <View>
+            {status === 'inactive' && !!workout?.id && (
+              <Overview handleDisplayWorkout={() => setStatus('active')} selectedDay={selectedDay}></Overview>
+            )}
 
-        {status === 'completed' && (
-          <CompletedWorkout handleNavigateToDashboard={() => setStatus('inactive')}></CompletedWorkout>
+            {status === 'active' && (
+              <WorkoutDisplay
+                handleCompleteWorkout={handleCompleteWorkout}
+                handleWorkoutStarted={() => setIsWorkoutInProgress(true)}
+              ></WorkoutDisplay>
+            )}
+
+            {status === 'completed' && (
+              <CompletedWorkout
+                handleNavigateToDashboard={() => {
+                  setStatus('inactive')
+                }}
+              ></CompletedWorkout>
+            )}
+          </View>
         )}
       </View>
     </Container>

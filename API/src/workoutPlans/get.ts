@@ -4,11 +4,8 @@ import { rollback } from '../utils/rollback'
 import { Request, Response } from 'express'
 import { QueryResult } from 'pg'
 import { User } from '../lib/types/user'
-import { WorkoutFormatted } from '../lib/types/workouts'
-interface CompletedWorkouts {
-  name: string
-  workoutId: string
-}
+import { WorkoutFormatted, CompletedWorkouts } from '../lib/types/workouts'
+
 export const getAllWorkoutPlans = async (api: Context, request: Request, response: Response): Promise<void> => {
   try {
     await client.query('BEGIN TRANSACTION')

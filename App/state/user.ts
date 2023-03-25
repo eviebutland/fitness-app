@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil'
 
 import { User } from '../../API/src/lib/types/user'
 
-interface LoggedInUser extends Partial<User> {
+export interface LoggedInUser extends Partial<User> {
   token: string | undefined
 }
 
