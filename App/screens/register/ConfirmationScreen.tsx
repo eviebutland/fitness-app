@@ -10,6 +10,7 @@ import { BaseButton } from '../../components/base/Button'
 import { useForm, Controller } from 'react-hook-form'
 import axios from 'axios'
 import { useError } from '../../lib/useError'
+import { fetchActivationCode, updateUser } from '../../services/user'
 
 interface FormData {
   activationCode: string | null
@@ -26,10 +27,11 @@ const ConfirmationScreen = ({ navigation }) => {
 
   const triggerActivationEmail = async () => {
     try {
-      const { data } = await axios.patch('http://localhost:3030/users/activation', {
-        email: newUser.email,
+      const { data } = await fetchActivationCode({
+        email: newUser.email as string,
         method: 'create'
       })
+
       activationCode.current = data.token
       userId.current = data.id
 
@@ -59,13 +61,9 @@ const ConfirmationScreen = ({ navigation }) => {
   }, [hasTriggeredActivationEmail.current])
 
   const handleCompleteRegistration = async () => {
-    // check this against input field
-
     if (activationCode.current === parseInt(control._formValues.activationCode)) {
       try {
-        await axios.patch(`http://localhost:3030/users/${userId.current}`, {
-          password: control._formValues.password
-        })
+        await updateUser(userId.current, { password: control._formValues.password })
 
         clearError()
 

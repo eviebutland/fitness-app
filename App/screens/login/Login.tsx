@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { useRecoilState } from 'recoil'
 import { BaseButton } from '../../components/base/Button'
 import { userState } from '../../state/user'
 import { Input } from '../../components/base/Input'
 import { Container } from '../../components/base/Container'
-import axios from 'axios'
 import ErrorSummary from '../../components/base/ErrorSummary'
 import { useForm, Controller } from 'react-hook-form'
 import jwt from 'expo-jwt'
 import { storeData } from '../../lib/async-storage/store-data'
 import { useError } from '../../lib/useError'
 import { removeData } from '../../lib/async-storage/remove-data'
+import { userLogin } from '../../services/user'
 
 type FormData = {
   username: string
@@ -35,10 +35,7 @@ const LoginScreen = ({ navigation, route }) => {
 
   const handleLogin = async (formData: FormData) => {
     try {
-      const { data } = await axios.post('http://localhost:3030/login', {
-        username: formData.username.toLowerCase(),
-        password: formData.password
-      })
+      const { data } = await userLogin({ username: formData.username.toLowerCase(), password: formData.password })
 
       if (data.user && data.user.status === 'active') {
         const userToken = jwt.decode(data.user.token, 'secret')

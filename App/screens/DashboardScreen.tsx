@@ -12,7 +12,6 @@ import Overview from '../components/dashboard/Overview'
 import CompletedWorkout from '../components/dashboard/CompletedWorkout'
 import { fetchUser, updatedCompletedWorkouts } from '../services/user'
 
-import { createAxiosInstance } from '../services/axios'
 import { fetchWorkoutOfTheDay } from '../services/workout'
 type Status = 'inactive' | 'active' | 'completed'
 
@@ -28,7 +27,6 @@ const DashboardScreen = ({ navigation }) => {
   const workout = useRecoilValue(todaysWorkoutGetter)
 
   const today = new Date().toLocaleString('en-gb', { weekday: 'long' }).toLowerCase()
-  const axiosInstance = createAxiosInstance(user.token as string)
 
   const fetchTodaysWorkout = async (day: string) => {
     let queryString = day

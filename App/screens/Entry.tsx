@@ -7,6 +7,7 @@ import { getData } from '../lib/async-storage/get-data'
 import { userState } from '../state/user'
 import axios from 'axios'
 import { removeData } from '../lib/async-storage/remove-data'
+import { userLogin } from '../services/user'
 
 const EntryScreen = ({ navigation }) => {
   const [user, setUser] = useRecoilState(userState)
@@ -16,7 +17,7 @@ const EntryScreen = ({ navigation }) => {
 
     if (storedUser?.email && storedUser?.password) {
       try {
-        const { data } = await axios.post('http://localhost:3030/login', {
+        const { data } = await userLogin({
           username: storedUser?.email,
           password: storedUser?.password
         })

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
-import { useRecoilValue } from 'recoil'
 import { BaseButton } from '../../components/base/Button'
 import { Title } from '../../components/base/Title'
 import { useForm, Controller } from 'react-hook-form'
@@ -9,6 +8,7 @@ import { Container } from '../../components/base/Container'
 import axios from 'axios'
 import ErrorSummary from '../../components/base/ErrorSummary'
 import { useError } from '../../lib/useError'
+import { fetchActivationCode, resetPassword } from '../../services/user'
 
 interface FormData {
   username: string
@@ -41,10 +41,10 @@ const PasswordResetScreen = ({ navigation }) => {
     }
   }, [hasTriggeredToken.current])
 
-  const fetchActivationCode = async () => {
+  const handleFetchActivationCode = async () => {
     setIsLoading(true)
     try {
-      const { data } = await axios.patch('http://localhost:3030/users/activation', {
+      const { data } = await fetchActivationCode({
         email: control._formValues.username.toLowerCase(),
         method: 'reset'
       })
@@ -66,11 +66,10 @@ const PasswordResetScreen = ({ navigation }) => {
 
     if (resetToken.current === parseInt(control._formValues.token)) {
       try {
-        await axios.post('http://localhost:3030/reset-password', {
+        await resetPassword({
           email: control._formValues.username.toLowerCase(),
           newPassword: control._formValues.password
         })
-
         handleNavigate()
       } catch (error) {
         setError({ name: 'Something went wrong', message: error?.response?.data?.message })
@@ -118,7 +117,9 @@ const PasswordResetScreen = ({ navigation }) => {
         <Text style={styles.link} onPress={handleNavigate}>
           or login
         </Text>
-        {!displayTokenField && <BaseButton text="Get activation code" onPress={fetchActivationCode}></BaseButton>}
+        {!displayTokenField && (
+          <BaseButton text="Get activation code" onPress={handleFetchActivationCode}></BaseButton>
+        )}
 
         {displayTokenField && (
           <View>

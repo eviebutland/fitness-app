@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { View, Image, StyleSheet, Text, Pressable, ActivityIndicator } from 'react-native'
 import { useRecoilState } from 'recoil'
-import { WorkoutPreference } from '../../../API/src/lib/types/user'
+import { UserRequestBody, WorkoutPreference } from '../../../API/src/lib/types/user'
 import { BaseButton } from '../../components/base/Button'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
@@ -15,6 +15,7 @@ import ErrorSummary from '../../components/base/ErrorSummary'
 import { useError } from '../../lib/useError'
 import jwt from 'expo-jwt'
 import { storeData } from '../../lib/async-storage/store-data'
+import { createUser } from '../../services/user'
 
 type Day = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 type Workout = 'LOWER' | 'FULL BODY' | 'UPPER' | 'GLUTES' | 'REST'
@@ -50,7 +51,7 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
     try {
       isLoading.current = true
 
-      const { data } = await axios.post('http://localhost:3030/users', {
+      const { data } = await createUser({
         ...registerDetails,
         age: parseInt(registerDetails.age),
         levelOfAccess: 'subscriber',
@@ -59,7 +60,9 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
         completedWorkouts: [],
         password: 'Inact1v3!',
         workoutPreference: userPreference
-      })
+      } as UserRequestBody)
+
+      axios.post('http://localhost:3030/users')
 
       const userToken = jwt.decode(data.token, 'secret')
       const jsonUserToken = JSON.stringify(userToken)
