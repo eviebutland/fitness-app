@@ -13,22 +13,24 @@ interface CompletedWorkoutProps {
 
 const CompletedWorkout = (props: CompletedWorkoutProps) => {
   const completedWorkout = useRecoilValue(completedWorkoutGetter)
-  console.log(completedWorkout)
 
   return (
     <View style={{ marginTop: 40 }}>
       <Text style={{ fontSize: 25, fontWeight: '600', textAlign: 'center' }}>Workout completed!</Text>
 
       <View style={{ justifyContent: 'space-around', flexDirection: 'row', marginVertical: 10 }}>
-        <View style={styles.box}>
-          <FontAwesomeIcon
-            icon={faClock}
-            color={'#52B788'}
-            style={{ marginBottom: 10 }}
-            size={35}
-          ></FontAwesomeIcon>
-          <Text style={{ fontSize: 20, fontWeight: '600' }}>{completedWorkout.time / 60}</Text>
-        </View>
+        {completedWorkout.time !== '0' && (
+          <View style={styles.box}>
+            <FontAwesomeIcon
+              icon={faClock}
+              color={'#52B788'}
+              style={{ marginBottom: 10 }}
+              size={35}
+            ></FontAwesomeIcon>
+            <Text style={{ fontSize: 20, fontWeight: '600' }}>{completedWorkout.time}</Text>
+          </View>
+        )}
+
         <View style={styles.box}>
           <FontAwesomeIcon
             icon={faCheckCircle}

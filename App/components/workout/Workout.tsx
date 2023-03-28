@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { ExerciseJSONB } from '../../../API/src/lib/types/workouts'
 import { capitaliseFirstLetter } from '../../lib/utility/string'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { completedSetsGetter, completedWorkoutState } from '../../state/workouts'
+import { completedWorkoutState, recordedRepsGetter } from '../../state/workouts'
 import { Dayjs } from 'dayjs'
 
 interface WorkoutProps {
@@ -26,7 +26,7 @@ interface OrderedWorkout {
   }
 }
 
-const orderedWorkout: OrderedWorkout = {
+let orderedWorkout: OrderedWorkout = {
   warmUp: {
     label: 'Warm up',
     value: null
@@ -37,6 +37,10 @@ const orderedWorkout: OrderedWorkout = {
   },
   wod: {
     label: 'WOD',
+    value: null
+  },
+  circuit: {
+    label: 'Circuit',
     value: null
   },
   additionalTopUp: {
@@ -55,7 +59,7 @@ const orderedWorkout: OrderedWorkout = {
 const Workout = (props: WorkoutProps) => {
   const { handleInterval, handleStartTimer, startTime, handleEndTimer, isTimerActive } = useTimer()
   const [_, setCompletedWorkout] = useRecoilState(completedWorkoutState)
-  const completedSets = useRecoilValue(completedSetsGetter)
+  const recordedReps = useRecoilValue(recordedRepsGetter)
 
   useEffect(() => {
     if (isTimerActive) {
@@ -67,26 +71,14 @@ const Workout = (props: WorkoutProps) => {
 
   const handleEndWorkout = () => {
     setCompletedWorkout({
-      reps: 10,
-      time: startTime.format('mm:ss'),
+      reps: recordedReps,
+      time: Object.values(startTime).length && startTime?.format('mm:ss') ? startTime?.format('mm:ss') : '0',
       name: props.workout?.title as string
     })
 
     handleEndTimer()
     props.onCompleteWorkout()
   }
-
-  // const completedSetsValues = Object.values(completedSets)
-
-  // console.log(Object.values(test))
-  // const format = completedSetsValues.flatMap(value => {
-  //   console.log('value', value)
-  //   return Object.values(value).flatMap(te =>
-  //     Object.values(te).reduce((accumulator, currentValue) => accumulator + currentValue.reps.value, 0)
-  //   )
-  // })
-
-  // console.log(format)
 
   const handleStartWorkout = () => {
     props.onWorkoutStart()
@@ -96,6 +88,8 @@ const Workout = (props: WorkoutProps) => {
   Object.entries(props.workout?.workout as WorkoutJSONB).forEach(([key, value]) => {
     orderedWorkout[key] = { ...orderedWorkout[key], value }
   })
+
+  orderedWorkout = Object.fromEntries(Object.entries(orderedWorkout).filter(([key, value]) => !!value.value))
 
   return (
     <View style={{ marginVertical: 20 }}>
@@ -112,7 +106,7 @@ const Workout = (props: WorkoutProps) => {
       )}
       {startTime && isTimerActive && (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Text onPress={handleEndWorkout} style={{ fontSize: 40, fontWeight: '500' }}>
+          <Text onPress={handleEndTimer} style={{ fontSize: 40, fontWeight: '500' }}>
             {startTime.format('mm:ss')}
           </Text>
         </View>

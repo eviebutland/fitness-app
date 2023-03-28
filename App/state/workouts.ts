@@ -12,6 +12,18 @@ export const todaysWorkoutGetter = selector({
   }
 })
 
+export const recordedRepsState = atom({
+  key: 'recordedRepsState',
+  default: 0
+})
+
+export const recordedRepsGetter = selector({
+  key: 'recordedRepsGetter',
+  get: ({ get }) => {
+    return get(recordedRepsState)
+  }
+})
+
 export const completedSetsState = atom({
   key: 'completedSetsState',
   default: {}

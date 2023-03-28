@@ -4,7 +4,7 @@ import React from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { activeModalGetter, activeModalState } from '../../state/modal'
-import { completedSetsGetter, completedSetsState } from '../../state/workouts'
+import { completedSetsState, recordedRepsState } from '../../state/workouts'
 import Tooltip from '../base/Tooltip'
 import RecordModal from './RecordModal'
 
@@ -28,9 +28,9 @@ interface ExerciseProps {
 
 const Exercise = (props: ExerciseProps) => {
   const [completedSets, setCompletedSets] = useRecoilState(completedSetsState)
+  const [recordedReps, setRecordedReps] = useRecoilState(recordedRepsState)
   const [activeModals, setActiveModals] = useRecoilState(activeModalState)
   const currentActiveModals = useRecoilValue(activeModalGetter)
-  const setGetter = useRecoilValue(completedSetsGetter)
 
   const handleToggleTooltip = () => {
     const exerciseDescriptionModal = 'exercise-description-modal'
@@ -46,12 +46,15 @@ const Exercise = (props: ExerciseProps) => {
     }
   }
 
-  const handleCompleteSet = (reps: number, set: string, index: number, shouldDisplayModal: boolean) => {
+  const handleCompleteSet = (reps: Rep, set: string, index: number, shouldDisplayModal: boolean) => {
     const sets = { [index]: { reps, weight: 10 } }
 
     shouldDisplayModal && handleOpenModal()
 
-    // console.log(completedSets)
+    if (reps.type === 'weight') {
+      setRecordedReps(recordedReps + reps.value)
+    }
+
     setCompletedSets({
       ...completedSets,
       [set]: {
@@ -68,8 +71,8 @@ const Exercise = (props: ExerciseProps) => {
     setActiveModals(newActiveModal)
   }
 
-  const handlePressReps = (rep, index) => {
-    const repsInState = setGetter?.[props.set]?.[props.groupIndex]?.[index]?.reps
+  const handlePressReps = (rep: Rep, index: number) => {
+    const repsInState = completedSets?.[props.set]?.[props.groupIndex]?.[index]?.reps
 
     if (rep.type === 'weight') {
       repsInState ? handleOpenModal() : handleCompleteSet(rep, props.set, index, true)
@@ -108,7 +111,7 @@ const Exercise = (props: ExerciseProps) => {
               }}
               key={index}
             >
-              {setGetter?.[props.set]?.[props.groupIndex]?.[index]?.reps ? (
+              {completedSets?.[props.set]?.[props.groupIndex]?.[index]?.reps ? (
                 <FontAwesomeIcon icon={faCheckCircle} color={'#52B788'} />
               ) : (
                 <Text>
