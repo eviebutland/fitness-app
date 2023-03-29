@@ -58,10 +58,32 @@ router.get(
   getUsers
 )
 
-router.post('/users', createUser)
-router.patch('/users/activation', createActivationCode)
+router.post(
+  '/users',
+  (req: Request, res: Response, next: NextFunction) => {
+    // Minimum level of access required to get the list of users is read:users
+    isAuthorized(req, res, next, 'r:user')
+  },
+  createUser
+)
+router.patch(
+  '/users/activation',
+  (req: Request, res: Response, next: NextFunction) => {
+    // Minimum level of access required to get the list of users is read:users
+    isAuthorized(req, res, next, 'r:user')
+  },
+  createActivationCode
+)
 
-router.patch('/users/:id', updateUser)
+router.patch(
+  '/users/:id',
+  (req: Request, res: Response, next: NextFunction) => {
+    // Minimum level of access required to get the list of users is read:users
+    isAuthorized(req, res, next, 'r:user')
+  },
+  updateUser
+)
+
 router.patch(
   '/users/:id/completed-workout',
   (req: Request, res: Response, next: NextFunction) => {

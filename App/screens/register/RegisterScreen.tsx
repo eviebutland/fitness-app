@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { View, Image, StyleSheet, Text } from 'react-native'
 import { BaseButton } from '../../components/base/Button'
 import { Container } from '../../components/base/Container'
@@ -8,7 +8,11 @@ import { Title } from '../../components/base/Title'
 import { useForm, Controller } from 'react-hook-form'
 import { useRecoilState } from 'recoil'
 import { newUserState } from '../../state/register'
-
+import { fetchActivationCode, userLogin } from '../../services/user'
+import { userState } from '../../state/user'
+import { removeData } from '../../lib/async-storage/remove-data'
+import { storeData } from '../../lib/async-storage/store-data'
+import jwt from 'expo-jwt'
 interface FormData {
   name: string
   age: number | null
@@ -16,7 +20,8 @@ interface FormData {
 }
 const RegisterScreen = ({ navigation }) => {
   const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
-
+  // const [user, setUser] = useRecoilState(userState)
+  const user = useRef('')
   const {
     control,
     handleSubmit,
@@ -29,7 +34,43 @@ const RegisterScreen = ({ navigation }) => {
     }
   })
 
-  const handleContinue = () => {
+  // TODO REMOVE THIS FROM THIS PAGE
+  const loginAsAdmin = async () => {
+    // isLoading.current = true
+    removeData('userToken')
+
+    // console.log(process.env.ADMIN_USERNAME)
+    try {
+      const { data } = await userLogin({
+        username: 'admin@0990.com',
+        password: 'Password!23'
+      })
+
+      if (data.user) {
+        user.current = data.user.token
+      }
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+      // setError({ name: 'Something went wrong', message: error?.response?.data?.message })
+    } finally {
+      // isLoading.current = false
+    }
+  }
+
+  const handleContinue = async () => {
+    await loginAsAdmin()
+
+    console.log('user', user.current)
+    const { data } = await fetchActivationCode(
+      {
+        email: control._formValues.email.toLowerCase() as string,
+        method: 'create'
+      },
+      user.current
+    )
+
+    console.log('data', data)
     const userDetails = {
       ...control._formValues,
       email: control._formValues.email.toLowerCase()

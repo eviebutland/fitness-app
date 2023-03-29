@@ -30,15 +30,13 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use((request: Request, response: Response, next: NextFunction) => {
-  const createUserPath = request.method === 'POST' && request.url.includes('user')
-  const activationPath = request.method === 'PATCH' && request.url.includes('users')
+  // const createUserPath = request.method === 'POST' && request.url.includes('user')
+  // const activationPath = request.method === 'PATCH' && request.url.includes('users')
   const loginPath = request.url.includes('login')
   const logoutPath = request.url.includes('logout')
-  const resetPasswordPath = request.url.includes('reset-password')
+  // const resetPasswordPath = request.url.includes('reset-password')
 
-  loginPath || logoutPath || createUserPath || activationPath || resetPasswordPath
-    ? next()
-    : passport.authenticate('bearer', { session: false })(request, response, next)
+  loginPath || logoutPath ? next() : passport.authenticate('bearer', { session: false })(request, response, next)
 })
 
 const api = new OpenApiBackend({

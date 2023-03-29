@@ -50,8 +50,12 @@ export const updateUser = (id: string, patchModel: Record<string, string>) => {
   axios.patch(`http://localhost:3030/users/${id}`, patchModel)
 }
 
-export const fetchActivationCode = (patchModel: ActivationCodeModel) => {
-  return axios.patch('http://localhost:3030/users/activation', patchModel)
+export const fetchActivationCode = (patchModel: ActivationCodeModel, token: string) => {
+  return axios.patch('http://localhost:3030/users/activation', patchModel, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 }
 
 export const resetPassword = (postModel: ResetPasswordModel): void => {

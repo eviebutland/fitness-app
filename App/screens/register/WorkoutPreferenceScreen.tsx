@@ -15,19 +15,20 @@ import ErrorSummary from '../../components/base/ErrorSummary'
 import { useError } from '../../lib/useError'
 import jwt from 'expo-jwt'
 import { storeData } from '../../lib/async-storage/store-data'
-import { createUser } from '../../services/user'
+import { createUser, userLogin } from '../../services/user'
+import { userState } from '../../state/user'
 
 type Day = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 type Workout = 'LOWER' | 'FULL BODY' | 'UPPER' | 'GLUTES' | 'REST'
 
 const WorkoutPreferenceScreen = ({ navigation }) => {
   const [registerDetails, _] = useRecoilState(newUserState)
+  const [user, setUser] = useRecoilState(userState)
   const { clearError, setError, error } = useError()
   const isLoading = useRef(false)
   const days: Day[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
   // TODO These should come from an API call
   const availableWorkouts: Workout[] = ['LOWER', 'FULL BODY', 'UPPER', 'GLUTES', 'REST']
-
   const initialPreference: WorkoutPreference = {
     monday: null,
     tuesday: null,
@@ -43,12 +44,35 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
     setUserPreference({ ...userPreference, [day]: workout })
   }
 
+  const loginAsAdmin = async () => {
+    isLoading.current = true
+
+    // console.log(process.env.ADMIN_USERNAME)
+    try {
+      const { data } = await userLogin({
+        username: 'admin@0990.com',
+        password: 'Password!23'
+      })
+
+      if (data.user) {
+        setUser(data.user)
+      }
+    } catch (error) {
+      console.log(error)
+      setError({ name: 'Something went wrong', message: error?.response?.data?.message })
+    } finally {
+      isLoading.current = false
+    }
+  }
+
   const handleSubmit = async () => {
     if (error.name) {
       clearError()
     }
 
     try {
+      // await loginAsAdmin()
+
       isLoading.current = true
 
       const { data } = await createUser({

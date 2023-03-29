@@ -5,7 +5,7 @@ import { Container } from '../components/base/Container'
 import { Title } from '../components/base/Title'
 import { getData } from '../lib/async-storage/get-data'
 import { userState } from '../state/user'
-import axios from 'axios'
+
 import { removeData } from '../lib/async-storage/remove-data'
 import { userLogin } from '../services/user'
 
