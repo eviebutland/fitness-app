@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
 import { useRecoilValue } from 'recoil'
-import { newUserGetter } from '../../state/register'
+import { adminTokenGetter, newUserGetter } from '../../state/register'
 import { Title } from '../../components/base/Title'
 import { Input } from '../../components/base/Input'
 import { BaseButton } from '../../components/base/Button'
@@ -22,15 +22,19 @@ const ConfirmationScreen = ({ navigation }) => {
   const activationCode = useRef(null)
   const userId = useRef(null)
   const hasTriggeredActivationEmail = useRef(false)
+  const adminToken = useRecoilValue(adminTokenGetter)
 
   const { clearError, setError, error } = useError()
 
   const triggerActivationEmail = async () => {
     try {
-      const { data } = await fetchActivationCode({
-        email: newUser.email as string,
-        method: 'create'
-      })
+      const { data } = await fetchActivationCode(
+        {
+          email: newUser.email as string,
+          method: 'create'
+        },
+        adminToken
+      )
 
       activationCode.current = data.token
       userId.current = data.id
@@ -63,7 +67,7 @@ const ConfirmationScreen = ({ navigation }) => {
   const handleCompleteRegistration = async () => {
     if (activationCode.current === parseInt(control._formValues.activationCode)) {
       try {
-        await updateUser(userId.current, { password: control._formValues.password })
+        updateUser(userId.current, { password: control._formValues.password }, adminToken)
 
         clearError()
 

@@ -89,6 +89,7 @@ export const createActivationCode = async (api: Context, request: Request, respo
         response
           .status(201)
           .json({ message: 'Successfully sent activation code', token: activationCode, id: user.rows[0].id })
+        return
       } else if (request.body.method === 'reset') {
         console.log('reset here')
         const courier: ICourierClient = CourierClient({
@@ -111,8 +112,10 @@ export const createActivationCode = async (api: Context, request: Request, respo
       response
         .status(201)
         .json({ message: 'Successfully sent reset code', token: activationCode, id: user.rows[0].id })
+      return
     } else {
       response.status(400).json({ message: `Unable to find user with email ${request.body.email}` })
+      return
     }
   } catch (error) {
     console.log(error)

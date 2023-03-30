@@ -23,6 +23,13 @@ export const userLogin = async (postModel: LoginModel) => {
   return await axios.post('http://localhost:3030/login', postModel)
 }
 
+export const loginAsAdmin = async () => {
+  return await userLogin({
+    username: 'admin@0990.com',
+    password: 'Password!23'
+  })
+}
+
 export const fetchUser = async (existingUser: LoggedInUser, callback?: Function): Promise<void> => {
   const axiosInstance = createAxiosInstance(existingUser?.token as string)
   try {
@@ -36,8 +43,12 @@ export const fetchUser = async (existingUser: LoggedInUser, callback?: Function)
   }
 }
 
-export const createUser = async (postModel: UserRequestBody) => {
-  return axios.post('http://localhost:3030/users', postModel)
+export const createUser = async (postModel: UserRequestBody, token: string) => {
+  return axios.post('http://localhost:3030/users', postModel, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 }
 
 export const updatedCompletedWorkouts = (user: LoggedInUser, patchModel: CompletedWorkouts): void => {
@@ -46,8 +57,12 @@ export const updatedCompletedWorkouts = (user: LoggedInUser, patchModel: Complet
   axiosInstance.patch(`http://localhost:3030/users/${user.id}/completed-workout`, patchModel)
 }
 
-export const updateUser = (id: string, patchModel: Record<string, string>) => {
-  axios.patch(`http://localhost:3030/users/${id}`, patchModel)
+export const updateUser = (id: string, patchModel: Record<string, string>, token: string) => {
+  return axios.patch(`http://localhost:3030/users/${id}`, patchModel, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
 }
 
 export const fetchActivationCode = (patchModel: ActivationCodeModel, token: string) => {

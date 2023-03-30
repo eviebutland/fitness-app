@@ -6,7 +6,7 @@ import { BaseButton } from '../../components/base/Button'
 import { Container } from '../../components/base/Container'
 import { ProgressBar } from '../../components/base/ProgressBar'
 import { Title } from '../../components/base/Title'
-import { newUserState } from '../../state/register'
+import { adminTokenState, newUserState } from '../../state/register'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import { capitaliseFirstLetter } from '../../lib/utility/string'
@@ -15,15 +15,16 @@ import ErrorSummary from '../../components/base/ErrorSummary'
 import { useError } from '../../lib/useError'
 import jwt from 'expo-jwt'
 import { storeData } from '../../lib/async-storage/store-data'
-import { createUser, userLogin } from '../../services/user'
-import { userState } from '../../state/user'
+import { createUser, loginAsAdmin, userLogin } from '../../services/user'
 
 type Day = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
 type Workout = 'LOWER' | 'FULL BODY' | 'UPPER' | 'GLUTES' | 'REST'
 
 const WorkoutPreferenceScreen = ({ navigation }) => {
-  const [registerDetails, _] = useRecoilState(newUserState)
-  const [user, setUser] = useRecoilState(userState)
+  const [registerDetails, setRegisterDetails] = useRecoilState(newUserState)
+  const [_, setAdminToken] = useRecoilState(adminTokenState)
+
+  const adminUserToken = useRef('')
   const { clearError, setError, error } = useError()
   const isLoading = useRef(false)
   const days: Day[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
@@ -44,18 +45,14 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
     setUserPreference({ ...userPreference, [day]: workout })
   }
 
-  const loginAsAdmin = async () => {
+  const handleLoginAsAdmin = async () => {
     isLoading.current = true
 
-    // console.log(process.env.ADMIN_USERNAME)
     try {
-      const { data } = await userLogin({
-        username: 'admin@0990.com',
-        password: 'Password!23'
-      })
+      const { data } = await loginAsAdmin()
 
       if (data.user) {
-        setUser(data.user)
+        adminUserToken.current = data.user.token
       }
     } catch (error) {
       console.log(error)
@@ -71,20 +68,25 @@ const WorkoutPreferenceScreen = ({ navigation }) => {
     }
 
     try {
-      // await loginAsAdmin()
+      await handleLoginAsAdmin()
 
       isLoading.current = true
 
-      const { data } = await createUser({
-        ...registerDetails,
-        age: parseInt(registerDetails.age),
-        levelOfAccess: 'subscriber',
-        permissions: 'rw:user',
-        status: 'inactive',
-        completedWorkouts: [],
-        password: 'Inact1v3!',
-        workoutPreference: userPreference
-      } as UserRequestBody)
+      const { data } = await createUser(
+        {
+          ...registerDetails,
+          age: parseInt(registerDetails.age),
+          levelOfAccess: 'subscriber',
+          permissions: 'rw:user',
+          status: 'inactive',
+          completedWorkouts: [],
+          password: 'Inact1v3!',
+          workoutPreference: userPreference
+        } as UserRequestBody,
+        adminUserToken.current
+      )
+
+      setAdminToken(adminUserToken.current)
 
       const userToken = jwt.decode(data.token, 'secret')
       const jsonUserToken = JSON.stringify(userToken)

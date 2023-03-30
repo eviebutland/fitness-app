@@ -23,7 +23,18 @@ export const newUserState = atom({
 export const newUserGetter = selector({
   key: 'newUserGetter',
   get: ({ get }) => {
-    const state = get(newUserState)
     return get(newUserState)
+  }
+})
+
+export const adminTokenState = atom({
+  key: 'adminTokenState',
+  default: ''
+})
+
+export const adminTokenGetter = selector({
+  key: 'adminTokenGetter',
+  get: ({ get }) => {
+    return get(adminTokenState)
   }
 })
