@@ -1,187 +1,339 @@
 {
-  "warmUp": [
-    {
-      "exercise": "Broomstick strech",
-      "sets": 1,
-      "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
-      ],
-      "video": "https://bbc.com"
-    },
-    {
-      "exercise": "Walkouts",
-      "sets": 1,
-      "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
-      ],
-      "video": "https://bbc.com"
-    },
-    {
-      "exercise": "Cat/Cow",
-      "sets": 1,
-      "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
-      ],
-      "video": "https://bbc.com"
-    },
-    {
-      "exercise": "Deadbugs",
-      "sets": 1,
-      "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
-      ],
-      "video": "https://bbc.com"
-    }
-  ],
   "set": [
     {
-      "exercise": "Barbell bench press",
-      "sets": 3,
       "reps": [
-        { "type": "weight", "value": 8 },
-        { "type": "weight", "value": 8 },
-        { "type": "weight", "value": 6 },
-        { "type": "weight", "value": 6 }
+        {
+          "type": "weight",
+          "value": 8
+        },
+        {
+          "type": "weight",
+          "value": 8
+        },
+        {
+          "type": "weight",
+          "value": 6
+        },
+        {
+          "type": "weight",
+          "value": 6
+        }
       ],
-      "video": "https://bbc.com"
+      "sets": 3,
+      "video": "https://bbc.com",
+      "exercise": "Barbell bench press",
+      "description": "Keep chin close to chest"
     },
     {
-      "exercise": "Cable facepull",
-      "sets": 3,
       "reps": [
-        { "type": "weight", "value": 15 },
-        { "type": "weight", "value": 15 },
-        { "type": "weight", "value": 15 }
+        {
+          "type": "weight",
+          "value": 15
+        },
+        {
+          "type": "weight",
+          "value": 15
+        },
+        {
+          "type": "weight",
+          "value": 15
+        }
       ],
-      "video": "https://bbc.com"
+      "sets": 3,
+      "video": "https://bbc.com",
+      "exercise": "Cable facepull",
+      "description": "Pull towards eyes"
     }
   ],
   "wod": [
     {
+      "reps": [
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        }
+      ],
+      "sets": 4,
+      "video": "https://bbc.com",
       "exercise": "DB Alternate snatch",
-      "sets": 4,
-      "reps": [
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 }
-      ],
-      "video": "https://bbc.com"
+      "description": "Swap arms for each rep"
     },
     {
+      "reps": [
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        }
+      ],
+      "sets": 4,
+      "video": "https://bbc.com",
       "exercise": "Bear crawl",
-      "sets": 4,
-      "reps": [
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 }
-      ],
-      "video": "https://bbc.com"
+      "description": "Stay as low to the ground as possible"
     },
     {
+      "reps": [
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        }
+      ],
+      "sets": 4,
+      "video": "https://bbc.com",
       "exercise": "Slams",
-      "sets": 4,
-      "reps": [
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 }
-      ],
-      "video": "https://bbc.com"
+      "description": "Throw down as hard as possible"
     },
     {
+      "reps": [
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        },
+        {
+          "type": "weight",
+          "value": 12
+        }
+      ],
+      "sets": 4,
+      "video": "https://bbc.com",
       "exercise": "Med ball roll out",
-      "sets": 4,
-      "reps": [
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 },
-        { "type": "weight", "value": 12 }
-      ],
-      "video": "https://bbc.com"
+      "description": "Hold plank position"
     }
   ],
-  "finisher": [
+  "warmUp": [
     {
-      "exercise": "Plate front raise",
-      "sets": 2,
       "reps": [
-        { "type": "weight", "value": 15 },
-        { "type": "weight", "value": 15 }
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
       ],
-      "video": "https://bbc.com"
+      "sets": 1,
+      "video": "https://bbc.com",
+      "exercise": "Broomstick stretch"
     },
     {
-      "exercise": "Plate bicep curls",
-      "sets": 2,
       "reps": [
-        { "type": "weight", "value": 15 },
-        { "type": "weight", "value": 15 }
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
       ],
-      "video": "https://bbc.com"
-    }
-  ],
-  "additionalTopUp": [
-    {
-      "exercise": "Incline pushups",
-      "sets": 2,
-      "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
-      ],
-      "video": "https://bbc.com"
+      "sets": 1,
+      "video": "https://bbc.com",
+      "exercise": "Walkouts"
     },
     {
-      "exercise": "Commandoes",
-      "sets": 3,
       "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
       ],
-      "video": "https://bbc.com"
+      "sets": 1,
+      "video": "https://bbc.com",
+      "exercise": "Cat/Cow"
     },
     {
-      "exercise": "Plank hold",
-      "sets": 3,
       "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
       ],
-      "video": "https://bbc.com"
+      "sets": 1,
+      "video": "https://bbc.com",
+      "exercise": "Deadbugs"
     }
   ],
   "cooldown": [
     {
-      "exercise": "Tricep stretch",
-      "sets": 1,
       "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
       ],
-      "video": "https://bbc.com"
+      "sets": 1,
+      "video": "https://bbc.com",
+      "exercise": "Tricep stretch"
     },
     {
-      "exercise": "Childs pose",
-      "sets": 1,
       "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
       ],
-      "video": "https://bbc.com"
+      "sets": 1,
+      "video": "https://bbc.com",
+      "exercise": "Childs pose"
     },
     {
-      "exercise": "Cross body shoulder stretch",
-      "sets": 1,
       "reps": [
-        { "type": "time", "value": 40 },
-        { "type": "time", "value": 40 }
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
       ],
-      "video": "https://bbc.com"
+      "sets": 1,
+      "video": "https://bbc.com",
+      "exercise": "Cross body shoulder stretch"
+    }
+  ],
+  "finisher": [
+    {
+      "reps": [
+        {
+          "type": "weight",
+          "value": 15
+        },
+        {
+          "type": "weight",
+          "value": 15
+        }
+      ],
+      "sets": 2,
+      "video": "https://bbc.com",
+      "exercise": "Plate front raise",
+      "description": "Keep upright position steady"
+    },
+    {
+      "reps": [
+        {
+          "type": "weight",
+          "value": 15
+        },
+        {
+          "type": "weight",
+          "value": 15
+        }
+      ],
+      "sets": 2,
+      "video": "https://bbc.com",
+      "exercise": "Plate bicep curls",
+      "description": "Keep upright position steady"
+    }
+  ],
+  "additionalTopUp": [
+    {
+      "reps": [
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
+      ],
+      "sets": 2,
+      "video": "https://bbc.com",
+      "exercise": "Incline pushups",
+      "description": "Keep plank position steady"
+    },
+    {
+      "reps": [
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
+      ],
+      "sets": 3,
+      "video": "https://bbc.com",
+      "exercise": "Commandoes",
+      "description": "Keep plank position steady"
+    },
+    {
+      "reps": [
+        {
+          "type": "time",
+          "value": 40
+        },
+        {
+          "type": "time",
+          "value": 40
+        }
+      ],
+      "sets": 3,
+      "video": "https://bbc.com",
+      "exercise": "Plank hold",
+      "description": "Brace core"
     }
   ]
 }
