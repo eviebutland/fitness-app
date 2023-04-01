@@ -81,4 +81,4 @@ app
     process.exit()
   })
 
-connectDb()
+// connectDb()

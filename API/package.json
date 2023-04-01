@@ -6,11 +6,12 @@
   "type": "commonjs",
   "scripts": {
     "build": "npx tsc",
-    "start": "ts-node-dev index.ts",
-    "dev": "npm run kill && npm run start",
+    "start": "npm run kill && node dist/index.js",
+    "dev": "npm run kill && ts-node-dev index.ts",
     "kill": "npx kill-port 3030",
     "start:DB": "brew services start postgresql",
-    "stop:DB": "brew services stop postgresql"
+    "stop:DB": "brew services stop postgresql",
+    "deploy": "eb deploy"
   },
   "author": "Evie Butland",
   "license": "ISC",
