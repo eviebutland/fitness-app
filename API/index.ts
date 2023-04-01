@@ -69,9 +69,11 @@ app.use((req, res) => api.handleRequest(req as OpenAPIRequest, req, res))
 
 app.use(router)
 
+const port = process.env.PORT || 3030
+
 app
-  .listen(3030, () => {
-    console.log(`App running on port 3030.`)
+  .listen(port, () => {
+    console.log(`App running on port ${port}.`)
   })
   .on('error', error => {
     console.log(error)
