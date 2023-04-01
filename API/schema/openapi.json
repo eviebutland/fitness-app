@@ -1134,9 +1134,6 @@
             },
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "string"
-                },
                 "examples": {
                   "response": {
                     "value": "Successfully deleted"
@@ -1256,7 +1253,7 @@
       },
       "UserPatch": {
         "type": "object",
-        "title": "user",
+        "title": "User Patch",
         "properties": {
           "name": {
             "description": "The name of the user",
@@ -1316,8 +1313,7 @@
       },
       "ResetPassword": {
         "type": "object",
-        "title": "user",
-        "required": [],
+        "title": "Reset Password",
         "properties": {
           "email": {
             "description": "The email of the user",
@@ -1331,7 +1327,7 @@
       },
       "User": {
         "type": "object",
-        "title": "user",
+        "title": "User",
         "required": [
           "name",
           "age",
@@ -1429,18 +1425,6 @@
       }
     },
     "securitySchemes": {
-      "main_auth": {
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "http://example.com/api/oauth/dialog",
-            "scopes": {
-              "read:users": "read users info",
-              "write:users": "modify or remove users"
-            }
-          }
-        }
-      },
       "bearer": {
         "type": "http",
         "scheme": "bearer",
