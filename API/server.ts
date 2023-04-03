@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+// TODO store these values in AWS
 export const client: Client = new Client({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
