@@ -4,7 +4,7 @@ import { client } from '../../server'
 import { User } from '../lib/types/user'
 import { rollback } from '../utils/rollback'
 import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { Context } from 'openapi-backend'
 
 let failedLoginAttempts = 0
