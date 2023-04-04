@@ -11,7 +11,7 @@
     "kill": "npx kill-port 3030",
     "start:DB": "brew services start postgresql",
     "stop:DB": "brew services stop postgresql",
-    "deploy": "eb deploy"
+    "deploy": "npm run build && eb deploy"
   },
   "author": "Evie Butland",
   "license": "ISC",
