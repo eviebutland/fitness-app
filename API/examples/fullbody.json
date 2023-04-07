@@ -17,7 +17,8 @@
       ],
       "sets": 3,
       "video": "https://bbc.com",
-      "exercise": "Deficit reverse lunges"
+      "exercise": "Deficit reverse lunges",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "reps": [
@@ -36,7 +37,8 @@
       ],
       "sets": 3,
       "video": "https://bbc.com",
-      "exercise": "DB sumo pulse squat"
+      "exercise": "DB sumo pulse squat",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "reps": [
@@ -55,7 +57,8 @@
       ],
       "sets": 3,
       "video": "https://bbc.com",
-      "exercise": "Single leg hip thrust"
+      "exercise": "Single leg hip thrust",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "reps": [
@@ -74,7 +77,8 @@
       ],
       "sets": 3,
       "video": "https://bbc.com",
-      "exercise": "Broad jumps"
+      "exercise": "Broad jumps",
+      "description": "Make sure you get the full range of motion"
     }
   ],
   "warmUp": [
@@ -137,7 +141,8 @@
       ],
       "sets": 2,
       "video": "https://bbc.com",
-      "exercise": "Cable pull through"
+      "exercise": "Cable pull through",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "reps": [
@@ -152,7 +157,8 @@
       ],
       "sets": 2,
       "video": "https://bbc.com",
-      "exercise": "Cable kickbacks"
+      "exercise": "Cable kickbacks",
+      "description": "Make sure you get the full range of motion"
     }
   ],
   "superset": [
@@ -177,7 +183,8 @@
       ],
       "sets": 4,
       "video": "https://bbc.com",
-      "exercise": "Barbell tempo RDL"
+      "exercise": "Barbell tempo RDL",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "reps": [
@@ -200,7 +207,8 @@
       ],
       "sets": 4,
       "video": "https://bbc.com",
-      "exercise": "Heels elevated glute bridge"
+      "exercise": "Heels elevated glute bridge",
+      "description": "Make sure you get the full range of motion"
     }
   ],
   "additionalTopUp": [
@@ -221,7 +229,8 @@
       ],
       "sets": 3,
       "video": "https://bbc.com",
-      "exercise": "Shoot throughs"
+      "exercise": "Shoot throughs",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "reps": [
@@ -240,7 +249,8 @@
       ],
       "sets": 3,
       "video": "https://bbc.com",
-      "exercise": "Reverse lunge knee drive"
+      "exercise": "Reverse lunge knee drive",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "reps": [
@@ -259,7 +269,8 @@
       ],
       "sets": 3,
       "video": "https://bbc.com",
-      "exercise": "Banded high glute bridge"
+      "exercise": "Banded high glute bridge",
+      "description": "Make sure you get the full range of motion"
     }
   ]
 }

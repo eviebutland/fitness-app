@@ -11,13 +11,15 @@
       "exercise": "Reverse lunges",
       "sets": 1,
       "reps": [{ "type": "time", "value": 40 }],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "exercise": "Short band crab walks",
       "sets": 1,
       "reps": [{ "type": "time", "value": 40 }],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Stay low!"
     }
   ],
   "superset": [
@@ -30,7 +32,8 @@
         { "type": "weight", "value": 6 },
         { "type": "weight", "value": 6 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Remember to keep your back straight"
     },
     {
       "exercise": "Heels elevated glute bridge",
@@ -41,7 +44,8 @@
         { "type": "weight", "value": 12 },
         { "type": "weight", "value": 12 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Squeeze, and go slow"
     }
   ],
   "wod": [
@@ -53,7 +57,8 @@
         { "type": "weight", "value": 16 },
         { "type": "weight", "value": 16 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Squeeze, and go slow"
     },
     {
       "exercise": "DB sumo pulse squat",
@@ -63,7 +68,8 @@
         { "type": "weight", "value": 12 },
         { "type": "weight", "value": 12 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Squeeze, and go slow"
     },
     {
       "exercise": "Single leg hip thrust",
@@ -73,7 +79,8 @@
         { "type": "weight", "value": 16 },
         { "type": "weight", "value": 16 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Squeeze, and go slow"
     },
     {
       "exercise": "Broad jumps",
@@ -83,7 +90,8 @@
         { "type": "weight", "value": 12 },
         { "type": "weight", "value": 12 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Get the heart rate up!"
     }
   ],
   "finisher": [
@@ -94,7 +102,8 @@
         { "type": "weight", "value": 15 },
         { "type": "weight", "value": 15 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Squeeze, and go slow"
     },
     {
       "exercise": "Cable kickbacks",
@@ -103,7 +112,8 @@
         { "type": "weight", "value": 20 },
         { "type": "weight", "value": 20 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Squeeze, and go slow"
     }
   ],
   "additionalTopUp": [
@@ -115,7 +125,8 @@
         { "type": "weight", "value": 10 },
         { "type": "weight", "value": 10 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Squeeze, and go slow"
     },
     {
       "exercise": "Reverse lunge knee drive",
@@ -125,7 +136,8 @@
         { "type": "weight", "value": 12 },
         { "type": "weight", "value": 12 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Squeeze, and go slow"
     },
     {
       "exercise": "Banded high glute bridge",
@@ -135,7 +147,8 @@
         { "type": "weight", "value": 16 },
         { "type": "weight", "value": 16 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Squeeze, and go slow"
     }
   ],
   "cooldown": [
@@ -145,7 +158,12 @@
       "reps": [{ "type": "time", "value": 40 }],
       "video": "https://bbc.com"
     },
-    { "exercise": "Cobra", "sets": 1, "reps": [{ "type": "time", "value": 40 }], "video": "https://bbc.com" },
+    {
+      "exercise": "Cobra",
+      "sets": 1,
+      "reps": [{ "type": "time", "value": 40 }],
+      "video": "https://bbc.com"
+    },
     {
       "exercise": "Hamstring stretch",
       "sets": 1,

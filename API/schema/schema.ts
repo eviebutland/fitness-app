@@ -1162,13 +1162,7 @@ export const document: OpenAPIV3.Document = {
           workout: {
             type: 'object',
             description: 'Workout',
-            example: '{}',
-            properties: {
-              warmUp: {
-                type: 'object',
-                example: []
-              }
-            }
+            example: '{}'
           }
         }
       },

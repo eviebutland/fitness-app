@@ -15,7 +15,8 @@
         { "type": "weight", "value": 8 },
         { "type": "weight", "value": 8 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Do not lock your knees"
     },
     {
       "exercise": "Leg press narrow",
@@ -26,7 +27,8 @@
         { "type": "weight", "value": 10 },
         { "type": "weight", "value": 10 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     }
   ],
   "wod": [
@@ -39,7 +41,8 @@
         { "type": "weight", "value": 10 },
         { "type": "weight", "value": 10 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "exercise": "Sand bag over shoulder",
@@ -50,7 +53,8 @@
         { "type": "weight", "value": 10 },
         { "type": "weight", "value": 10 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "exercise": "DB front racked squats",
@@ -61,7 +65,8 @@
         { "type": "weight", "value": 15 },
         { "type": "weight", "value": 15 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     }
   ],
   "finisher": [
@@ -72,7 +77,8 @@
         { "type": "weight", "value": 15 },
         { "type": "weight", "value": 15 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "exercise": "Bodyweight heels elevated squat",
@@ -81,7 +87,8 @@
         { "type": "weight", "value": 15 },
         { "type": "weight", "value": 15 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     }
   ],
   "additionalTopUp": [
@@ -93,7 +100,8 @@
         { "type": "weight", "value": 15 },
         { "type": "weight", "value": 15 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "exercise": "Single leg glute bridge",
@@ -103,7 +111,8 @@
         { "type": "weight", "value": 16 },
         { "type": "weight", "value": 16 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     },
     {
       "exercise": "Extended clams",
@@ -113,7 +122,8 @@
         { "type": "weight", "value": 16 },
         { "type": "weight", "value": 16 }
       ],
-      "video": "https://bbc.com"
+      "video": "https://bbc.com",
+      "description": "Make sure you get the full range of motion"
     }
   ],
   "cooldown": [

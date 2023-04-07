@@ -7,8 +7,8 @@ export const createWorkoutPlan = async (api: Context, request: Request, response
   try {
     await client.query('BEGIN TRANSACTION')
 
-    const query = `INSERT INTO workoutPlans (title, workout)
-    VALUES ($1, $2)`
+    const query = `INSERT INTO workoutPlans (title, workout, plan_name)
+    VALUES ($1, $2, $3)`
 
     const values: string[] = Object.values(api.request.body)
 
