@@ -32,7 +32,7 @@ export const updateWorkout = async (api: Context, request: Request, response: Re
     await client.query(query, [...values])
 
     await client.query('COMMIT TRANSACTION')
-    response.status(500).json({ message: `Successfully updated workout with id: ${api.request.params.id}` })
+    response.status(201).json({ message: `Successfully updated workout with id: ${api.request.params.id}` })
   } catch (error) {
     rollback(client)
     console.log(error)
