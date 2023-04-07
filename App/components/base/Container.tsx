@@ -1,8 +1,9 @@
 import { View, StyleSheet, ScrollView, Text, Pressable } from 'react-native'
 import React, { ReactElement } from 'react'
-import { ProgressBar } from './ProgressBar'
+// import { ProgressBar } from './ProgressBar'
 import { useRecoilState } from 'recoil'
 import { activeModalState } from '../../state/modal'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 interface ContainerProps {
   children: ReactElement
@@ -19,13 +20,15 @@ export const Container = (props: ContainerProps) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Pressable onPress={handleCloseAllModals}>
-        <View>
-          <View style={styles.children}>{props.children}</View>
-          <View style={styles.footer}>{props.footer}</View>
-        </View>
-        <View style={props.hasOverlay ? styles.overlay : { display: 'none' }}></View>
-      </Pressable>
+      <KeyboardAwareScrollView extraScrollHeight={100}>
+        <Pressable onPress={handleCloseAllModals}>
+          <View>
+            <View style={styles.children}>{props.children}</View>
+            <View style={styles.footer}>{props.footer}</View>
+          </View>
+          <View style={props.hasOverlay ? styles.overlay : { display: 'none' }}></View>
+        </Pressable>
+      </KeyboardAwareScrollView>
     </ScrollView>
   )
 }

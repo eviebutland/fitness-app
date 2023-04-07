@@ -23,6 +23,7 @@ const DashboardScreen = ({ navigation }) => {
   const activeModal = useRecoilValue(activeModalGetter)
   const workout = useRecoilValue(todaysWorkoutGetter)
 
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
   const [isWorkoutInProgress, setIsWorkoutInProgress] = useState(false)
   const [status, setStatus] = useState<Status>('inactive')
   const [isLoading, setIsLoading] = useState(false)
@@ -49,10 +50,11 @@ const DashboardScreen = ({ navigation }) => {
       navigation.navigate('Login')
     } finally {
       setIsLoading(false)
+      setIsFirstLoad(false)
     }
   }
 
-  if (!workout) {
+  if (!workout && isFirstLoad) {
     fetchTodaysWorkout('today')
   }
 

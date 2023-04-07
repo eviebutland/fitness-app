@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import { useRecoilState } from 'recoil'
 import { BaseButton } from '../../components/base/Button'
 import { userState } from '../../state/user'
@@ -12,7 +12,6 @@ import { storeData } from '../../lib/async-storage/store-data'
 import { useError } from '../../lib/useError'
 import { removeData } from '../../lib/async-storage/remove-data'
 import { userLogin } from '../../services/user'
-import { API_PATH } from '@env'
 
 type FormData = {
   username: string
@@ -71,7 +70,7 @@ const LoginScreen = ({ navigation, route }) => {
   }
   return (
     <Container>
-      <View>
+      <ScrollView>
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
@@ -127,7 +126,7 @@ const LoginScreen = ({ navigation, route }) => {
         ></BaseButton>
 
         {!!error && <ErrorSummary error={error}></ErrorSummary>}
-      </View>
+      </ScrollView>
     </Container>
   )
 }
