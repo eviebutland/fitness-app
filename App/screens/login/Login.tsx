@@ -12,6 +12,7 @@ import { storeData } from '../../lib/async-storage/store-data'
 import { useError } from '../../lib/useError'
 import { removeData } from '../../lib/async-storage/remove-data'
 import { userLogin } from '../../services/user'
+import { API_PATH } from '@env'
 
 type FormData = {
   username: string

@@ -36,7 +36,7 @@ export const document: OpenAPIV3.Document = {
   ],
   servers: [
     {
-      url: 'http://localhost:3030'
+      url: 'http://fitness-app.eba-5rqxchqt.us-east-1.elasticbeanstalk.com'
     }
   ],
   paths: {
