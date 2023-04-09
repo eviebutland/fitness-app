@@ -4,6 +4,9 @@ import { createAxiosInstance } from './axios'
 import axios from 'axios'
 import { UserRequestBody } from '../../API/src/lib/types/user'
 import { API_PATH, ADMIN_USERNAME, ADMIN_PASSWORD } from '@env'
+
+const api_path = process.env.NODE_ENV === 'development' ? 'http://localhost:3030' : API_PATH
+
 interface LoginModel {
   username: string
   password: string
@@ -20,7 +23,7 @@ interface ResetPasswordModel {
 }
 
 export const userLogin = async (postModel: LoginModel) => {
-  return await axios.post(`${API_PATH}/login`, postModel)
+  return await axios.post(`${api_path}/login`, postModel)
 }
 
 export const loginAsAdmin = async () => {
@@ -33,7 +36,7 @@ export const loginAsAdmin = async () => {
 export const fetchUser = async (existingUser: LoggedInUser, callback?: Function): Promise<void> => {
   const axiosInstance = createAxiosInstance(existingUser?.token as string)
   try {
-    const { data } = await axiosInstance.get(`${API_PATH}/users/${existingUser.id}`)
+    const { data } = await axiosInstance.get(`${api_path}/users/${existingUser.id}`)
 
     if (callback) {
       callback(data)
@@ -44,7 +47,7 @@ export const fetchUser = async (existingUser: LoggedInUser, callback?: Function)
 }
 
 export const createUser = async (postModel: UserRequestBody, token: string) => {
-  return axios.post(`${API_PATH}/users`, postModel, {
+  return axios.post(`${api_path}/users`, postModel, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -54,11 +57,11 @@ export const createUser = async (postModel: UserRequestBody, token: string) => {
 export const updatedCompletedWorkouts = (user: LoggedInUser, patchModel: CompletedWorkouts): void => {
   const axiosInstance = createAxiosInstance(user?.token as string)
 
-  axiosInstance.patch(`${API_PATH}/users/${user.id}/completed-workout`, patchModel)
+  axiosInstance.patch(`${api_path}/users/${user.id}/completed-workout`, patchModel)
 }
 
 export const updateUser = (id: string, patchModel: Record<string, string>, token: string) => {
-  return axios.patch(`${API_PATH}/users/${id}`, patchModel, {
+  return axios.patch(`${api_path}/users/${id}`, patchModel, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -66,7 +69,7 @@ export const updateUser = (id: string, patchModel: Record<string, string>, token
 }
 
 export const fetchActivationCode = (patchModel: ActivationCodeModel, token: string) => {
-  return axios.patch(`${API_PATH}/users/activation`, patchModel, {
+  return axios.patch(`${api_path}/users/activation`, patchModel, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -74,5 +77,5 @@ export const fetchActivationCode = (patchModel: ActivationCodeModel, token: stri
 }
 
 export const resetPassword = (postModel: ResetPasswordModel): void => {
-  axios.post(`${API_PATH}/reset-password`, postModel)
+  axios.post(`${api_path}/reset-password`, postModel)
 }
