@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { userState } from '../state/user'
@@ -54,13 +54,15 @@ const DashboardScreen = ({ navigation }) => {
     }
   }
 
-  if (!workout && isFirstLoad) {
-    fetchTodaysWorkout('today')
-  }
+  useEffect(() => {
+    if (isFirstLoad && !Object.values(workout).length) {
+      fetchTodaysWorkout('today')
+    }
+  })
 
-  const handleCompleteWorkout = async () => {
+  const handleCompleteWorkout = () => {
     try {
-      await updatedCompletedWorkouts(user, {
+      updatedCompletedWorkouts(user, {
         workoutId: todaysWorkout?.id,
         name: todaysWorkout?.title
       })
