@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "App",
-    "slug": "App",
+    "slug": "fitness-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,11 +14,10 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.evieperren.fitnessapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +27,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d7efa376-1912-4b92-8cfd-0a55e5d87814"
+      }
+    },
+    "owner": "evieperren"
   }
 }
