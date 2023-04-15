@@ -19,7 +19,12 @@ export default function App() {
     <RecoilRoot>
       <NavigationContainer>
         <Navigator initialRouteName="Entry">
-          <Screen name="Login" component={LoginScreen}></Screen>
+          <Screen
+            options={() => ({ headerBackVisible: false })}
+            hideNavigationBar
+            name="Login"
+            component={LoginScreen}
+          ></Screen>
           <Group>
             <Screen
               name="ResetPassword"
@@ -77,7 +82,7 @@ export default function App() {
           </Group>
 
           <Group screenOptions={{ headerLeft: () => {} }}>
-            <Screen name="Entry" component={EntryScreen}></Screen>
+            <Screen name="Entry" options={() => ({ headerBackVisible: false })} component={EntryScreen}></Screen>
             <Screen
               name="Dashboard"
               component={DashboardScreen}
