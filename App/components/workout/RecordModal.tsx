@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, StyleSheet, View, Pressable, Text } from 'react-native'
+import { Modal, StyleSheet, View, Pressable } from 'react-native'
 import { BaseButton } from '../base/Button'
 import { Input } from '../base/Input'
 import { useRecoilState, useRecoilValue } from 'recoil'
