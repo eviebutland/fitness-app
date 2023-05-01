@@ -90,6 +90,10 @@ I am using [courier](https://www.courier.com/), this is an API that can manage m
 Generating workouts:
 My initial thoughts on this project was to have the workouts generate themselves based off of exercise types (i.e select 3 upper body exercises and this would be a workout). However, since researching more into existing workout guides available, I have found that most, if not all, are structured in a plan. This is where there are 8/12 weeks worth of exercises premade and ready to use. However, since I have collected user data on workout preference, I will continue to use the current set up.
 
+
+#### Final stages
+I was able to deploy my API to Elastic beanstalk with a RDS connection to store my data. After some time accessing this and getting to understand the systems, I decided to close down the API from the server as costs were increasing. I believe a better option may have been a lambda, so to only cost when the API was being called, instead of by its availability. 
+
 </details>
 
 <details>
@@ -142,7 +146,7 @@ const charCountState = selector({
 const count = useRecoilValue(charCountState)
 ```
 
-</details>
+
 
 ## Form validation
 
@@ -150,4 +154,10 @@ For form validation, I decided to go with [React hook form](https://react-hook-f
 
 ## Future features
 
-I currently have a hard coded step count within the app, however, i would like to be able to pull in health data already recorded within Apple. [Health data integration](https://github.com/agencyenterprise/react-native-health)
+I currently have a hard coded step count within the app, however, I would like to be able to pull in health data already recorded within Apple. [Health data integration](https://github.com/agencyenterprise/react-native-health)
+
+After downloading the expo app to my phone, I was able to test the functionality. The modal to add weights requires more work as currently is covered by the keyboard. In order to fit the keyboard covering on login screens, I installed react-native-keyboard-aware-scroll-view which allowed me to offset the components when the keyboard was open. I would like to get to know more built in functionality within React native to make this a more seamless product.
+</details>
+
+
+I have been able to learn a lot from this project and delve into FE and BE topics I haven't touched before. This project was incredibily fun to work on and I hope to revisit it in the future.
