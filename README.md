@@ -146,11 +146,16 @@ const charCountState = selector({
 const count = useRecoilValue(charCountState)
 ```
 
-
-
 ## Form validation
 
 For form validation, I decided to go with [React hook form](https://react-hook-form.com/).
+
+
+## Workout screens:
+![Simulator Screenshot - iPad (10th generation) - 2025-06-11 at 21 52 50](https://github.com/user-attachments/assets/e42ce1eb-b26c-422f-a4f0-3122394d6401)
+![Simulator Screenshot - iPad (10th generation) - 2025-06-11 at 21 53 02](https://github.com/user-attachments/assets/3cd90d21-840d-4b1e-b56c-9bb5fad49f93)
+![Simulator Screenshot - iPad (10th generation) - 2025-06-11 at 21 53 16](https://github.com/user-attachments/assets/dc73575d-2170-4b2d-b13e-dae6303f4d3c)
+
 
 ## Future features
 
