@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Text } from 'react-native'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { userState } from '../state/user'
 import { Calendar } from '../components/Calendar'
@@ -91,6 +91,7 @@ const DashboardScreen = ({ navigation }) => {
           <ActivityIndicator></ActivityIndicator>
         ) : (
           <View>
+            <Text>Hello</Text>
             {status === 'inactive' && !!workout?.id && (
               <Overview handleDisplayWorkout={() => setStatus('active')} selectedDay={selectedDay}></Overview>
             )}

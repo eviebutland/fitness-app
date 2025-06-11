@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { useRecoilState } from 'recoil'
 import { Container } from '../components/base/Container'
 import { Title } from '../components/base/Title'
@@ -8,6 +8,7 @@ import { userState } from '../state/user'
 
 import { removeData } from '../lib/async-storage/remove-data'
 import { userLogin } from '../services/user'
+import { BaseButton } from '../components/base/Button'
 
 const EntryScreen = ({ navigation }) => {
   const [user, setUser] = useRecoilState(userState)
@@ -48,7 +49,8 @@ const EntryScreen = ({ navigation }) => {
         </View>
         <Text style={styles.subtitle}>Are you ready for today's workout?</Text>
         <Image style={styles.image} source={require('../assets/entry.png')} accessibilityLabel="App icon" />
-        <ActivityIndicator />
+
+        <BaseButton text="Let's get started!" onPress={() => navigation.navigate('Dashboard')} />
       </View>
     </Container>
   )

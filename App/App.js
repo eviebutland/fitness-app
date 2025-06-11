@@ -19,12 +19,12 @@ export default function App() {
     <RecoilRoot>
       <NavigationContainer>
         <Navigator initialRouteName="Entry">
-          <Screen
+          {/* <Screen
             options={() => ({ headerBackVisible: false })}
             hideNavigationBar
             name="Login"
             component={LoginScreen}
-          ></Screen>
+          ></Screen> */}
           <Group>
             <Screen
               name="ResetPassword"
